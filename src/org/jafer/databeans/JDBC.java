@@ -190,18 +190,36 @@ public abstract class JDBC extends Databean implements Z3950Connection, Present,
  */
   public Field getCurrentRecord() throws JaferException {
 
-    try {
-      if (resultSet == null)
-	search();
+    Field field = null;
+    if (resultSet == null)
+        try {
+          search();
+        }
+        catch (JaferException ex) {
+          ex.printStackTrace();
+        }
+        catch (SQLException ex) {
+          ex.printStackTrace();
+        }
 
       if (getRecordSchema() == null)
 	throw new JaferException("Record schema not set");
 
-      return createRecord();
-    }
-    catch (SQLException ex) {
-      throw new JaferException("Error executing query on database", ex);
-    }
+      try {
+        field = createRecord();
+      }
+      catch (JaferException ex1) {
+          ex1.printStackTrace();
+      }
+      catch (SQLException ex1) {
+          ex1.printStackTrace();
+      }
+
+      return field;
+//    }
+//    catch (SQLException ex) {
+//      throw new JaferException("Error executing query on database", ex);
+//    }
   }
 
   public String getCurrentDatabase() {
@@ -332,6 +350,7 @@ public abstract class JDBC extends Databean implements Z3950Connection, Present,
   protected void search() throws SQLException, JaferException {
 
     setQueryString("");
+    System.out.print(getQueryString());
     resultSet = getStatement().executeQuery(getQueryString());
     logger.log(Level.FINE, "search(): "+getQueryString());
   }
@@ -523,6 +542,9 @@ public abstract class JDBC extends Databean implements Z3950Connection, Present,
 
     if (columnName != null && !columnName.equals("") && alignCursor()) {// i.e. no value in <jafer:insert> column attribute
       pKey = resultSet.getString(1);
+      if (columnName.indexOf('.') < 0)
+        throw new JaferException("Column name must be specified in record template as tablename.columnname");
+
       tableName = columnName.substring(0, columnName.indexOf('.'));
 
       if (tableName.equalsIgnoreCase(primaryTable))

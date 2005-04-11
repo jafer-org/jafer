@@ -53,11 +53,11 @@ public class OPACRecord extends DataObject {
     this.ber = ber;
   }
 
-  public OPACRecord(String dbName, Node root) {
-
-    super(dbName, root);
-    this.root = root;
-  }
+//  public OPACRecord(String dbName, Node root) {
+//
+//    super(dbName, root);
+//    this.root = root;
+//  }
 
   public BEREncoding getBER() throws org.jafer.record.RecordException {
     /**@todo: Override this org.jafer.record.DataObject method*/

@@ -47,11 +47,11 @@ public class SUTRSRecord extends DataObject {
     this.ber = ber;
   }
 
-  public SUTRSRecord(String dbName, Node root) {
-
-    super(dbName, root);
-    this.root = root.getFirstChild();
-  }
+//  public SUTRSRecord(String dbName, Node root) {
+//
+//    super(dbName, root);
+//    this.root = root.getFirstChild();
+//  }
 
   public BEREncoding getBER() throws org.jafer.record.RecordException {
 

@@ -42,6 +42,8 @@ import org.w3c.dom.Node;
 
 public class Diagnostic extends DataObject {
 
+  private static final String JAFER_OID = "1.2.840.10003.4.1000.176.1";
+
   public Diagnostic(String dbName, BEREncoding ber) {
 
     super(dbName, ber);
@@ -49,11 +51,12 @@ public class Diagnostic extends DataObject {
 
   public Diagnostic(String dbName, Node root) {
 
-    super(dbName, root);
+    super(dbName, root, JAFER_OID);
   }
 
   private DefaultDiagFormat getDefaultDiagFormat() throws RecordException {
 
+    /** @todo what if the BER is null, ie constructor used root? */
     DefaultDiagFormat defaultDiagFormat = null;
     try {
       defaultDiagFormat = new DefaultDiagFormat(getBER(), true);

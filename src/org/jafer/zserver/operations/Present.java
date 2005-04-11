@@ -39,7 +39,7 @@ import org.jafer.conf.Config;
 import org.jafer.exception.JaferException;
 import org.jafer.record.*;
 import org.jafer.util.xml.*;
-import org.jafer.zserver.*;
+import org.jafer.zserver.Session;
 
 import java.util.logging.*;
 
@@ -72,6 +72,13 @@ public class Present extends Operation {
 
   public PDU runOp() throws Exception {
 
+    int start, total;
+    int[] preferredSyntax;
+
+    start = pduRequest.c_presentRequest.s_resultSetStartPoint.get();
+    total = pduRequest.c_presentRequest.s_numberOfRecordsRequested.get();
+    preferredSyntax = pduRequest.c_presentRequest.s_preferredRecordSyntax.get();
+
     pduResponse.c_presentResponse = new PresentResponse();
     pduResponse.c_presentResponse.s_referenceId = pduRequest.c_presentRequest.s_referenceId;
     pduResponse.c_presentResponse.s_nextResultSetPosition = new ASN1Integer(0);
@@ -79,19 +86,22 @@ public class Present extends Operation {
     pduResponse.c_presentResponse.s_records = new Records();
     pduResponse.c_presentResponse.s_presentStatus = new PresentStatus();
 
-    return Present(pduRequest.c_presentRequest.s_resultSetStartPoint.get(),
-                   pduRequest.c_presentRequest.s_numberOfRecordsRequested.get(),
-                   pduRequest.c_presentRequest.s_preferredRecordSyntax.get());
+    Present(start, total, preferredSyntax);
+
+    return pduResponse;
   }
 
   public PDU Present(int start, int total, int[] syntax) throws Exception {
 
-    String requestedRecordSyntax, recordSyntax, recordSchema = null;
+//    String requestedRecordSyntax, recordSyntax, recordSchema = null;
+    String requestedRecordSyntax, recordSyntax;
+   String targetRecordSchema = null, recordSchema = null;
     try {
       requestedRecordSyntax = Config.convertSyntax(syntax);
-      recordSchema = Config.getRecordSerializerTargetSchema(requestedRecordSyntax);
+//      recordSchema = Config.getRecordSerializerTargetSchema(requestedRecordSyntax);
+      targetRecordSchema = Config.getRecordSerializerTargetSchema(requestedRecordSyntax);
       /** @todo we're not using recordSyntax! */
-      recordSyntax = Config.getRecordSyntax(recordSchema);
+      recordSyntax = Config.getRecordSyntax(targetRecordSchema);/** @todo take out after debug... */
     }
     catch (JaferException ex) {
       logger.log(Level.WARNING, getName() + " " + ex.toString(), ex);
@@ -104,7 +114,7 @@ public class Present extends Operation {
     else
       resultSetName = pduRequest.c_presentRequest.s_resultSetId.value.value.get();
     org.jafer.interfaces.Present databean = getDatabean(resultSetName);
-    databean.setRecordSchema(recordSchema);
+    databean.setRecordSchema(targetRecordSchema);
 
     String databaseName;
     Node recordRoot;
@@ -118,7 +128,11 @@ public class Present extends Operation {
         databean.setRecordCursor(recNo);
         databaseName = databean.getCurrentDatabase();
         recordRoot = databean.getCurrentRecord().getRoot();
-        dataObject = new DataObject(databaseName, recordRoot);
+        //////
+        recordSchema = recordRoot.getNamespaceURI();
+        recordSyntax = Config.getRecordSyntax(recordSchema);
+        //////
+        dataObject = new DataObject(databaseName, recordRoot, recordSyntax);
         ber = (BEREncoding)recordFactory.getBER(dataObject, DOMFactory.newDocument(), databean.getRecordCursor());
 
         record = new NamePlusRecord();

@@ -72,11 +72,11 @@ public class GRS1Record extends DataObject {
     this.ber = ber;
   }
 
-  public GRS1Record(String dbName, Node root) {
-
-    super(dbName, root);
-    this.root = root.getFirstChild();
-  }
+//  public GRS1Record(String dbName, Node root) {
+//
+//    super(dbName, root);
+//    this.root = root.getFirstChild();
+//  }
 
   public BEREncoding getBER() throws org.jafer.record.RecordException {
 

@@ -64,12 +64,12 @@ public class DataObject {
     this.root = root;
   }
 
-//  public DataObject(String dbName, Node root, String syntax) {
-//
-//    this.dbName = dbName;
-//    this.root = root;
-//    this.syntax = Config.convertSyntax(syntax);
-//  }
+  public DataObject(String dbName, Node root, String syntax) {
+
+    this.dbName = dbName;
+    this.root = root;
+    this.syntax = Config.convertSyntax(syntax);
+  }
 
   public DataObject(Node root, String schema) {
 

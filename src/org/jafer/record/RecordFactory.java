@@ -95,23 +95,24 @@ public class RecordFactory {
   public Object getXML(DataObject dataObject, Document document, String targetSchema, int recNo) throws JaferException {
 
     int[] recordSyntax;
-    String dbName;
     Node recordNode;
+    String dbName = dataObject.getDatabaseName();
 
     if (dataObject.getXML() != null)
       recordNode = getXML(dataObject, targetSchema);
     else
-      recordNode = getXML(dataObject, document, targetSchema);
-//    }
-//    catch (JaferException e) {
-//      recordNode = (Element) DOMFactory.getExceptionNode(document, e, e.getStackTrace(), "Error generating or getting XML from record");
-//      logger.warning(e.getMessage());
-//      /** @todo we need recordSchema for XML JaferException */
-//      return getRecordRoot(recordNode, Config.convertSyntax(Config.getRecordSyntaxFromName("JAFER")), "JaferException", dbName, recNo);
-//    }
+      try {
+        recordNode = getXML(dataObject, document, targetSchema);
+      }
+      catch (JaferException e) {
+        recordNode = (Element) DOMFactory.getExceptionNode(document, e, e.getStackTrace(), "Error generating or getting XML from record");
+        logger.warning(e.getMessage());
+        /** @todo we need recordSchema for XML JaferException */
+        return getRecordRoot(recordNode, Config.convertSyntax(Config.getRecordSyntaxFromName("JAFER")), "JaferException", dbName, recNo);
+      }
     logger.exiting("RecordFactory", "public Element getXML(DataObject dataObject, Integer recNo)");
 
-    return getRecordRoot(recordNode, dataObject.getRecordSyntax(), targetSchema, dataObject.getDatabaseName(), recNo);
+    return getRecordRoot(recordNode, dataObject.getRecordSyntax(), targetSchema, dbName, recNo);
   }
 
   private Node getXML(DataObject dataObject, String requestedRecordSchema) {
@@ -127,6 +128,7 @@ public class RecordFactory {
         return recordNode;
 
       recordNode = transformRecord(recordNode, recordSchema, requestedRecordSchema);
+
     } catch (JaferException e) {
       String message = "RecordFactory: cannot transform XMLRecord - use setCheckRecordFormat() to identify XMLRecords that do not conform to requested format";
       logger.warning(message);
@@ -238,7 +240,11 @@ public class RecordFactory {
         }
 
         template = (Templates)map.get(styleSheet);
-        recordNode = XMLTransformer.transform(recordNode, template);
+ // ZClient version
+  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/before.xml");
+      recordNode = XMLTransformer.transform(recordNode, template);
+  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/after.xml");
+//        recordNode = XMLTransformer.transform(recordNode, template);
     }
     return recordNode;
   }
@@ -263,7 +269,13 @@ public class RecordFactory {
           }
         }
         template = (Templates)cachedTemplates.get(styleSheet);
-        recordNode = XMLTransformer.transform(recordNode, template);
+//SRW version
+recordNode.normalize();
+  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/before.xml");
+      recordNode = XMLTransformer.transform(recordNode, template);
+  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/after.xml");
+
+//        recordNode = XMLTransformer.transform(recordNode, template);
     }
     return recordNode;
   }
