@@ -143,7 +143,7 @@
 	<include name="zebulun.jar"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/client/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
+    <zip zipfile="${distrib}/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -177,7 +177,7 @@
         <include name="org/jafer/zclient/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/client/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
+    <zip zipfile="${distrib}/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -235,7 +235,7 @@
         <include name="*"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/server/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
+    <zip zipfile="${distrib}/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -272,7 +272,7 @@
         <include name="org/jafer/zserver/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/server/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
+    <zip zipfile="${distrib}/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
