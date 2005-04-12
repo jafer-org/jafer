@@ -328,7 +328,7 @@
 	<include name="zebulun.jar"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/JaferSample.war" basedir="${temp}"/>
+    <zip zipfile="${distrib}/JaferSample-${buildVersion}.war" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
