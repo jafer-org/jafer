@@ -20,6 +20,9 @@
     <delete dir="${classes}"/>
     <delete dir="${temp}"/>
     <mkdir dir="${temp}"/>
+
+
+
   </target>
 
   <target name="compile-client" depends="init">
@@ -35,6 +38,8 @@
       <include name="org/jafer/test/Demo.java"/>
       <include name="org/jafer/util/**"/>
       <include name="org/jafer/zclient/**"/>
+      <exclude name="org/jafer/zclient/SRWClient.java" />
+      <exclude name="org/jafer/zclient/SRWSession.java" />
     </javac>
   </target>
 
@@ -55,6 +60,8 @@
       <include name="org/jafer/util/**"/>
       <include name="org/jafer/zclient/**"/>
       <include name="org/jafer/zserver/**"/>
+      <exclude name="org/jafer/zclient/SRWClient.java" />
+      <exclude name="org/jafer/zclient/SRWSession.java" />
     </javac>
   </target>
 
@@ -185,7 +192,7 @@
       </fileset>
       <fileset dir="${distrib}">
        <include name="jaferdoc.jar"/>
-      </fileset>    
+      </fileset>
 
       <!-- copies all class files, but uses compile-server target to compile server-only classes -->
       <fileset dir="${classes}">

@@ -16,7 +16,7 @@
       <param-name>port</param-name>
       <param-value>210</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>databaseName</param-name>
       <param-value>advance</param-value>
     </init-param>
@@ -58,7 +58,7 @@
     <display-name>ZGet</display-name>
     <description>bib-1 style url configuration for JAFER Servlet</description>
     <servlet-class>org.jafer.servlet.ZServlet</servlet-class>
-	<init-param>
+    <init-param>
       <param-name>target</param-name>
       <param-value>library.ox.ac.uk</param-value>
     </init-param>
@@ -66,7 +66,7 @@
       <param-name>port</param-name>
       <param-value>210</param-value>
     </init-param>
-	<init-param>
+    <init-param>
       <param-name>databaseName</param-name>
       <param-value>advance</param-value>
     </init-param>
