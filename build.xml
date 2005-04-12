@@ -4,7 +4,7 @@
 
   <property name="src" value="src"/>
   <property name="classes"  value="classes"/>
-  <property name="distrib"  value="distrib"/>
+  <property name="distrib"  value="${publishDir}"/>
   <property name="lib"  value="lib"/>
   <property name="doc"  value="doc"/>
   <property name="webapps"  value="webapps"/>
@@ -85,7 +85,7 @@
   </target>
 
   <target name="jardoc" depends="javadoc">
-    <zip zipfile="${distrib}/jaferdoc.jar" basedir="${doc}"/><!-- zip or jar? -->
+    <zip zipfile="${distrib}/jaferdoc-${buildVersion}.jar" basedir="${doc}"/><!-- zip or jar? -->
   </target>
 
   <target name="zebulun" depends="compile-all">
@@ -96,7 +96,7 @@
         <include name="asn1/**"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/zebulun.jar" basedir="${temp}"/>
+    <zip zipfile="${distrib}/zebulun-${buildVersion}.jar" basedir="${temp}"/>
   </target>
 
   <target name="client" depends="compile-client">
@@ -107,7 +107,7 @@
        <include name="Demo.bat"/>
       </fileset>
       <fileset dir="${distrib}">
-       <include name="jaferdoc.jar"/>
+       <include name="jaferdoc-${buildVersion}.jar"/>
       </fileset>
       <!-- copies all class files, but uses compile-client target to compile client-only classes -->
       <fileset dir="${classes}">
@@ -143,7 +143,7 @@
 	<include name="zebulun.jar"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/client/jafer-client.zip" basedir="${temp}"/>
+    <zip zipfile="${distrib}/client/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -177,7 +177,7 @@
         <include name="org/jafer/zclient/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/client/jafer-client-src.jar" basedir="${temp}"/>
+    <zip zipfile="${distrib}/client/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -191,7 +191,7 @@
        <include name="TestClient.bat"/>
       </fileset>
       <fileset dir="${distrib}">
-       <include name="jaferdoc.jar"/>
+       <include name="jaferdoc-${buildVersion}.jar"/>
       </fileset>
 
       <!-- copies all class files, but uses compile-server target to compile server-only classes -->
@@ -235,7 +235,7 @@
         <include name="*"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/server/jafer-server.zip" basedir="${temp}"/>
+    <zip zipfile="${distrib}/server/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -272,7 +272,7 @@
         <include name="org/jafer/zserver/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/server/jafer-server-src.jar" basedir="${temp}"/>
+    <zip zipfile="${distrib}/server/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
