@@ -4,7 +4,7 @@
 
   <property name="src" value="src"/>
   <property name="classes"  value="classes"/>
-  <property name="distrib"  value="${publishDir}"/>
+  <property name="distrib"  value="distrib"/>
   <property name="lib"  value="lib"/>
   <property name="doc"  value="doc"/>
   <property name="webapps"  value="webapps"/>
@@ -85,18 +85,18 @@
   </target>
 
   <target name="jardoc" depends="javadoc">
-    <zip zipfile="${distrib}/jaferdoc-${buildVersion}.jar" basedir="${doc}"/><!-- zip or jar? -->
+    <zip zipfile="${publishDir}/jaferdoc-${buildVersion}.jar" basedir="${doc}"/><!-- zip or jar? -->
   </target>
 
   <target name="zebulun" depends="compile-all">
-    <mkdir dir="${distrib}"/>
+    <mkdir dir="${publishDir}"/>
     <copy todir="${temp}">
       <fileset dir="${classes}">
         <include name="z3950/**"/>
         <include name="asn1/**"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/zebulun-${buildVersion}.jar" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/zebulun-${buildVersion}.jar" basedir="${temp}"/>
   </target>
 
   <target name="client" depends="compile-client">
@@ -106,7 +106,7 @@
        <include name="readme.html"/>
        <include name="Demo.bat"/>
       </fileset>
-      <fileset dir="${distrib}">
+      <fileset dir="${publishDir}">
        <include name="jaferdoc-${buildVersion}.jar"/>
       </fileset>
       <!-- copies all class files, but uses compile-client target to compile client-only classes -->
@@ -143,7 +143,7 @@
 	<include name="zebulun.jar"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -177,7 +177,7 @@
         <include name="org/jafer/zclient/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -190,7 +190,7 @@
        <include name="ServerStart.bat"/>
        <include name="TestClient.bat"/>
       </fileset>
-      <fileset dir="${distrib}">
+      <fileset dir="${publishDir}">
        <include name="jaferdoc-${buildVersion}.jar"/>
       </fileset>
 
@@ -235,7 +235,7 @@
         <include name="*"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -272,7 +272,7 @@
         <include name="org/jafer/zserver/**"/>
       </fileset>
      </copy>
-    <zip zipfile="${distrib}/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
@@ -328,7 +328,7 @@
 	<include name="zebulun.jar"/>
       </fileset>
     </copy>
-    <zip zipfile="${distrib}/JaferSample-${buildVersion}.war" basedir="${temp}"/>
+    <zip zipfile="${publishDir}/JaferSample-${buildVersion}.war" basedir="${temp}"/>
     <delete dir="${temp}" />
   </target>
 
