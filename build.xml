@@ -50,8 +50,6 @@
       <include name="org/jafer/test/Demo.java"/>
       <include name="org/jafer/util/**"/>
       <include name="org/jafer/zclient/**"/>
-      <exclude name="org/jafer/zclient/SRWClient.java" />
-      <exclude name="org/jafer/zclient/SRWSession.java" />
     </javac>
   </target>
 
@@ -72,8 +70,6 @@
       <include name="org/jafer/util/**"/>
       <include name="org/jafer/zclient/**"/>
       <include name="org/jafer/zserver/**"/>
-      <exclude name="org/jafer/zclient/SRWClient.java" />
-      <exclude name="org/jafer/zclient/SRWSession.java" />
     </javac>
   </target>
 
