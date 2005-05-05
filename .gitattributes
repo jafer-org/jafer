@@ -123,6 +123,7 @@ src/org/jafer/xsl/DC2RLI.xsl -text
 src/org/jafer/xsl/GILS2RLI.xsl -text
 src/org/jafer/xsl/GRS1-GILS.xsl -text
 src/org/jafer/xsl/MARC21.xsl -text
+src/org/jafer/xsl/MARC21TOMODS3.xsl -text
 src/org/jafer/xsl/MARC21slim2DC.xsl -text
 src/org/jafer/xsl/MARC21slim2MODS3.xsl -text
 src/org/jafer/xsl/MARC21slim2OAIMARC.xsl -text
