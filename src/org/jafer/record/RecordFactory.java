@@ -241,10 +241,7 @@ public class RecordFactory {
 
         template = (Templates)map.get(styleSheet);
  // ZClient version
-  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/before.xml");
       recordNode = XMLTransformer.transform(recordNode, template);
-  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/after.xml");
-//        recordNode = XMLTransformer.transform(recordNode, template);
     }
     return recordNode;
   }
@@ -270,12 +267,8 @@ public class RecordFactory {
         }
         template = (Templates)cachedTemplates.get(styleSheet);
 //SRW version
-recordNode.normalize();
-  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/before.xml");
-      recordNode = XMLTransformer.transform(recordNode, template);
-  org.jafer.util.xml.XMLSerializer.out(recordNode, "xml", "C:/after.xml");
-
-//        recordNode = XMLTransformer.transform(recordNode, template);
+		recordNode.normalize();
+	    recordNode = XMLTransformer.transform(recordNode, template);
     }
     return recordNode;
   }
