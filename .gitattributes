@@ -45,6 +45,7 @@ src/org/jafer/conf/characterSets/hebrew.xml -text
 src/org/jafer/conf/characterSets/latin.xml -text
 src/org/jafer/conf/characterSets/subscripts.xml -text
 src/org/jafer/conf/characterSets/superscripts.xml -text
+src/org/jafer/conf/cqlContextSets.xml -text
 src/org/jafer/conf/jdbcConfig/MODSTemplate.xml -text
 src/org/jafer/conf/jdbcConfig/OAITemplate.xml -text
 src/org/jafer/conf/jdbcConfig/config.xml -text

@@ -440,6 +440,55 @@ import org.w3c.dom.NodeList;
 
     return schemaName;
   }
+
+  /////////////////////////
+    private static Hashtable bib1ToCQLMappings;
+
+    private static void buildBib1ToCQLMappings() {
+
+      bib1ToCQLMappings = new Hashtable();
+      NodeList list = null;
+      try {
+        Document doc = config.parseDocument("org/jafer/conf/cqlContextSets.xml");
+        list = selectNodeList(doc, "contextSets/contextSet");
+      }
+      catch (JaferException ex) {
+        ex.printStackTrace();
+        /** @todo handle this when moving method call to constructor... */
+      }
+      Element el;
+      for (int i=0; i <list.getLength(); i++) {
+        el = (Element)list.item(i);
+        String prefix = el.getAttribute("shortId");
+        NodeList indexlist = null;
+        try {
+          indexlist = selectNodeList(el, "indexes/index");
+        }
+        catch (JaferException ex1) {
+          /** @todo handle this when moving method call to constructor... */
+        }
+        Element el2;
+        for (int j=0; j <list.getLength(); j++) {
+          el2 = (Element) indexlist.item(i);
+          if (el2.getAttribute("attributeSet").equalsIgnoreCase("bib1")) {
+            bib1ToCQLMappings.put(el2.getAttribute("useAttribute"),
+                                  prefix + "." + el2.getAttribute("name"));
+          }
+        }
+      }
+    }
+
+    public static String translateBib1ToCQLIndex(String use) {
+
+      String cqlIndex = null;
+      if (bib1ToCQLMappings == null)
+        buildBib1ToCQLMappings();
+
+      cqlIndex = (String)bib1ToCQLMappings.get(use);
+
+      return cqlIndex;
+    }
+
 ////////////////////////
 
   private static void buildBib1AttributeConfig(String bib1AttributesFile) throws JaferException {
