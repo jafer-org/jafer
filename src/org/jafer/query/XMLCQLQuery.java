@@ -94,6 +94,15 @@ public class XMLCQLQuery {
     return buffer;
   }
 
+  private String translateUse(String use) {
+    if (use.equalsIgnoreCase("author"))
+      return "dc.creator";
+    if (use.equalsIgnoreCase("title"))
+      return "dc.title";
+    if (use.equalsIgnoreCase("subject"))
+      return "dc.subject";
+    return "cql.any";
+  }
 
   private StringBuffer processConstraintModel(Node cM, StringBuffer buffer) throws QueryException {
 
@@ -105,18 +114,35 @@ public class XMLCQLQuery {
     semantic = selectNode(cM, "constraint/semantic");
     relation = selectNode(cM, "constraint/relation");
 
-    if (semantic != null && relation != null) {// must include both or neither
+    if (semantic != null) {
       try {
         index = Config.getSemanticAttributeName(getNodeValue(semantic));
-        rel = Config.getRelationSymbol(getNodeValue(relation));
-        if (index != "" && rel != "") //relation att might not translate to a symbol, eg phonetic, stem?
-          /** @todo warning if only one of semantic/relation found? */
-          buffer.append(index + " " + rel + " ");
+        if (index != "" ) {//relation att might not translate to a symbol, eg phonetic, stem?
+          buffer.append(Config.translateBib1ToCQLIndex(index) + " ");
+        }
+        if (relation != null) {// must include both or neither
+          try {
+            rel = Config.getRelationSymbol(getNodeValue(relation));
+            if (rel != "") {//relation att might not translate to a symbol, eg phonetic, stem?
+              /** @todo warning if only one of semantic/relation found? */
+              buffer.append(rel + " ");
+            } else {
+              buffer.append("= ");
+            }
+          }
+          catch (JaferException ex) {
+            throw new QueryException(
+                "Error in converting XML attribute value to name or symbol");
+          }
+        } else {
+          buffer.append("= ");
+        }
       }
       catch (JaferException ex) {
         throw new QueryException(
             "Error in converting XML attribute value to name or symbol");
       }
+
     }
 
     term = getNodeValue(selectNode(cM, "model"));
