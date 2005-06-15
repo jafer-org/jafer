@@ -146,9 +146,11 @@ public class SRWSession
 
       SearchRetrieveRequestType request = new SearchRetrieveRequestType();
 
+      request.setVersion("1.1");
       request.setQuery(query);
       request.setStartRecord(new PositiveInteger(Integer.toString(nRecord)));
       request.setMaximumRecords(new PositiveInteger(Integer.toString(nRecords)));
+      request.setRecordPacking("string");
 
       /**@todo: need to set schema by OID
        *
@@ -159,7 +161,11 @@ public class SRWSession
       RecordType[] records = response.getRecords().getRecord();
 
       for (int i = 0; i < records.length; i++) {
-        if (records[i].getRecordPacking().equalsIgnoreCase("string")) {
+        String recordPacking = records[i].getRecordPacking();
+        if (recordPacking == null) {
+          recordPacking = "string"; //strictly recordPacking should never be null
+        }
+        if (recordPacking.equalsIgnoreCase("string")) {
           String data = records[i].getRecordData().get_any()[0].getNodeValue();
           try {
             Document doc = DOMFactory.parse(data);
@@ -169,9 +175,15 @@ public class SRWSession
             ////////////////////////////
             String schema = records[i].getRecordSchema();
             if (schema != null)
-              schema = org.jafer.conf.Config.translateSRWSchemaName(schema);
+              if (!schema.equalsIgnoreCase("default")) {
+                schema = org.jafer.conf.Config.translateSRWSchemaName(schema);
+              } else {
+                schema = org.jafer.conf.Config.translateSRWSchemaName(root.getNamespaceURI());
+              }
             else
               schema = root.getNamespaceURI();
+
+
 
             XMLRecord record = new XMLRecord(root, schema);
 //            record.setrecordsyntax...?
@@ -181,12 +193,15 @@ public class SRWSession
             /** @todo  */
             ex1.printStackTrace();
           }
-        } else if (records[i].getRecordPacking().equalsIgnoreCase("xml")) {
-          /**@todo: needs work
-           *
-           */
-          Node nd = records[i].getRecordData().get_any()[0].getFirstChild();
-//          dataObjects.add(new XMLRecord("SRW", nd));
+        } else if (recordPacking.equalsIgnoreCase("xml")) {
+          Node root = records[i].getRecordData().get_any()[0].getFirstChild();
+          String schema = records[i].getRecordSchema();
+          if (schema != null)
+            schema = org.jafer.conf.Config.translateSRWSchemaName(schema);
+          else
+            schema = root.getNamespaceURI();
+
+          XMLRecord record = new XMLRecord(root, schema);
         }
       }
 
@@ -262,6 +277,7 @@ public class SRWSession
       else
         throw new QueryException("Query type: "+ queryObject.getClass().getName() +" not supported", 107, "");
 
+      request.setVersion("1.1");
       request.setQuery(query);
       request.setStartRecord(new PositiveInteger("1"));
       request.setMaximumRecords(new NonNegativeInteger("0"));
