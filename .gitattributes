@@ -54,6 +54,7 @@ src/org/jafer/conf/jdbcConfig/query.xsl -text
 src/org/jafer/conf/jdbcConfig/server.xml -text
 src/org/jafer/conf/logging.properties -text
 src/org/jafer/conf/openURL.xml -text
+src/org/jafer/conf/query-schema.dtd -text
 src/org/jafer/conf/recordDescriptor.xml -text
 src/org/jafer/conf/searchProfiles.xml -text
 src/org/jafer/conf/server.xml -text
