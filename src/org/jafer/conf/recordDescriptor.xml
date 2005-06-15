@@ -11,6 +11,7 @@
 <!--  <transform sourceSchema="http://www.loc.gov/mods/" targetSchema="http://www.loc.gov/mods/v3">org/jafer/xsl/MODS2Up2MODS3.xsl</transform>  -->
   <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0">org/jafer/xsl/DC2RLI.xsl</transform>
   <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://ltsc.ieee.org/xsd/LOM">org/jafer/xsl/DC2LOM.xsl</transform>
+  <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://www.loc.gov/MARC21/slim">org/jafer/xsl/DC2MARC21slim.xsl</transform>
   <serializer targetSchema="http://www.openarchives.org/OAI/oai_marc">org.jafer.record.MARCRecord</serializer>
  </oid>
  <oid name="UKMARC" syntax="1.2.840.10003.5.11" priority="2">

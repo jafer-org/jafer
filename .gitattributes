@@ -121,6 +121,7 @@ src/org/jafer/util/xml/XMLSerializer.java -text
 src/org/jafer/util/xml/XMLTransformer.java -text
 src/org/jafer/util/xml/XMLTree.java -text
 src/org/jafer/xsl/DC2LOM.xsl -text
+src/org/jafer/xsl/DC2MARC21slim.xsl -text
 src/org/jafer/xsl/DC2RLI.xsl -text
 src/org/jafer/xsl/GILS2RLI.xsl -text
 src/org/jafer/xsl/GRS1-GILS.xsl -text
