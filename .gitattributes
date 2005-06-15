@@ -69,6 +69,8 @@ src/org/jafer/databeans/QueryAdaptorFactory.java -text
 src/org/jafer/databeans/RecordAdaptor.java -text
 src/org/jafer/databeans/RecordAdaptorFactory.java -text
 src/org/jafer/databeans/TDSDatabean.java -text
+src/org/jafer/databeans/ZeerexFactory.java -text
+src/org/jafer/databeans/ZurlFactory.java -text
 src/org/jafer/exception/JaferException.java -text
 src/org/jafer/interfaces/Authenticate.java -text
 src/org/jafer/interfaces/Authentication.java -text
