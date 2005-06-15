@@ -35,6 +35,13 @@
       verbose="true"
       url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
     </axis-wsdl2java>
+    <axis-wsdl2java
+      output="${src}"
+      testcase="false"
+      serverSide="true"
+      verbose="true"
+      url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
+    </axis-wsdl2java>
   </target>
 
   <target name="compile-client" depends="init">
