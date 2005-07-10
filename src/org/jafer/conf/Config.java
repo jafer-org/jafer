@@ -702,26 +702,61 @@ import org.w3c.dom.NodeList;
   }
 
   public static NodeList selectNodeList(Node node, String xPath) throws JaferException {
+    return selectNodeList(node, xPath, false);
+  }
 
+  private static NodeList selectNodeList(Node node, String xPath, boolean retry) throws JaferException {
     NodeList nodeList = null;
+    xPathAPI = new CachedXPathAPI();
     try {
       nodeList = xPathAPI.selectNodeList(node, xPath);
     } catch (javax.xml.transform.TransformerException e) {
       String message = "Error selecting Nodes: " + e.getMessage();
       throw new JaferException(message, e);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      /**
+       * There appears to be a problem with some versions of CachedXPathAPI
+       * which produces array out of bounds when used for a long time
+       * This is an attempt to workaround - i.e. refresh the Cache if this occurs
+       */
+      if (retry) {
+        xPathAPI = new CachedXPathAPI();
+        return selectNodeList(node, xPath, true);
+      }
+      else {
+        String message = "Error selecting Nodes: " + e.getMessage();
+        throw new JaferException(message, e);
+      }
     }
     return nodeList;
   }
 
   public static Node selectSingleNode(Node node, String xPath) throws JaferException {
+    return selectSingleNode(node, xPath, false);
+  }
 
+  private static Node selectSingleNode(Node node, String xPath, boolean retry) throws JaferException {
     Node selection = null;
     try {
       selection = xPathAPI.selectSingleNode(node, xPath);
     } catch (javax.xml.transform.TransformerException e) {
       String message = "Error selecting Node: " + e.getMessage();
       throw new JaferException(message, e);
+    } catch (ArrayIndexOutOfBoundsException e) {
+      /**
+       * There appears to be a problem with some versions of CachedXPathAPI
+       * which produces array out of bounds when used for a long time
+       * This is an attempt to workaround - i.e. refresh the Cache if this occurs
+       */
+      if (retry) {
+        xPathAPI = new CachedXPathAPI();
+        return selectSingleNode(node, xPath, true);
+      } else {
+        String message = "Error selecting Node: " + e.getMessage();
+        throw new JaferException(message, e);
+      }
     }
+
     return selection;
   }
 
