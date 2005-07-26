@@ -47,6 +47,8 @@ import org.xml.sax.SAXException;
 
 import org.xml.sax.InputSource;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.io.File;
 import java.io.InputStream;
@@ -90,15 +92,25 @@ public class DOMFactory {
     return getDocumentBuilder().newDocument();
   }
 
-  public static Document parse(URL resource) throws JaferException {
-
-    try {
-      return parse(new File(resource.getPath()));
-    } catch (NullPointerException e) {
-      String message = "DOMFactory, public static Document parse(URL resource): Cannot parse resource; " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    }
+  public static Document parse(URL resource) throws JaferException
+  {
+      try
+      {
+          // convert to URL to URI first to take care of %20 encoding
+          return parse(new File(new URI(resource.toString())));
+      }
+      catch (URISyntaxException e)
+      {
+          String message = "DOMFactory, public static Document parse(URL resource): Cannot create URI from URL; " + e.toString();
+          logger.severe(message);
+          throw new JaferException(message, e);
+      }
+      catch (NullPointerException e)
+      {
+          String message = "DOMFactory, public static Document parse(URL resource): Cannot parse resource; " + e.toString();
+          logger.severe(message);
+          throw new JaferException(message, e);
+      }
   }
 
   public static Document parse(File file) throws JaferException {
