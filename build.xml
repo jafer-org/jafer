@@ -10,17 +10,18 @@
   <property name="webapps"  value="webapps"/>
   <property name="temp"  value="temp"/>
 
+	
   <path id="base.classpath">
     <fileset dir="${lib}">
       <include name="**/*.jar"/>
     </fileset>
   </path>
 
-  <path id="axis.classpath">
-    <fileset dir="/var/luntbuild/ant/lib/axis">
-      <include name="**/*.jar" />
-    </fileset>
-  </path>
+	<path id="axis.classpath">
+	    <fileset dir="lib/axis">
+	      <include name="**/*.jar" />
+	    </fileset>
+	  </path>
   
   <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
 
@@ -126,16 +127,20 @@
       </fileset>
       <!-- copies all class files, but uses compile-client target to compile client-only classes -->
       <fileset dir="${classes}">
-	<include name="org/jafer/**"/>
-      </fileset>
+	  </fileset>
       <fileset dir="${src}">
         <!-- XML, XSL, properties files: -->
+      	<!-- AF - added for SRW support -->
+      	        <include name="org/jafer/conf/cqlContextSets.xml"/>
+      	        <include name="org/jafer/conf/SRWSchemaMappings.xml"/>
+      	<!-- AF end add -->	
         <include name="org/jafer/conf/characterSets/*"/>
 	<include name="org/jafer/conf/logging.properties"/>
         <include name="org/jafer/conf/bib1Attributes.xml"/>
 	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
 	<include name="org/jafer/conf/recordDescriptor.xml"/>
 	<include name="org/jafer/conf/searchProfiles.xml"/>
+    
 	<!-- following 2 not necessary, but included as e.g.'s: -->
         <include name="org/jafer/xsl/beans/queryAdaptor.xsl"/>
         <include name="org/jafer/xsl/beans/recordAdaptor.xsl"/>
@@ -167,6 +172,10 @@
      <fileset dir="${src}">
         <include name="org/jafer/conf/Config.java"/>
         <include name="org/jafer/conf/CompressedXMLDecoder.java"/>
+		<!-- AF - added for SRW support -->
+		<include name="org/jafer/conf/cqlContextSets.xml"/>
+		<include name="org/jafer/conf/SRWSchemaMappings.xml"/>
+		<!-- AF end add -->	
 	<include name="org/jafer/conf/logging.properties"/>
         <include name="org/jafer/conf/bib1Attributes.xml"/>
 	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
@@ -211,10 +220,13 @@
 
       <!-- copies all class files, but uses compile-server target to compile server-only classes -->
       <fileset dir="${classes}">
-	<include name="org/jafer/**"/>
-      </fileset>
+	  </fileset>
       <fileset dir="${src}">
         <!-- XML, XSL, properties files: -->
+      	<!-- AF - added for SRW support -->
+      	<include name="org/jafer/conf/cqlContextSets.xml"/>
+      	<include name="org/jafer/conf/SRWSchemaMappings.xml"/>
+      	<!-- AF end add -->	
         <include name="org/jafer/conf/characterSets/*"/>
 	<include name="org/jafer/conf/jdbcConfig/*"/>
 	<include name="org/jafer/conf/logging.properties"/>
@@ -257,6 +269,10 @@
   <target name="server-src">
    <copy todir="${temp}">
     <fileset dir="${src}">
+    	<!-- AF - added for SRW support -->
+    	<include name="org/jafer/conf/cqlContextSets.xml"/>
+    	<include name="org/jafer/conf/SRWSchemaMappings.xml"/>
+    	<!-- AF end add -->	
 	<include name="org/jafer/conf/characterSets/*"/>
 	<include name="org/jafer/conf/jdbcConfig/*"/>
 	<include name="org/jafer/conf/Config.java"/>
