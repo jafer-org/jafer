@@ -22,6 +22,7 @@ package org.jafer.conf;
 import org.jafer.exception.JaferException;
 import org.jafer.util.xml.DOMFactory;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -92,9 +93,9 @@ import org.w3c.dom.NodeList;
           }
   }
 
-  public static URL getResource(String path) {
+  public static InputStream getResource(String path) {
 
-    return new Config().getClass().getClassLoader().getResource(path);
+    return new Config().getClass().getClassLoader().getResourceAsStream(path);
   }
 
   private static void buildRecordConfig(String recordDescriptorFile) throws JaferException {
@@ -468,8 +469,8 @@ import org.w3c.dom.NodeList;
           /** @todo handle this when moving method call to constructor... */
         }
         Element el2;
-        for (int j=0; j <list.getLength(); j++) {
-          el2 = (Element) indexlist.item(i);
+        for (int j=0; j <indexlist.getLength(); j++) {
+          el2 = (Element) indexlist.item(j);
           if (el2.getAttribute("attributeSet").equalsIgnoreCase("bib1")) {
             bib1ToCQLMappings.put(el2.getAttribute("useAttribute"),
                                   prefix + "." + el2.getAttribute("name"));
@@ -691,12 +692,12 @@ import org.w3c.dom.NodeList;
     return config.parseDocument(SERVER_CONFIG_FILE);
   }
 
-  public static URL getServerDecode() throws JaferException {
+  public static InputStream getServerDecode() throws JaferException {
 
     return getResource(SERVER_DECODE_FILE);
   }
 
-  public static URL getServerEncode() throws JaferException {
+  public static InputStream getServerEncode() throws JaferException {
 
     return getResource(SERVER_ENCODE_FILE);
   }
@@ -784,11 +785,11 @@ import org.w3c.dom.NodeList;
 
   private Document parseDocument(String documentPath) throws JaferException {
 
-    URL url = null;
+    InputStream stream = null;
     Document document = null;
     try {
-      url = this.getClass().getClassLoader().getResource(documentPath);
-      document = DOMFactory.parse(url);
+      stream = this.getClass().getClassLoader().getResourceAsStream(documentPath);
+      document = DOMFactory.parse(stream);
     } catch (JaferException e) {
       String message = "Error parsing document; could not find resource: " + documentPath;
       throw new JaferException(message, e);
