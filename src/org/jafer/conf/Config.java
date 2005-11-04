@@ -595,6 +595,19 @@ import org.w3c.dom.NodeList;
       symbol = getValue(selectSingleNode(node, "@symbol"));
     return symbol;
   }
+  
+  public static String getRelationName(String attributeValue) throws JaferException {
+      /** @todo rename method................ */
+      /** @todo convert all methods to use XPath? */
+      /** @todo throw exception if lookup fails */
+      Document attributeDocument = config.parseDocument(BIB1_ATTRIBUTES_FILE);
+      String name = "";
+      Node node = selectSingleNode(attributeDocument, "attributeSets/attributeSet[@name='bib1']/attributeType[@name='relation']/attribute[@value='"+attributeValue+"']");
+
+      if (node != null)
+          name = getValue(selectSingleNode(node, "@name"));
+      return name;
+    }
 
 /////////////////////////////////////////////////////////
 
