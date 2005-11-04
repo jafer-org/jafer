@@ -35,7 +35,7 @@ import org.jafer.util.ConnectionException;
 import org.jafer.zclient.Session;
 import org.jafer.util.PDUDriver;
 import org.jafer.record.Diagnostic;
-import org.jafer.query.XMLRPNQuery;
+import org.jafer.query.JaferQuery;
 import org.jafer.query.QueryException;
 import org.jafer.exception.JaferException;
 
@@ -74,7 +74,8 @@ public class Search {
   public int[] search(Node domQuery, String[] databases, String resultSetName)
       throws JaferException, ConnectionException {
 
-    return search(XMLRPNQuery.getRPNQuery(domQuery), databases, resultSetName);
+    JaferQuery jaferQuery = new JaferQuery(domQuery);
+    return search(jaferQuery.toRPNQuery().getQuery(), databases, resultSetName);
   }
 
 

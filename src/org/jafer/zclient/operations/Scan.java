@@ -37,7 +37,7 @@ import org.jafer.util.PDUDriver;
 import org.jafer.conf.Config;
 import org.jafer.record.TermRecord;
 import org.jafer.zclient.Session;
-import org.jafer.query.XMLRPNQuery;
+import org.jafer.query.converter.RPNQueryConverter;
 
 import java.util.Vector;
 import org.w3c.dom.Node;
@@ -71,8 +71,7 @@ public class Scan {
  */
   public Vector scan(String[] databases, int nTerms, int step, int position, Node term) throws JaferException, ConnectionException {
 
-    XMLRPNQuery xmlQuery = new XMLRPNQuery();
-    return scan(databases, nTerms, step, position, xmlQuery.processConstraintModelNode(term).c_op.c_attrTerm);
+    return scan(databases, nTerms, step, position, RPNQueryConverter.processConstraintModelNode(term).c_op.c_attrTerm);
   }
 
   public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject) throws JaferException, ConnectionException {
