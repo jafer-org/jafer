@@ -28,7 +28,7 @@
 
 package org.jafer.databeans;
 
-import org.jafer.query.XMLRPNQuery;
+
 import org.jafer.exception.*;
 import org.w3c.dom.Node;
 import z3950.v3.RPNQuery;
@@ -53,7 +53,8 @@ public class TDSDatabean extends JDBC {
 
   public int submitQuery(RPNQuery query) throws JaferException {
 
-    return submitQuery(XMLRPNQuery.getXMLQuery(query));
+      org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
+      return submitQuery(rpnQuery.toJaferQuery().getQuery());
   }
 
   public int submitQuery(Node query) throws JaferException {

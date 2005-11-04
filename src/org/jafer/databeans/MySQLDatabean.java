@@ -29,7 +29,7 @@
 package org.jafer.databeans;
 
 import org.jafer.exception.JaferException;
-import org.jafer.query.XMLRPNQuery;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.Document;
 import java.util.logging.Level;
@@ -59,7 +59,8 @@ public class MySQLDatabean extends JDBC {
 
   public int submitQuery(RPNQuery query) throws JaferException {
 
-    return submitQuery(XMLRPNQuery.getXMLQuery(query));
+      org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
+      return submitQuery(rpnQuery.toJaferQuery().getQuery());
   }
 
   public int submitQuery(Node query) throws JaferException {

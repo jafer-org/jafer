@@ -24,7 +24,6 @@ import java.util.logging.Level;
 
 import org.jafer.exception.JaferException;
 import org.jafer.interfaces.Search;
-import org.jafer.query.XMLRPNQuery;
 import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.xml.XMLTransformer;
 import org.w3c.dom.Node;
@@ -72,7 +71,7 @@ import z3950.v3.RPNQuery;
 
    public int submitQuery(RPNQuery query) throws JaferException {
 
-     Node xmlQuery = XMLRPNQuery.getXMLQuery(query);
-     return submitQuery(xmlQuery);
+       org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
+       return submitQuery(rpnQuery.toJaferQuery().getQuery());
    }
 }

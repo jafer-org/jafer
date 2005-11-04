@@ -43,7 +43,6 @@ import org.jafer.conf.*;
 import org.jafer.exception.*;
 import org.jafer.interfaces.*;
 import org.jafer.record.*;
-import org.jafer.query.XMLRPNQuery;
 import org.jafer.util.xml.*;
 
 import org.w3c.dom.*;
@@ -293,8 +292,8 @@ public abstract class JDBC extends Databean implements Z3950Connection, Present,
   }
 
   public int submitQuery(RPNQuery query) throws JaferException {
-
-    return submitQuery(XMLRPNQuery.getXMLQuery(query));
+    org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
+    return submitQuery(rpnQuery.toJaferQuery().getQuery());
   }
 
   public int submitQuery(Node query) throws JaferException {
