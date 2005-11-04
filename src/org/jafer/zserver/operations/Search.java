@@ -21,7 +21,6 @@ package org.jafer.zserver.operations;
 
 import org.jafer.zserver.Session;
 import org.jafer.interfaces.Databean;
-import org.jafer.query.XMLRPNQuery;
 import org.jafer.conf.Config;
 import org.jafer.query.QueryException;
 import org.jafer.exception.JaferException;
