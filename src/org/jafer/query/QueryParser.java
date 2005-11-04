@@ -30,10 +30,12 @@
 
 package org.jafer.query;
 
-import org.w3c.dom.Node;
-import z3950.v3.RPNQuery;
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import org.w3c.dom.Node;
+
+import z3950.v3.RPNQuery;
 
 public class QueryParser {
 
