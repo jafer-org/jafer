@@ -18,6 +18,7 @@
  */
 
 package org.jafer.util.xml;
+
 import org.jafer.exception.JaferException;
 
 import java.io.File;
@@ -27,11 +28,12 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Map;
 import java.util.Iterator;
-//Imported TraX classes
+// Imported TraX classes
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.URIResolver;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.dom.DOMResult;
 import javax.xml.transform.stream.StreamSource;
@@ -47,321 +49,454 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- * <p>Provides methods for transforming xml using a templates object or by specifying a file, or URL for the styleSheet.
- * NB use OutputStreams instead of Writers to preserve the required output character encoding</p>
+ * <p>
+ * Provides methods for transforming xml using a templates object or by
+ * specifying a file, or URL for the styleSheet. NB use OutputStreams instead of
+ * Writers to preserve the required output character encoding
+ * </p>
+ * 
  * @author Antony Corfield; Matthew Dovey; Colin Tatham
  * @version 1.0
  */
-public class XMLTransformer {
+public class XMLTransformer
+{
 
-  private static Logger logger;
-  private static TransformerFactory tFactory;
+    private static Logger logger;
 
-    static {
-      logger = Logger.getLogger("org.jafer.util");
-      tFactory = TransformerFactory.newInstance();
+    private static TransformerFactory tFactory;
 
-      if(!(tFactory.getFeature(DOMSource.FEATURE) &&
-           tFactory.getFeature(DOMResult.FEATURE))) {
-          String message = "DOM node processing not supported - cannot continue!";
-          logger.severe(message);
-          System.exit(-1);
-      }
-    }
+    static
+    {
+        logger = Logger.getLogger("org.jafer.util");
+        tFactory = TransformerFactory.newInstance();
 
-  public static Node transform(Node sourceNode, Transformer transformer) throws JaferException {
-
-    logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, Transformer transformer)");
-
-    try {
-      // Define a DOMSource object.
-      DOMSource domSource = new DOMSource(sourceNode);
-      // Create an empty DOMResult for the Result.
-      DOMResult domResult = new DOMResult(sourceNode.cloneNode(false));
-      // Perform the transformation, placing the output in the DOMResult.
-      transformer.transform(domSource, domResult);
-      return domResult.getNode().getFirstChild();
-    } catch (TransformerException e) {
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (IllegalArgumentException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (NullPointerException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, Transformer transformer)");
-    }
-  }
-
-  public static void transform(Node sourceNode, Transformer transformer, OutputStream stream) throws JaferException {
-
-    logger.entering("XMLTransformer", "public static void transform(Node sourceNode, Transformer transformer, OutputStream stream");
-
-    try {
-      DOMSource domSource = new DOMSource(sourceNode);
-      StreamResult streamResult = new StreamResult(stream);
-      transformer.transform(domSource, streamResult);
-    } catch (TransformerException e) {
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (IllegalArgumentException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (NullPointerException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static void transform(Node sourceNode, Transformer transformer, OutputStream stream");
-    }
-  }
-
-  public static void transform(Node sourceNode, Transformer transformer, Writer writer) throws JaferException {
-
-    logger.entering("XMLTransformer", "public static void transform(Node sourceNode, Transformer transformer, Writer writer)");
-
-    try {
-      DOMSource domSource = new DOMSource(sourceNode);
-      StreamResult streamResult = new StreamResult(writer);
-      transformer.transform(domSource, streamResult);
-    } catch (TransformerException e) {
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (IllegalArgumentException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (NullPointerException e) {// eg. node is null
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static void transform(Node sourceNode, Transformer transformer, Writer writer)");
-    }
-  }
-
-  public static Node transform(Node sourceNode, Templates template) throws JaferException {
-
-    logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, Templates template)");
-
-    try {// Create Transformer object from thread safe templates object
-      return transform(sourceNode, template.newTransformer());
-    } catch (TransformerConfigurationException e) {
-      String message = "XMLTransformer; cannot create transformer object from template. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, Templates template)");
-    }
-  }
-
-  public static Node transform(Node sourceNode, InputStream stream) throws JaferException {
-
-      logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, InputStream stream)");
-
-      Transformer transformer = null;
-      try {
-        transformer = tFactory.newTransformer(new StreamSource(stream));
-        return transform(sourceNode, transformer);
-      } catch (TransformerConfigurationException e) {
-        String message = "XMLTransformer; cannot create transformer object from styleSheet input stream. " + e.toString();
-        logger.severe(message);
-        throw new JaferException(message, e);
-      } catch (NullPointerException e) {
-        String message = "XMLTransformer; cannot transform node, NULL template. " + e.toString();
-        logger.severe(message);
-        throw new JaferException(message, e);
-      } finally {
-        logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, InputStream stream)");
-      }
-  }
-  
-  public static Node transform(Map paramMap, Node sourceNode, InputStream stream) throws JaferException {
-
-      logger.entering("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, InputStream stream)");
-
-      Transformer transformer = null;
-      try {
-        transformer = tFactory.newTransformer(new StreamSource(stream));
-        Iterator keys = paramMap.keySet().iterator();
-        while (keys.hasNext()) {
-          String param = (String)keys.next();
-          String value = (String)paramMap.get(param);
-          transformer.setParameter(param, value);
+        if (!(tFactory.getFeature(DOMSource.FEATURE) && tFactory.getFeature(DOMResult.FEATURE)))
+        {
+            String message = "DOM node processing not supported - cannot continue!";
+            logger.severe(message);
+            System.exit(-1);
         }
-        return transform(sourceNode, transformer);
-      } catch (TransformerConfigurationException e) {
-        String message = "XMLTransformer; cannot create transformer object from stylesheet input stream. " + e.toString();
-        logger.severe(message);
-        throw new JaferException(message, e);
-      } catch (NullPointerException e) {
-        String message = "XMLTransformer; cannot transform node. " + e.toString();
-        logger.severe(message);
-        throw new JaferException(message, e);
-      } finally {
-        logger.exiting("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, InputStream stream)");
-      }
-  }
-  
-  public static Node transform(Node sourceNode, String path) throws JaferException {
-
-    logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, String path)");
-
-    Transformer transformer = null;
-    try {
-      transformer = tFactory.newTransformer(new StreamSource(path));
-      return transform(sourceNode, transformer);
-    } catch (TransformerConfigurationException e) {
-      String message = "XMLTransformer; cannot create transformer object from styleSheet " + path + ". " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node, NULL template. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, String path)");
     }
-  }
 
-  public static Node transform(Map paramMap, Node sourceNode, String path) throws JaferException {
-
-    logger.entering("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, String path)");
-
-    Transformer transformer = null;
-    try {
-      transformer = tFactory.newTransformer(new StreamSource(path));
-      Iterator keys = paramMap.keySet().iterator();
-      while (keys.hasNext()) {
-        String param = (String)keys.next();
-        String value = (String)paramMap.get(param);
-        transformer.setParameter(param, value);
-      }
-      return transform(sourceNode, transformer);
-    } catch (TransformerConfigurationException e) {
-      String message = "XMLTransformer; cannot create transformer object from stylesheet " + path + ". " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, String path)");
+    /**
+     * Set the URI resolver for the transformer factory that will resolve any
+     * URLs in XSLT stylesheets
+     * 
+     * @param resolver The URIResolver to use for all transformations
+     */
+    public static void setFactoryURIResover(URIResolver resolver)
+    {
+        tFactory.setURIResolver(resolver);
     }
-  }
 
-  public static Node transform(Node sourceNode, URL resource) throws JaferException {
+    public static Node transform(Node sourceNode, Transformer transformer) throws JaferException
+    {
 
-    logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, URL resource)");
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, Transformer transformer)");
 
-    try {
-      return transform(sourceNode, resource.getFile());
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node, NULL resource. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer",  "public static Node transform(Node sourceNode, URL resource)");
+        try
+        {
+            // Define a DOMSource object.
+            DOMSource domSource = new DOMSource(sourceNode);
+            // Create an empty DOMResult for the Result.
+            DOMResult domResult = new DOMResult(sourceNode.cloneNode(false));
+            // Perform the transformation, placing the output in the DOMResult.
+            transformer.transform(domSource, domResult);
+            return domResult.getNode().getFirstChild();
+        }
+        catch (TransformerException e)
+        {
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (IllegalArgumentException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, Transformer transformer)");
+        }
     }
-  }
 
-  public static Node transform(Map paramMap, Node sourceNode, URL resource) throws JaferException {
+    public static void transform(Node sourceNode, Transformer transformer, OutputStream stream) throws JaferException
+    {
 
-    logger.entering("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, URL resource)");
+        logger.entering("XMLTransformer",
+                "public static void transform(Node sourceNode, Transformer transformer, OutputStream stream");
 
-    try {
-      return transform(paramMap, sourceNode, resource.getFile());
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node, NULL resource. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, URL resource)");
+        try
+        {
+            DOMSource domSource = new DOMSource(sourceNode);
+            StreamResult streamResult = new StreamResult(stream);
+            transformer.transform(domSource, streamResult);
+        }
+        catch (TransformerException e)
+        {
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (IllegalArgumentException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer",
+                    "public static void transform(Node sourceNode, Transformer transformer, OutputStream stream");
+        }
     }
-  }
 
-  public static Node transform(Node sourceNode, File file) throws JaferException {
+    public static void transform(Node sourceNode, Transformer transformer, Writer writer) throws JaferException
+    {
 
-    logger.entering("XMLTransformer",  "public static Node transform(Node sourceNode, File file)");
+        logger
+                .entering("XMLTransformer",
+                        "public static void transform(Node sourceNode, Transformer transformer, Writer writer)");
 
-    try {
-      return transform(sourceNode, file.getPath());
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node, NULL file. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer",  "public static Node transform(Node sourceNode, File file)");
+        try
+        {
+            DOMSource domSource = new DOMSource(sourceNode);
+            StreamResult streamResult = new StreamResult(writer);
+            transformer.transform(domSource, streamResult);
+        }
+        catch (TransformerException e)
+        {
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (IllegalArgumentException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {// eg. node is null
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer",
+                    "public static void transform(Node sourceNode, Transformer transformer, Writer writer)");
+        }
     }
-  }
 
-  public static Node transform(Map paramMap, Node sourceNode, File file) throws JaferException {
+    public static Node transform(Node sourceNode, Templates template) throws JaferException
+    {
 
-    logger.entering("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, File file)");
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, Templates template)");
 
-    try {
-      return transform(paramMap, sourceNode, file.getPath());
-    } catch (NullPointerException e) {
-      String message = "XMLTransformer; cannot transform node, NULL file. " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer",  "public static Node transform(Map paramMap, Node sourceNode, File file)");
+        try
+        {// Create Transformer object from thread safe templates object
+            return transform(sourceNode, template.newTransformer());
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create transformer object from template. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, Templates template)");
+        }
     }
-  }
 
-  public static Templates createTemplate(InputStream stream) throws JaferException {
+    public static Node transform(Node sourceNode, InputStream stream) throws JaferException
+    {
 
-      logger.entering("XMLTransformer", "public static Templates createTemplate(InputStream stream)");
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, InputStream stream)");
 
-      try {// Create a templates object, which is the processed, thread-safe representation of the stylesheet - NB. namespace?
-        return tFactory.newTemplates(new StreamSource(stream));
-      } catch (TransformerConfigurationException e) {
-        String message = "XMLTransformer; cannot create template using stylesheet from input stream. " + e.toString();
-        logger.severe(message);
-        throw new JaferException(message, e);
-      } finally {
-        logger.exiting("XMLTransformer", "public static Templates createTemplate(InputStream stream)");
-      }
+        Transformer transformer = null;
+        try
+        {
+            transformer = tFactory.newTransformer(new StreamSource(stream));
+            return transform(sourceNode, transformer);
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create transformer object from styleSheet input stream. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL template. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, InputStream stream)");
+        }
     }
-  
-  public static Templates createTemplate(String path) throws JaferException {
 
-    logger.entering("XMLTransformer", "public static Templates createTemplate(String path)");
+    public static Node transform(Map paramMap, Node sourceNode, InputStream stream) throws JaferException
+    {
 
-    try {// Create a templates object, which is the processed, thread-safe representation of the stylesheet - NB. namespace?
-      return tFactory.newTemplates(new StreamSource(path));
-    } catch (TransformerConfigurationException e) {
-      String message = "XMLTransformer; cannot create template using stylesheet: " + path + ". " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    } finally {
-      logger.exiting("XMLTransformer", "public static Templates createTemplate(String path)");
+        logger.entering("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, InputStream stream)");
+
+        Transformer transformer = null;
+        try
+        {
+            transformer = tFactory.newTransformer(new StreamSource(stream));
+            Iterator keys = paramMap.keySet().iterator();
+            while (keys.hasNext())
+            {
+                String param = (String) keys.next();
+                String value = (String) paramMap.get(param);
+                transformer.setParameter(param, value);
+            }
+            return transform(sourceNode, transformer);
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create transformer object from stylesheet input stream. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, InputStream stream)");
+        }
     }
-  }
 
-  public static Templates createTemplate(URL resource) throws JaferException {
+    public static Node transform(Node sourceNode, String path) throws JaferException
+    {
 
-    if (resource != null)
-      return createTemplate(resource.getFile());
-    else
-      throw new JaferException("Resource necessary for creating XML transformer template not found");
-  }
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, String path)");
 
-  public static Templates createTemplate(File file) throws JaferException {
+        Transformer transformer = null;
+        try
+        {
+            transformer = tFactory.newTransformer(new StreamSource(path));
+            return transform(sourceNode, transformer);
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create transformer object from styleSheet " + path + ". " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL template. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, String path)");
+        }
+    }
 
-    if (file != null)
-      return createTemplate(file.getPath());
-    else
-      throw new JaferException("Resource necessary for creating XML transformer template not found");
-  }
+    public static Node transform(Map paramMap, Node sourceNode, String path) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, String path)");
+
+        Transformer transformer = null;
+        try
+        {
+            transformer = tFactory.newTransformer(new StreamSource(path));
+            Iterator keys = paramMap.keySet().iterator();
+            while (keys.hasNext())
+            {
+                String param = (String) keys.next();
+                String value = (String) paramMap.get(param);
+                transformer.setParameter(param, value);
+            }
+            return transform(sourceNode, transformer);
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create transformer object from stylesheet " + path + ". " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, String path)");
+        }
+    }
+
+    public static Node transform(Node sourceNode, URL resource) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, URL resource)");
+
+        try
+        {
+            return transform(sourceNode, resource.getFile());
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL resource. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, URL resource)");
+        }
+    }
+
+    public static Node transform(Map paramMap, Node sourceNode, URL resource) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, URL resource)");
+
+        try
+        {
+            return transform(paramMap, sourceNode, resource.getFile());
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL resource. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, URL resource)");
+        }
+    }
+
+    public static Node transform(Node sourceNode, File file) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, File file)");
+
+        try
+        {
+            return transform(sourceNode, file.getPath());
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL file. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Node sourceNode, File file)");
+        }
+    }
+
+    public static Node transform(Map paramMap, Node sourceNode, File file) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, File file)");
+
+        try
+        {
+            return transform(paramMap, sourceNode, file.getPath());
+        }
+        catch (NullPointerException e)
+        {
+            String message = "XMLTransformer; cannot transform node, NULL file. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, File file)");
+        }
+    }
+
+    public static Templates createTemplate(InputStream stream) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Templates createTemplate(InputStream stream)");
+
+        try
+        {// Create a templates object, which is the processed, thread-safe
+            // representation of the stylesheet - NB. namespace?
+            return tFactory.newTemplates(new StreamSource(stream));
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create template using stylesheet from input stream. " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Templates createTemplate(InputStream stream)");
+        }
+    }
+
+    public static Templates createTemplate(String path) throws JaferException
+    {
+
+        logger.entering("XMLTransformer", "public static Templates createTemplate(String path)");
+
+        try
+        {// Create a templates object, which is the processed, thread-safe
+            // representation of the stylesheet - NB. namespace?
+            return tFactory.newTemplates(new StreamSource(path));
+        }
+        catch (TransformerConfigurationException e)
+        {
+            String message = "XMLTransformer; cannot create template using stylesheet: " + path + ". " + e.toString();
+            logger.severe(message);
+            throw new JaferException(message, e);
+        }
+        finally
+        {
+            logger.exiting("XMLTransformer", "public static Templates createTemplate(String path)");
+        }
+    }
+
+    public static Templates createTemplate(URL resource) throws JaferException
+    {
+
+        if (resource != null)
+            return createTemplate(resource.getFile());
+        else
+            throw new JaferException("Resource necessary for creating XML transformer template not found");
+    }
+
+    public static Templates createTemplate(File file) throws JaferException
+    {
+
+        if (file != null)
+            return createTemplate(file.getPath());
+        else
+            throw new JaferException("Resource necessary for creating XML transformer template not found");
+    }
 }
