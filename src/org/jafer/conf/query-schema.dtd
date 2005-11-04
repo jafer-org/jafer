@@ -10,8 +10,8 @@
                             constraintModel))>
 <!ELEMENT not             (and | or | not |
                            constraintModel)>
-<!ELEMENT constraintModel (constraint*, model?)>
-<!ELEMENT constraint     (semantic | relation | position | structure | truncation | completeness)>
+<!ELEMENT constraintModel (constraint, model)>
+<!ELEMENT constraint     (semantic, relation?, position?, structure?, truncation?, completeness?)>
 <!ELEMENT model          (#PCDATA)>
 <!ELEMENT semantic       (#PCDATA)>
 <!ELEMENT relation       (#PCDATA)>
