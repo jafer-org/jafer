@@ -267,13 +267,12 @@ public class SRWSession
     try {
       SearchRetrieveRequestType request = new SearchRetrieveRequestType();
 
-      XMLCQLQuery q = new XMLCQLQuery();
-
       if (queryObject instanceof RPNQuery) {
-        query = new XMLCQLQuery().getCQLQuery(new XMLRPNQuery().getXMLQuery((RPNQuery)queryObject));
+        org.jafer.query.RPNQuery rpnQuery =  new org.jafer.query.RPNQuery((RPNQuery)queryObject);
+        query = new CQLQuery(rpnQuery.toJaferQuery()).getCQLQuery();
       }
       else if (queryObject instanceof Node)
-        query = new XMLCQLQuery().getCQLQuery((Node)queryObject);
+        query = new CQLQuery(new JaferQuery((Node)queryObject)).getCQLQuery();
       else
         throw new QueryException("Query type: "+ queryObject.getClass().getName() +" not supported", 107, "");
 
