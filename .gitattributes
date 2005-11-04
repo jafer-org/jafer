@@ -194,6 +194,12 @@ src/org/jafer/zserver/operations/Search.java -text
 src/org/jafer/zserver/operations/Sort.java -text
 src/org/jafer/zserver/util/ContextListener.java -text
 src/org/jafer/zserver/util/Lock.java -text
+test/org/jafer/JafferTestSuite.java -text
+test/org/jafer/query/JaferQueryTestObject.java -text
+test/org/jafer/query/QueryBuilderTest.java -text
+test/org/jafer/query/converter/CQLQueryConverterTest.java -text
+test/org/jafer/query/converter/JaferQueryConverterTest.java -text
+test/org/jafer/query/converter/RPNQueryConverterTest.java -text
 webapps/readinglist/WEB-INF/web.xml -text
 webapps/readinglist/add.gif -text
 webapps/readinglist/basket.jsp -text
