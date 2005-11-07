@@ -32,7 +32,11 @@ lib/xmlParserAPIs.jar -text
 lib/zebulun.jar -text
 src/org/jafer/conf/CompressedXMLDecoder.java -text
 src/org/jafer/conf/Config.java -text
+src/org/jafer/conf/JQFtoXCQL.xsl -text
 src/org/jafer/conf/SRWSchemaMappings.xml -text
+src/org/jafer/conf/XCQLtoCQL.xsl -text
+src/org/jafer/conf/XCQLtoJQF.xsl -text
+src/org/jafer/conf/XMLFileUriResolver.java -text
 src/org/jafer/conf/bib1.xml -text
 src/org/jafer/conf/bib1Attributes.xml -text
 src/org/jafer/conf/bib1Diagnostics.xml -text
