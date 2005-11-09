@@ -9,6 +9,8 @@
   <property name="doc"  value="doc"/>
   <property name="webapps"  value="webapps"/>
   <property name="temp"  value="temp"/>
+  <property name="publishDir"  value="publish"/>
+  <property name="buildVersion"  value="1.0"/>
 
 	
   <path id="base.classpath">
@@ -161,6 +163,7 @@
 	<include name="xml-apis.jar"/>
 	<include name="xmlParserAPIs.jar"/>
 	<include name="zebulun.jar"/>
+    <include name="cql-java.jar"/>
       </fileset>
     </copy>
     <zip zipfile="${publishDir}/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
