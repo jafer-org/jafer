@@ -719,7 +719,7 @@ import org.w3c.dom.NodeList;
     return selectNodeList(node, xPath, false);
   }
 
-  private static NodeList selectNodeList(Node node, String xPath, boolean retry) throws JaferException {
+  private static synchronized NodeList selectNodeList(Node node, String xPath, boolean retry) throws JaferException {
     NodeList nodeList = null;
     xPathAPI = new CachedXPathAPI();
     try {
@@ -732,6 +732,10 @@ import org.w3c.dom.NodeList;
        * There appears to be a problem with some versions of CachedXPathAPI
        * which produces array out of bounds when used for a long time
        * This is an attempt to workaround - i.e. refresh the Cache if this occurs
+       *
+       * This might be due to CacheXPath not being thread safe
+       * method now synchronized to compensate as well
+       *
        */
       if (retry) {
         xPathAPI = new CachedXPathAPI();
@@ -749,7 +753,7 @@ import org.w3c.dom.NodeList;
     return selectSingleNode(node, xPath, false);
   }
 
-  private static Node selectSingleNode(Node node, String xPath, boolean retry) throws JaferException {
+  private static synchronized Node selectSingleNode(Node node, String xPath, boolean retry) throws JaferException {
     Node selection = null;
     try {
       selection = xPathAPI.selectSingleNode(node, xPath);
@@ -761,6 +765,10 @@ import org.w3c.dom.NodeList;
        * There appears to be a problem with some versions of CachedXPathAPI
        * which produces array out of bounds when used for a long time
        * This is an attempt to workaround - i.e. refresh the Cache if this occurs
+       *
+       * This might be due to CacheXPath not being thread safe
+       * method now synchronized to compensate as well
+       *
        */
       if (retry) {
         xPathAPI = new CachedXPathAPI();
