@@ -80,13 +80,18 @@ public abstract class Operation extends ZServerThread {
       } catch (ConnectionException ce) {
         logger.log(Level.WARNING, getName() + " " + ce.toString());
       }
-    } catch (Exception ex) {
+  } catch (Exception ex) {
       logger.log(Level.SEVERE, getName() + " " + ex.toString());
       ex.printStackTrace();
-    } finally {
+      try {
+          pduDriver.initClose(9);
+      } catch (ConnectionException ce) {
+          logger.log(Level.WARNING, getName() + " " + ce.toString());
+      }
+  } finally {
       close();
-    }
   }
+}
 
   public final void close() {
     logger.log(Level.FINE, getName() + " stopping...");
