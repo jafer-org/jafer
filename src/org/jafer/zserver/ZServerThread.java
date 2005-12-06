@@ -120,7 +120,7 @@ public abstract class ZServerThread extends Thread implements Serializable {
     setName(name + getName().substring(getName().indexOf('-')));
   }
 
-  public int getId() {
+  public int getServerThreadId() {
 
     return Integer.parseInt(getName().substring(getName().indexOf('-') + 1));
   }
@@ -181,7 +181,7 @@ public abstract class ZServerThread extends Thread implements Serializable {
     return System.currentTimeMillis()/1000 - startTime;
   }
 
-  public int getState() {
+  public int getServerThreadState() {
     if (isStopped())
       return STATE_STOPPED;
     if (isStopping())

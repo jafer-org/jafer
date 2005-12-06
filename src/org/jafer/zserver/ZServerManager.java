@@ -77,7 +77,7 @@ public class ZServerManager {
       logger.log(Level.WARNING, "ZServerManager not started");
     else {
       for (int i = 0; i < servers.length; i++) {
-        if (servers[i].getId() == n) {
+        if (servers[i].getServerThreadId() == n) {
           if (servers[i].isStopped())
             servers[i].start();
           else
@@ -108,7 +108,7 @@ public class ZServerManager {
       logger.log(Level.WARNING, "ZServerManager not started");
     else {
       for (int i = 0; i < servers.length; i++) {
-        if (servers[i].getId() == n) {
+        if (servers[i].getServerThreadId() == n) {
           if (servers[i].isStopped())
             logger.log(Level.INFO, servers[i].getName() + " has stopped");
           else
@@ -150,7 +150,7 @@ public class ZServerManager {
         if (servers[i].hasThreads()) {
           Vector sessions = servers[i].purgeThreads();
           for (int j = 0; j < sessions.size(); j++) {
-            if (((ZServerThread)sessions.get(j)).getId() == n) {
+            if (((ZServerThread)sessions.get(j)).getServerThreadId() == n) {
               ((ZServerThread)sessions.get(j)).halt(timeout);
             }
           }
@@ -215,11 +215,11 @@ public class ZServerManager {
   private Node getInfo(ZServerThread zServerThread, Document document) {
 
     Element root = document.createElement("thread");
-    root.setAttribute("id", String.valueOf(zServerThread.getId()));
+    root.setAttribute("id", String.valueOf(zServerThread.getServerThreadId()));
     Node upTime = root.appendChild(document.createElement("upTime"));
     upTime.appendChild(document.createTextNode(String.valueOf(zServerThread.getUpTime())));
     Node state = root.appendChild(document.createElement("state"));
-    state.appendChild(document.createTextNode(String.valueOf(zServerThread.getState())));
+    state.appendChild(document.createTextNode(String.valueOf(zServerThread.getServerThreadState())));
     Node threads = root.appendChild(document.createElement("threads"));
     threads.appendChild(document.createTextNode(String.valueOf(zServerThread.getNumberOfActiveThreads())));
     return root;
