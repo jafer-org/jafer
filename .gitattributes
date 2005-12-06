@@ -23,6 +23,7 @@ lib/axis/log4j.properties -text
 lib/axis/saaj.jar -text
 lib/axis/wsdl4j.jar -text
 lib/cql-java.jar -text
+lib/java-zoom-api.jar -text
 lib/jdbc/jtds-0.4.jar -text
 lib/jdbc/mysql-connector-java-2.0.14-bin.jar -text
 lib/servlet.jar -text
@@ -189,6 +190,17 @@ src/org/jafer/zclient/operations/Present.java -text
 src/org/jafer/zclient/operations/PresentException.java -text
 src/org/jafer/zclient/operations/Scan.java -text
 src/org/jafer/zclient/operations/Search.java -text
+src/org/jafer/zoom/ConnectionImpl.java -text
+src/org/jafer/zoom/DiagnosticException.java -text
+src/org/jafer/zoom/META-INF/services/org.z3950.zoom.Connection -text
+src/org/jafer/zoom/META-INF/services/org.z3950.zoom.query.CQL -text
+src/org/jafer/zoom/META-INF/services/org.z3950.zoom.query.RPN -text
+src/org/jafer/zoom/QueryImplCQL.java -text
+src/org/jafer/zoom/QueryImplRPN.java -text
+src/org/jafer/zoom/RecordImpl.java -text
+src/org/jafer/zoom/ResultSetImpl.java -text
+src/org/jafer/zoom/SystemException.java -text
+src/org/jafer/zoom/test/Tester.java -text
 src/org/jafer/zserver/AdminServlet.java -text
 src/org/jafer/zserver/Session.java -text
 src/org/jafer/zserver/ZServer.java -text
