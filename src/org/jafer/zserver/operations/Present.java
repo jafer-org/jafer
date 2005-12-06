@@ -129,7 +129,7 @@ public class Present extends Operation {
         databaseName = databean.getCurrentDatabase();
         recordRoot = databean.getCurrentRecord().getRoot();
         //////
-        recordSchema = recordRoot.getNamespaceURI();
+        recordSchema = recordRoot.getFirstChild().getNamespaceURI();
         recordSyntax = Config.getRecordSyntax(recordSchema);
         //////
         dataObject = new DataObject(databaseName, recordRoot, recordSyntax);
