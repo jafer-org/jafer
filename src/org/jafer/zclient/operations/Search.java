@@ -32,7 +32,7 @@
 package org.jafer.zclient.operations;
 
 import org.jafer.util.ConnectionException;
-import org.jafer.zclient.Session;
+import org.jafer.zclient.ZSession;
 import org.jafer.util.PDUDriver;
 import org.jafer.record.Diagnostic;
 import org.jafer.query.JaferQuery;
@@ -48,12 +48,12 @@ import java.util.logging.Level;
 
 public class Search {
 
-  private Session session;
+  private ZSession session;
   private PDUDriver pduDriver;
   private static int refId = 0;
   private static Logger logger;
 
-  public Search(Session session) {
+  public Search(ZSession session) {
 
     this.session = session;
     this.pduDriver = session.getPDUDriver();

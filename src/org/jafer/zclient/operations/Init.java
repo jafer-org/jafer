@@ -32,7 +32,7 @@
 package org.jafer.zclient.operations;
 
 import org.jafer.util.ConnectionException;
-import org.jafer.zclient.Session;
+import org.jafer.zclient.ZSession;
 import org.jafer.util.PDUDriver;
 
 import java.util.logging.Logger;
@@ -43,12 +43,12 @@ import asn1.*;
 
 public class Init {
 
-  private Session session;
+  private ZSession session;
   private PDUDriver pduDriver;
   private String targetInfo;
   private int targetVersion;
 
-  public Init(Session session) {
+  public Init(ZSession session) {
 
     this.session = session;
     this.pduDriver = session.getPDUDriver();

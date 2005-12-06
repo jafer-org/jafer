@@ -33,7 +33,7 @@ package org.jafer.zclient.operations;
 
 import org.jafer.util.ConnectionException;
 
-import org.jafer.zclient.Session;
+import org.jafer.zclient.ZSession;
 import org.jafer.util.PDUDriver;
 import org.jafer.record.DataObject;
 import org.jafer.record.Diagnostic;
@@ -48,10 +48,10 @@ import asn1.*;
 public class Present {
 
   private static Logger logger;
-  private Session session;
+  private ZSession session;
   private PDUDriver pduDriver;
 
-  public Present(Session session) {
+  public Present(ZSession session) {
 
     logger = Logger.getLogger("org.jafer.zclient");
     this.session = session;

@@ -78,16 +78,6 @@ public class SRWSession
   }
 
   /**
-   * getPDUDriver
-   *
-   * @return PDUDriver
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public PDUDriver getPDUDriver() {
-    return null;
-  }
-
-  /**
    * getPassword
    *
    * @return String
@@ -290,12 +280,4 @@ public class SRWSession
     }
   }
 
-  /**
-   * setPDUDriver
-   *
-   * @param pduDriver PDUDriver
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public void setPDUDriver(PDUDriver pduDriver) {
-  }
 }

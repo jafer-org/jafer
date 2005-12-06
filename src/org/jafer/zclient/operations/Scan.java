@@ -36,7 +36,7 @@ import org.jafer.exception.JaferException;
 import org.jafer.util.PDUDriver;
 import org.jafer.conf.Config;
 import org.jafer.record.TermRecord;
-import org.jafer.zclient.Session;
+import org.jafer.zclient.ZSession;
 import org.jafer.query.converter.RPNQueryConverter;
 
 import java.util.Vector;
@@ -55,10 +55,10 @@ import z3950.v3.ScanResponse;
 
 public class Scan {
 
-  private Session session;
+  private ZSession session;
   private PDUDriver pduDriver;
 
-  public Scan(Session session) {
+  public Scan(ZSession session) {
 
     this.session = session;
     this.pduDriver = session.getPDUDriver();

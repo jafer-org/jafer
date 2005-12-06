@@ -16,8 +16,6 @@ public interface Session {
 
   public String getName();
 
-  public PDUDriver getPDUDriver();
-
   public String getPassword();
 
   public String getUsername();
@@ -40,5 +38,4 @@ public interface Session {
                       String resultSetName) throws JaferException,
       ConnectionException;
 
-  public void setPDUDriver(PDUDriver pduDriver);
 }
