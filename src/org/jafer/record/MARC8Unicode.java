@@ -255,6 +255,77 @@ public class MARC8Unicode {
     return out.toString();
   }
 
+  public String toUnicode(byte[] marc8) throws JaferException {
+      return toUnicode(marc8, 0, marc8.length);
+  }
+
+  public String toUnicode(byte[] marc8, int offset, int len) throws JaferException {
+
+    StringBuffer out = new StringBuffer();
+    StringBuffer diac = new StringBuffer();
+    StringBuffer multi = new StringBuffer();
+
+    // set default pages latin - basic (ASCII) AND extended (ANSEL)
+    setG0Page(ASCII_TYPE_1);
+    setG1Page(ANSEL);
+    setMultiByte(false);
+
+    int c = 0;
+    for (int n = offset; n < marc8.length && n < offset + len; n++) {
+      c = (int)(marc8[n] & 0x00ff);
+
+      if (isESCChar(c)) {
+        setESC(true);
+        setPageG0(false);
+        setPageG1(false);
+        setMultiByte(false);
+      } else if (isESC()) {
+
+        if (isMultiByte()) {
+          if (isPageG0()) {
+            setG0Page(c);
+          } else if (isPageG1()) {
+            setG1Page(c);
+          } else if (isG1PageChar(c)) {
+            setPageG1(true);
+          } else if (isG0PageChar(c)) {
+            setPageG0(true);
+          } else {
+            setG0Page(c);
+          }
+
+        } else if (isPageG0()) {
+          setG0Page(c);// method 2
+        } else if (isPageG1()) {
+          setG1Page(c);// method 2
+        } else if (isMultiByteChar(c)) {
+          setMultiByte(true);
+        } else if (isG0PageChar(c)) {
+          setPageG0(true);
+        } else if (isG1PageChar(c)) {
+          setPageG1(true);
+        } else {
+          setG0Page(c);// method 1
+        }
+
+      } else {
+        if (isMultiByte())
+          multi = appendMultiByte(c, multi, out);// assume diactritic not associated with multibyte character
+        else if (isDiacritic(c))
+          diac.append(getUnicodeCharacter(c));
+        else {
+//          if (isControlFunction(c))// do we include these?
+//            out.append(getControlCharacter(c));
+//          else
+            out.append(getUnicodeCharacter(c));
+          if (!isBufferEmpty(diac))
+            diac = emptyBuffer(diac, out, 0);
+        }
+      }
+    }
+    return out.toString();
+  }
+
   private static void loadCharacterSetsMap() throws JaferException {
 
     String id, file;
@@ -498,7 +569,7 @@ public class MARC8Unicode {
       id = getControlPageId();
 
     if (id == null) {
-      String message = "CharacterSet PageId is null";
+      String message = "CharacterSet PageId (" + c + ") is null";
       logger.log(Level.WARNING, message);
       throw new JaferException(message);
     }
@@ -706,13 +777,13 @@ public class MARC8Unicode {
   }
 
 
-  private char[] getMARC8Chars(int unicodeChar) throws JaferException {
+  private char[] getMARC8Chars(char unicodeChar) throws JaferException {
 
 
-    if (unicodeChar == (int)unicodeUnknown)
+    if (unicodeChar == unicodeUnknown)
       return new char[] {marc8Unknown};
 
-    Character key = new Character((char)unicodeChar);
+    Character key = new Character(unicodeChar);
     Hashtable page = null;
     String pageId;
     setPageG0(false);

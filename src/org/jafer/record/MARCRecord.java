@@ -261,10 +261,12 @@ public class MARCRecord extends DataObject {
   private String getString(byte[] bytes, int offset, int len) {
 
     try {
-      if (getEncoding() == MARC8_ENCODING)
-        return marc8Unicode.toUnicode(new String(bytes, offset, len, "ISO-8859-1"));
-      else /** @todo check this */
-        return new String(bytes, offset, len, getEncodingAsString());
+      if (getEncoding() == MARC8_ENCODING) {
+          return marc8Unicode.toUnicode(bytes, offset, len);
+      }
+      else /** @todo check this */ {
+          return new String(bytes, offset, len, getEncodingAsString());
+      }
     } catch (JaferException ex) {/** @todo handle exception */
       System.out.println("ERROR: " + ex.toString());
       return null;
@@ -292,7 +294,6 @@ public class MARCRecord extends DataObject {
   }
 
   private String getString(ByteArrayOutputStream byteOut, int offset) {
-
     return getString(byteOut.toByteArray(), offset, byteOut.size() - offset);
   }
 
@@ -469,7 +470,6 @@ public class MARCRecord extends DataObject {
   }
 
   private String getMARC8Value(Node node) throws JaferException {
-
     return marc8Unicode.toMARC8(Config.getValue(node));
   }
 
