@@ -44,8 +44,8 @@ public class AdminServlet extends HttpServlet {
 
   /**Initialize global variables*/
   public void init() throws ServletException {
-
-  logger = Logger.getLogger("org.jafer.zserver");
+    logger = Logger.getLogger("org.jafer.zserver");
+    ZServerManager.startUp();
   }
 
   /**Process the HTTP Get request*/
@@ -97,7 +97,7 @@ public class AdminServlet extends HttpServlet {
     else
       info = getXMLMessage("ZServerManager is not running");
     try {
-      URL url = this.getClass().getClassLoader().getResource("org/jafer/xsl/Server/info.xsl");
+      URL url = this.getClass().getClassLoader().getResource("org/jafer/xsl/server/info.xsl");
       XMLSerializer.transformOutput(info, url, out);
     } catch (JaferException ex) {
       logger.log(Level.WARNING, "AdminServlet - Error serializing output", ex);
