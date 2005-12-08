@@ -35,7 +35,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Stores a reference to the XMLHEADER text
      */
-    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     /**
      * Stores a reference to the query builder for building test data
@@ -45,7 +45,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Runs a conversion of the jafer query to XCQL and then onto CQL and checks
      * that the result from both conversion match what is expected
-     * 
+     *
      * @param testName The name of the test
      * @param jq the jafer query to convert
      * @param expectedXCQL the expected output XCQL
@@ -74,7 +74,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Runs a conversion from CQL to JQF and checks that the result from both
      * conversion match what is expected
-     * 
+     *
      * @param testName The name of the test being run
      * @param cq The CQLQuery being converted
      * @param expectedJQF The XML JQF expected
@@ -94,7 +94,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Runs a conversion from CQL to JQF and checks that the result from both
      * conversion match what is expected
-     * 
+     *
      * @param testName The name of the test being run
      * @param cql The cql being converted
      * @param expectedCQL The XCQL expected
@@ -2432,7 +2432,7 @@ public class CQLQueryConverterTest extends TestCase
                     + "</triple></XCQL>";
             testName = "simple and triple";
             runCQLToXCQLTest(testName, cql, expectedXCQL);
-            
+
             cql = "dc.title = golf or dc.author=woods";
             expectedXCQL = XMLHEADER
                     + "<XCQL><triple><boolean><value>or</value></boolean>"
@@ -2441,7 +2441,7 @@ public class CQLQueryConverterTest extends TestCase
                     + "</triple></XCQL>";
             testName = "simple or triple";
             runCQLToXCQLTest(testName, cql, expectedXCQL);
-            
+
             cql = "dc.title = golf not dc.author=woods";
             expectedXCQL = XMLHEADER
                     + "<XCQL><triple><boolean><value>not</value></boolean>"
@@ -2450,7 +2450,7 @@ public class CQLQueryConverterTest extends TestCase
                     + "</triple></XCQL>";
             testName = "simple not triple";
             runCQLToXCQLTest(testName, cql, expectedXCQL);
-            
+
             cql = "dc.title = golf prox dc.author=woods";
             expectedXCQL = XMLHEADER
                     + "<XCQL><triple><boolean><value>prox</value></boolean>"
@@ -2470,7 +2470,7 @@ public class CQLQueryConverterTest extends TestCase
                     + "<rightOperand><searchClause><index>dc.author</index><relation><value>=</value></relation><term>woods</term></searchClause></rightOperand></triple></XCQL>";
             testName = "nested or / and no brackets structure query";
             runCQLToXCQLTest(testName, cql, expectedXCQL);
-            
+
             cql = "dc.title = golf or (dc.title = chipping and dc.author=woods)";
             expectedXCQL = XMLHEADER
                     + "<XCQL><triple><boolean><value>or</value></boolean>" +

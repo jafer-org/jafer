@@ -32,7 +32,7 @@ public class JaferQueryConverterTest extends TestCase
     /**
      * Stores a reference to the XMLHEADER text
      */
-    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     /**
      * Stores a reference to the query builder for building test data
@@ -41,7 +41,7 @@ public class JaferQueryConverterTest extends TestCase
 
     /**
      * Checks the normailisation is correct
-     * 
+     *
      * @param testName the name of the test being run
      * @param inputJQNode The starting jaffer query before normailsation as a
      *        node
