@@ -142,7 +142,9 @@
 	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
 	<include name="org/jafer/conf/recordDescriptor.xml"/>
 	<include name="org/jafer/conf/searchProfiles.xml"/>
-    
+        <include name="org/jafer/conf/JQFtoXCQL.xsl"/>
+        <include name="org/jafer/conf/XCQLtoCQL.xsl"/>
+        <include name="org/jafer/conf/XCQLtoJQF.xsl"/>
 	<!-- following 2 not necessary, but included as e.g.'s: -->
         <include name="org/jafer/xsl/beans/queryAdaptor.xsl"/>
         <include name="org/jafer/xsl/beans/recordAdaptor.xsl"/>
