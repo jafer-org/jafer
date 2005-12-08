@@ -122,7 +122,6 @@ src/org/jafer/record/TermRecord.java -text
 src/org/jafer/record/XMLRecord.java -text
 src/org/jafer/servlet/ServletUtil.java -text
 src/org/jafer/servlet/ZServlet.java -text
-src/org/jafer/servlet/ZiNGServlet.java -text
 src/org/jafer/test/Demo.java -text
 src/org/jafer/test/ServerStart.java -text
 src/org/jafer/test/ServerTest.java -text
