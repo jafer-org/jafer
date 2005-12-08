@@ -103,13 +103,13 @@ public class XsltSearchPortlet extends XsltPortlet {
    */
   private Databean getSession(ActionRequest request, String databases) {
     Databean bean = null;
-    PortletSession session = request.getPortletSession(false);
+    PortletSession session = request.getPortletSession(true);
     if (session != null) {
       bean = (Databean)session.getAttribute("databean", PortletSession.PORTLET_SCOPE);
-      if (bean == null) {
-        bean = createBean(databases);
-        storeSession(request, bean);
-      }
+    }
+    if (bean == null) {
+      bean = createBean(databases);
+      storeSession(request, bean);
     }
     return bean;
   }
@@ -123,16 +123,9 @@ public class XsltSearchPortlet extends XsltPortlet {
    */
     private Databean getSession(RenderRequest request) {
     Databean bean = null;
-    PortletSession session = request.getPortletSession(false);
+    PortletSession session = request.getPortletSession(true);
     if (session != null) {
-      bean = (Databean) session.getAttribute("databean",
-                                            PortletSession.PORTLET_SCOPE);
-/*
-      if (bean == null) {
-        bean = createBean();
-        storeSession(request, bean);
-      }
- */
+      bean = (Databean) session.getAttribute("databean", PortletSession.PORTLET_SCOPE);
     }
     return bean;
   }
@@ -164,10 +157,17 @@ public class XsltSearchPortlet extends XsltPortlet {
    * @param request RenderRequest
    */
   private void clearSession(RenderRequest request) {
-    PortletSession session = request.getPortletSession(false);
-    if (session != null) {
-      session.removeAttribute("databean", PortletSession.PORTLET_SCOPE);
-    }
+      PortletSession session = request.getPortletSession(false);
+      if (session != null) {
+        Databean bean = (Databean)session.getAttribute("databean", PortletSession.PORTLET_SCOPE);
+        if (bean != null) {
+          try {
+            ((Connection)bean).close();
+          } catch (JaferException ex) {
+            }
+        }
+        session.removeAttribute("databean", PortletSession.PORTLET_SCOPE);
+      }
   }
 
   /**
@@ -298,12 +298,15 @@ public class XsltSearchPortlet extends XsltPortlet {
   protected void doView(RenderRequest request, RenderResponse response) throws PortletException,
       IOException {
     String action = request.getParameter("action");
+    if (action == null) {
+        action = "";
+    }
     String page = "search";
     Document xml = null;
 
     try {
       for (int n = 0; n < vTableView.length; n++) {
-        if (vTableView[n][0].equalsIgnoreCase(action)) {
+        if (action.toLowerCase().startsWith(vTableView[n][0])) {
           String method = vTableView[n][1];
           page = vTableView[n][2];
           Method func = this.getClass().getMethod(method,
@@ -320,7 +323,7 @@ public class XsltSearchPortlet extends XsltPortlet {
     if (xml == null) {
       xml = this.initSession(request);
     }
-    String xslUrl = request.getContextPath() + getPortletConfig().getInitParameter(page);
+    String xslUrl = getPortletConfig().getInitParameter(page);
     PortletPreferences prefs = request.getPreferences();
     Map urlParams = new HashMap();
     urlParams.put("mode",PortletMode.VIEW.toString());
