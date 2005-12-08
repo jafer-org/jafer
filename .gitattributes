@@ -242,10 +242,6 @@ webapps/Portlet/images/return.gif -text
 webapps/Portlet/images/right.gif -text
 webapps/Portlet/images/viewHTML.gif -text
 webapps/Portlet/images/viewXML.gif -text
-webapps/Portlet/jaferportlet_en.properties -text
-webapps/Portlet/xslt/item.xsl -text
-webapps/Portlet/xslt/list.xsl -text
-webapps/Portlet/xslt/search.xsl -text
 webapps/readinglist/WEB-INF/web.xml -text
 webapps/readinglist/add.gif -text
 webapps/readinglist/basket.jsp -text
