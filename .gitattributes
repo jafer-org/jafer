@@ -176,6 +176,9 @@ src/org/jafer/xsl/exception.xsl -text
 src/org/jafer/xsl/jspViewItem.xsl -text
 src/org/jafer/xsl/jspViewList.xsl -text
 src/org/jafer/xsl/output.xsl -text
+src/org/jafer/xsl/portlets/item.xsl -text
+src/org/jafer/xsl/portlets/list.xsl -text
+src/org/jafer/xsl/portlets/search.xsl -text
 src/org/jafer/xsl/query.xsl -text
 src/org/jafer/xsl/readingListTable.xsl -text
 src/org/jafer/xsl/server/info.xsl -text
