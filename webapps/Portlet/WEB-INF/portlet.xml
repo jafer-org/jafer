@@ -17,28 +17,25 @@
       <name>target.DSpace</name>
       <value>http://repository.ust.hk/SRW/search/DSpace</value>
     </init-param>
-<!--
     <init-param>
-      <name>target.Amstoria</name>
-      <value>http://203.200.1.75/AMSTOIASRWServices/srwService.asmx</value>
+      <name>target.Leeds University</name>
+      <value>z3950s://lib.leeds.ac.uk:210/INNOPAC</value>
     </init-param>
--->
     <init-param>
       <name>recordSchema</name>
       <value>http://www.loc.gov/mods/</value>
     </init-param>
-
     <init-param>
       <name>search</name>
-      <value>/properties/search.xsl</value>
+      <value>/org/jafer/xsl/portlets/search.xsl</value>
     </init-param>
     <init-param>
       <name>list</name>
-      <value>/properties/list.xsl</value>
+      <value>/org/jafer/xsl/portlets/list.xsl</value>
     </init-param>
     <init-param>
       <name>item</name>
-      <value>/properties/item.xsl</value>
+      <value>/org/jafer/xsl/portlets/item.xsl</value>
     </init-param>
 
     <expiration-cache>-1</expiration-cache>

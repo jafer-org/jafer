@@ -229,6 +229,7 @@ test/org/jafer/query/QueryBuilderTest.java -text
 test/org/jafer/query/converter/CQLQueryConverterTest.java -text
 test/org/jafer/query/converter/JaferQueryConverterTest.java -text
 test/org/jafer/query/converter/RPNQueryConverterTest.java -text
+webapps/Portlet/WEB-INF/jaferportlet_en.properties -text
 webapps/Portlet/WEB-INF/portlet.xml -text
 webapps/Portlet/WEB-INF/tld/portlet.tld -text
 webapps/Portlet/WEB-INF/web.xml -text
