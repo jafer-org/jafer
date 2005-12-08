@@ -32,9 +32,9 @@
 
 package org.jafer.zserver.operations;
 
-import org.jafer.util.ConnectionException;
+import org.jafer.transport.ConnectionException;
 
-import org.jafer.util.PDUDriver;
+import org.jafer.transport.PDUDriver;
 import org.jafer.zserver.*;
 
 import java.net.*;

@@ -17,9 +17,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package org.jafer.util;
+package org.jafer.transport;
 
-import org.jafer.util.ConnectionException;
+
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -39,6 +39,7 @@ import z3950.v3.*;
 import asn1.*;
 import java.util.TimerTask;
 import java.util.Timer;
+import org.jafer.util.*;
 
 
 class KillSocketTask extends TimerTask {

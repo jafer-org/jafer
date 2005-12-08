@@ -8,7 +8,7 @@ package org.jafer.interfaces;
  * @author unascribed
  * @version 1.0
  */
-import org.jafer.conf.CompressedXMLDecoder;
+import org.jafer.util.CompressedXMLDecoder;
 import java.net.URL;
 import java.io.*;
 

@@ -1,13 +1,13 @@
 package org.jafer.zclient;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.query.*;
 import org.jafer.record.DataObject;
 import org.jafer.record.XMLRecord;
 import org.jafer.util.xml.DOMFactory;
-import org.jafer.util.PDUDriver;
+import org.jafer.transport.PDUDriver;
 import org.jafer.exception.JaferException;
-import org.jafer.util.ConnectionException;
+import org.jafer.transport.ConnectionException;
 import org.jafer.zclient.operations.PresentException;
 
 import gov.loc.www.zing.srw.srw_bindings.SRWSoapBindingStub;
@@ -166,9 +166,9 @@ public class SRWSession
             String schema = records[i].getRecordSchema();
             if (schema != null)
               if (!schema.equalsIgnoreCase("default")) {
-                schema = org.jafer.conf.Config.translateSRWSchemaName(schema);
+                schema = org.jafer.util.Config.translateSRWSchemaName(schema);
               } else {
-                schema = org.jafer.conf.Config.translateSRWSchemaName(root.getNamespaceURI());
+                schema = org.jafer.util.Config.translateSRWSchemaName(root.getNamespaceURI());
               }
             else
               schema = root.getNamespaceURI();
@@ -187,7 +187,7 @@ public class SRWSession
           Node root = records[i].getRecordData().get_any()[0].getFirstChild();
           String schema = records[i].getRecordSchema();
           if (schema != null)
-            schema = org.jafer.conf.Config.translateSRWSchemaName(schema);
+            schema = org.jafer.util.Config.translateSRWSchemaName(schema);
           else
             schema = root.getNamespaceURI();
 

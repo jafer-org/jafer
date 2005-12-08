@@ -29,9 +29,8 @@
  *@version    1.0
  */
 
-package org.jafer.util;
+package org.jafer.transport;
 
-import org.jafer.zclient.operations.*;
 import org.jafer.exception.JaferException;
 /**
  * Exception thrown if problems connecting to server

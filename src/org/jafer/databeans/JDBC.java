@@ -48,6 +48,7 @@ import org.jafer.util.xml.*;
 import org.w3c.dom.*;
 
 import z3950.v3.RPNQuery;
+import org.jafer.util.*;
 
 /**
  * <p>Superclass with behaviour common to subclasses. Specific subclasses configured to make use of specific JDBC drivers should be instantiated.<br/>

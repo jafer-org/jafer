@@ -32,10 +32,10 @@
 
 package org.jafer.zserver.operations;
 
-import org.jafer.util.ConnectionException;
+import org.jafer.transport.ConnectionException;
 
-import org.jafer.util.PDUDriver;
-import org.jafer.conf.Config;
+import org.jafer.transport.PDUDriver;
+import org.jafer.util.Config;
 import org.jafer.exception.JaferException;
 import org.jafer.record.*;
 import org.jafer.util.xml.*;

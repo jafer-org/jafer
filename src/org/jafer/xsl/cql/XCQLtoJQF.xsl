@@ -1,10 +1,10 @@
-<!-- 
+<!--
     **********************************************************************************
     * This template converts XCQL to JQF                                             *
     *                                                                                *
     * This template starts by processing the top level node XCQL and outputs one     *
-    * node of JQF type (NOT,AND,OR,ConstrainModel)                                   *     
-    *                                                                                *     
+    * node of JQF type (NOT,AND,OR,ConstrainModel)                                   *
+    *                                                                                *
     **********************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
@@ -13,10 +13,10 @@
     <!-- Set up variables used for accessing BIB1 attributes and CQL Context Set data -->
     <!-- **************************************************************************** -->
     <!-- Store ref to the cqlcontextsets.xml file -->
-    <xsl:variable name="contextSets" select="document('cqlContextSets.xml')/contextSets"/>
+    <xsl:variable name="contextSets" select="document('../../conf/cqlContextSets.xml')/contextSets"/>
     <!-- Store a ref to the bib one attribute set -->
     <xsl:variable name="bibAttribSet"
-        select="document('bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
+        select="document('../../conf/bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
     <!-- ************************************** -->
     <!-- Processes an XCQL node                -->
     <!-- ************************************** -->
@@ -179,10 +179,10 @@
     <xsl:template match="index">
         <!--  Extract the prefix(shortID) and attribute ID to search for the semantic
               This extracts around the first period in the index. Hence
-              
+
              dc.creator      = shortID of "dc" and nameID of "creator"
              bath.dc.creator = shortID of "bath" and nameID of "dc.creator"
-              
+
           -->
         <xsl:variable name="index" select="."/>
         <xsl:variable name="shortID" select="substring-before($index,'.')"/>

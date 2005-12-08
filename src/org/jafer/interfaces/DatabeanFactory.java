@@ -1,7 +1,7 @@
 package org.jafer.interfaces;
 
 import java.rmi.RemoteException;
-import org.jafer.conf.CompressedXMLDecoder;
+import org.jafer.util.CompressedXMLDecoder;
 import java.net.URL;
 import java.io.*;
 

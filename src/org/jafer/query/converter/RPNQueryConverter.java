@@ -17,7 +17,7 @@ package org.jafer.query.converter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.exception.JaferException;
 import org.jafer.query.JaferQuery;
 import org.jafer.query.QueryBuilder;

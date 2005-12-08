@@ -20,7 +20,7 @@
 
 package org.jafer.zserver;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.xml.XMLSerializer;
 import org.jafer.util.xml.XMLTransformer;

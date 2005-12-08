@@ -32,7 +32,7 @@
 package org.jafer.record;
 
 import org.jafer.record.DataObject;
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;
 
 import asn1.BEREncoding;

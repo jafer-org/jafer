@@ -30,9 +30,9 @@
 
 package org.jafer.zclient;
 
-import org.jafer.util.ConnectionException;
+import org.jafer.transport.ConnectionException;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.record.Cache;
 import org.jafer.record.Field;
 import org.jafer.record.RecordFactory;

@@ -21,7 +21,7 @@ package org.jafer.zserver.operations;
 
 import org.jafer.zserver.Session;
 import org.jafer.interfaces.Databean;
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.query.QueryException;
 import org.jafer.exception.JaferException;
 import org.jafer.zserver.operations.OperationException;

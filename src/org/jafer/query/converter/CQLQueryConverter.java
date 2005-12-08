@@ -17,7 +17,7 @@ package org.jafer.query.converter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jafer.conf.XMLFileUriResolver;
+import org.jafer.util.XMLFileUriResolver;
 import org.jafer.exception.JaferException;
 import org.jafer.query.CQLQuery;
 import org.jafer.query.JaferQuery;
@@ -33,7 +33,7 @@ import org.z3950.zing.cql.CQLParser;
  * Jafer Queries
  */
 /**
- * 
+ *
  */
 public class CQLQueryConverter extends Converter
 {
@@ -45,7 +45,7 @@ public class CQLQueryConverter extends Converter
 
     /**
      * This method converts a cql query to the JaferQuery format
-     * 
+     *
      * @param cqlQuery The cql query object
      * @return the constructed jafer query
      * @throws QueryException
@@ -56,9 +56,9 @@ public class CQLQueryConverter extends Converter
         try
         {
             InputStream XcqlToJqfStylesheet = CQLQueryConverter.class.getClassLoader().getResourceAsStream(
-                    "org/jafer/conf/XCQLtoJQF.xsl");
+                    "org/jafer/xsl/cql/XCQLtoJQF.xsl");
             // set the URI resolver to use when doing this transform
-            XMLTransformer.setFactoryURIResover(new XMLFileUriResolver("org/jafer/conf/"));
+            XMLTransformer.setFactoryURIResover(new XMLFileUriResolver("org/jafer/xsl/cql/"));
             outNode = XMLTransformer.transform(cqlQuery.getXCQLQuery(), XcqlToJqfStylesheet);
             // make sure we normalise the result as XSLT will add extra
             // textNodes when processing that may throw other XSLTs off etc
@@ -73,7 +73,7 @@ public class CQLQueryConverter extends Converter
 
     /**
      * This method converts a jafer query to the CQL format
-     * 
+     *
      * @param jaferQuery TThe jafer query to convert
      * @return the constructed cql query
      * @throws QueryException
@@ -84,9 +84,9 @@ public class CQLQueryConverter extends Converter
         try
         {
             InputStream jqfToXcqlStylesheet = CQLQueryConverter.class.getClassLoader().getResourceAsStream(
-                    "org/jafer/conf/JQFtoXCQL.xsl");
+                    "org/jafer/xsl/cql/JQFtoXCQL.xsl");
             // set the URI resolver to use when doing this transform
-            XMLTransformer.setFactoryURIResover(new XMLFileUriResolver("org/jafer/conf/"));
+            XMLTransformer.setFactoryURIResover(new XMLFileUriResolver("org/jafer/xsl/cql/"));
             outNode = XMLTransformer.transform(jaferQuery.getQuery(), jqfToXcqlStylesheet);
             // make sure we normalise the result as XSLT will add extra
             // textNodes when processing that may throw other XSLTs off etc
@@ -101,7 +101,7 @@ public class CQLQueryConverter extends Converter
 
     /**
      * This method converts an XCQL query to the straight CQL
-     * 
+     *
      * @param xcql The root <XCQL> node
      * @return The CQL text
      * @throws QueryException
@@ -113,7 +113,7 @@ public class CQLQueryConverter extends Converter
         try
         {
             InputStream xcqlToCqlStylesheet = CQLQueryConverter.class.getClassLoader().getResourceAsStream(
-                    "org/jafer/conf/XCQLtoCQL.xsl");
+                    "org/jafer/xsl/cql/XCQLtoCQL.xsl");
             outNode = XMLTransformer.transform(xcql.getXCQLQuery(), xcqlToCqlStylesheet);
             // make sure we normalise the result as XSLT will add extra
             // textNodes when processing that may throw other XSLTs off etc
@@ -130,7 +130,7 @@ public class CQLQueryConverter extends Converter
 
     /**
      * This method converts a CQL query to XCQL
-     * 
+     *
      * @param cql The cql querey to convert
      * @return The <XCQL> root node
      * @throws QueryException

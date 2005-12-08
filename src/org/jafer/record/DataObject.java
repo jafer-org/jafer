@@ -31,7 +31,7 @@
 
 package org.jafer.record;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;

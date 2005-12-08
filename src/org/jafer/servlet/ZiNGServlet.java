@@ -15,7 +15,7 @@ import org.jafer.query.QueryBuilder;
 import org.jafer.record.Diagnostic;
 import org.jafer.zclient.operations.PresentException;
 import org.jafer.record.RecordException;
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.xml.XMLTransformer;
 import org.jafer.util.xml.XMLSerializer;

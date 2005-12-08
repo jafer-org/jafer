@@ -1,4 +1,4 @@
-<!-- 
+<!--
      **********************************************************************************
      * This template converts JQF to XCQL                                             *
      *                                                                                *
@@ -6,7 +6,7 @@
      *        AND THAT DOUBLE NEGATIVES HAVE BEEN RESOLVED. IT DOES NOT EXPECT ANY    *
      *        OR BLOCKS TO CONTAIN NOTs. IT WILL COPE WITH A TOP LEVEL NOT BUT THE    *
      *        RESULTING QUERY MAY TIME OUT ON THE SERVER                              *
-     *                                                                                *     
+     *                                                                                *
      **********************************************************************************
 -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
@@ -15,10 +15,10 @@
     <!-- Set up variables used for accessing BIB1 attributes and CQL Context Set data -->
     <!-- **************************************************************************** -->
     <!-- Store ref to the cqlcontextsets.xml file -->
-    <xsl:variable name="contextSets" select="document('cqlContextSets.xml')/contextSets"/>
+    <xsl:variable name="contextSets" select="document('../../conf/cqlContextSets.xml')/contextSets"/>
     <!-- Store a ref to the bib one attribute set -->
     <xsl:variable name="bibAttribSet"
-        select="document('bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
+        select="document('../../conf/bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
     <xsl:variable name="alwaysMatchRelationshipValue"
         select="$bibAttribSet/attributeType[@name='relation']/attribute[@name='always_matches']/@value"/>
     <!-- ************************************************************************ -->
@@ -49,7 +49,7 @@
                     <xsl:call-template name="processOr"/>
                 </XCQL>
             </xsl:when>
-            <!-- We are being called recursively to process an OR node in 
+            <!-- We are being called recursively to process an OR node in
                  a sub query so just call the processOr template              -->
             <xsl:otherwise>
                 <xsl:call-template name="processOr"/>
@@ -75,7 +75,7 @@
                     <xsl:call-template name="processAnd"/>
                 </XCQL>
             </xsl:when>
-            <!-- We are being called recursively to process an AND node in 
+            <!-- We are being called recursively to process an AND node in
                  a sub query so just call the processAnd template             -->
             <xsl:otherwise>
                 <xsl:call-template name="processAnd"/>
@@ -101,7 +101,7 @@
                     <xsl:call-template name="processNot"/>
                 </XCQL>
             </xsl:when>
-            <!-- We are being called recursively to process a NOT node in 
+            <!-- We are being called recursively to process a NOT node in
                  a sub query so just call the processNot template             -->
             <xsl:otherwise>
                 <xsl:call-template name="processNot"/>
@@ -120,8 +120,8 @@
     <!-- ******************************************************************** -->
     <xsl:template match="constraintModel">
         <xsl:choose>
-            <!-- If the node does not have a parent then call 
-                 processConstraintModel inside an <XCQL> block to form the 
+            <!-- If the node does not have a parent then call
+                 processConstraintModel inside an <XCQL> block to form the
                  root of the returned XCQL                                    -->
             <xsl:when test="not(parent::*)">
                 <XCQL>
@@ -129,7 +129,7 @@
                 </XCQL>
             </xsl:when>
             <!-- We are being called recursively to process a ConstraintModel
-                 node in a sub query so just call the processConstraintModel 
+                 node in a sub query so just call the processConstraintModel
                  template                                                     -->
             <xsl:otherwise>
                 <xsl:call-template name="processConstraintModel"/>
@@ -240,10 +240,10 @@
     <!-- template that matches any NOT nodes in the Query                      -->
     <!-- ******************************************************************** -->
     <xsl:template name="processNot">
-        <!-- Unfortunatly a not at the top level can not be converted 
+        <!-- Unfortunatly a not at the top level can not be converted
              very easily as NOT in CQL needs a left and right operand
              Hence we will make the left operand be all records. However
-             their is a risk that the search may now time out but its 
+             their is a risk that the search may now time out but its
              gives the user a chance rather than an error  -->
         <triple>
             <boolean>
@@ -272,7 +272,7 @@
     <!-- ******************************************************************** -->
     <xsl:template name="processConstraintModel">
         <searchClause>
-            <!-- process the semantic and relationship together 
+            <!-- process the semantic and relationship together
                  as they can not exists with out each other    -->
             <xsl:choose>
                 <!-- Normal Case: we have semantic and relationship -->
@@ -281,13 +281,13 @@
                     <xsl:apply-templates select="./constraint/semantic"/>
                     <xsl:apply-templates select="./constraint/relation"/>
                 </xsl:when>
-                <!-- Exception: we have semantic but no relationship 
+                <!-- Exception: we have semantic but no relationship
                      so make it implied equals                       -->
                 <xsl:when test="./constraint/semantic[position()=1] and
                     not(./constraint/relation[position()=1])">
                     <!-- Will apply SPECIAL CASE A when processing semantic -->
                     <xsl:apply-templates select="./constraint/semantic"/>
-                    <!-- No relationship to process so manually add 
+                    <!-- No relationship to process so manually add
                          a simple relationship of equals            -->
                     <relation>
                         <value>=</value>
@@ -331,7 +331,7 @@
     <!-- ******************************************************************** -->
     <xsl:template match="semantic">
         <xsl:choose>
-            <!-- SPECIAL CASE A: If the relationship is defined and is always_matches 
+            <!-- SPECIAL CASE A: If the relationship is defined and is always_matches
                  then we must put allrecords instead                  -->
             <xsl:when test="../relation[position()=1] = $alwaysMatchRelationshipValue">
                 <index>cql.allRecords</index>
@@ -344,10 +344,10 @@
                 <xsl:variable name="semanticBib1Name"
                     select="$bibAttribSet/attributeType[@name='semantic']/attribute
                     [@value=$semanticValue]/@name"/>
-                <!-- Find the first matching useAttribute in the cqlContextSets file 
-                     NOTE: This will locate the first matching value in the file and 
-                           use it as the context so the ordering in the ContextSets 
-                           file should be in order of inportance if a bib1 attributes 
+                <!-- Find the first matching useAttribute in the cqlContextSets file
+                     NOTE: This will locate the first matching value in the file and
+                           use it as the context so the ordering in the ContextSets
+                           file should be in order of inportance if a bib1 attributes
                            exists in more than one context set                        -->
                 <xsl:variable name="CQLIndex"
                     select="$contextSets/contextSet/indexes/index[@useAttribute=$semanticBib1Name
@@ -375,7 +375,7 @@
         <relation>
             <!-- Get the relation value to lookup in the bib1 & cql attribute files -->
             <xsl:variable name="relationValue" select="."/>
-            <!-- get the appropriate symbol from the bib1attributes as this tells 
+            <!-- get the appropriate symbol from the bib1attributes as this tells
                  us later if we need to create a modifier or not (see comment below) -->
             <xsl:variable name="relationBib1Symbol"
                 select="$bibAttribSet/attributeType[@name='relation']/attribute
@@ -391,20 +391,20 @@
                 </xsl:message>
             </xsl:if>
             <xsl:choose>
-                <!-- SPECIAL CASE A: If the relationship is defined and is always_matches 
+                <!-- SPECIAL CASE A: If the relationship is defined and is always_matches
                      then we must put equals as term will become 1  -->
                 <xsl:when test=". = $alwaysMatchRelationshipValue">
                     <value>=</value>
                 </xsl:when>
                 <!-- A relationship can be of one of two types
-                
+
                          * A symbol ( = , <> , <= , => , < , > , etc )
                          * A modifier (stem , phonetic , etc )
-                
+
                      Modifiers are defined in the bib1 attribute files as not having a symbol
-                     Hence if we did not find a symbol for this relationship then we have a 
-                     relation of type modifier. 
-                     
+                     Hence if we did not find a symbol for this relationship then we have a
+                     relation of type modifier.
+
                      When we have a modifer we have to create a basic equals relationship and
                      add the actual modifier in a modifiers block -->
                 <xsl:when test="not($relationBib1Symbol)">
@@ -415,7 +415,7 @@
                                 <xsl:value-of select="$CQLRelation"/>
                             </type>
                         </modifier>
-                        <!-- do we have a structure constraint to process that 
+                        <!-- do we have a structure constraint to process that
                              must sit in the modifiers block as well           -->
                         <xsl:if test="../structure">
                             <xsl:apply-templates select="../structure"/>
@@ -427,7 +427,7 @@
                     <value>
                         <xsl:value-of select="$CQLRelation"/>
                     </value>
-                    <!-- do we have a structure constraint to process that 
+                    <!-- do we have a structure constraint to process that
                          must sit in the modifiers block                    -->
                     <xsl:if test="../structure">
                         <modifiers>
@@ -475,7 +475,7 @@
     <xsl:template match="model">
         <term>
             <xsl:choose>
-                <!-- SPECIAL CASE A: If the relationship is defined and is always_matches 
+                <!-- SPECIAL CASE A: If the relationship is defined and is always_matches
                                      then we must put equals as term will become 1  -->
                 <xsl:when test="../constraint/relation = $alwaysMatchRelationshipValue">1</xsl:when>
                 <!-- Do we have trunctation, position or completeness to apply to the term -->

@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 import java.io.IOException;
 import org.w3c.dom.Element;
 import org.jafer.zclient.SRWClient;
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;
 import java.util.regex.*;
 

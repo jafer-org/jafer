@@ -11,7 +11,7 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
-package org.jafer.conf;
+package org.jafer.util;
 
 import java.io.InputStream;
 
@@ -39,7 +39,7 @@ public class XMLFileUriResolver implements URIResolver
 
     /**
      * Constructor
-     * 
+     *
      * @param packageRef Ref of the package that should be placed before the
      *        href to retrieve the requested file format org/jafer ....
      */
@@ -50,7 +50,7 @@ public class XMLFileUriResolver implements URIResolver
 
     /**
      * Resolves any references inside XSLT that require
-     * 
+     *
      * @param href An href attribute, which may be relative or absolute.
      * @param base The base URI against which the first argument will be made
      *        absolute if the absolute URI is required.

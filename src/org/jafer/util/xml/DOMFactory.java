@@ -30,7 +30,7 @@
  */
 
 package org.jafer.util.xml;
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.exception.JaferException;
 // Imported JAVA API for XML Parsing classes
 import javax.xml.parsers.DocumentBuilder;

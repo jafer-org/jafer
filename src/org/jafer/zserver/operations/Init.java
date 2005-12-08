@@ -19,7 +19,7 @@
 
 package org.jafer.zserver.operations;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.zserver.Session;
 
 import java.util.logging.Level;

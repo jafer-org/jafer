@@ -1,4 +1,4 @@
-package org.jafer.conf;
+package org.jafer.util;
 
 /**
  * <p>Title: </p>

@@ -31,11 +31,11 @@
 
 package org.jafer.zclient;
 
-import org.jafer.util.ConnectionException;
+import org.jafer.transport.ConnectionException;
 
 import org.jafer.exception.JaferException;
 import org.jafer.zclient.operations.*;
-import org.jafer.util.PDUDriver;
+import org.jafer.transport.PDUDriver;
 import org.jafer.record.TermRecord;
 
 import java.util.logging.Logger;

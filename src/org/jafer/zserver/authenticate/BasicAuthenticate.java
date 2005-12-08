@@ -19,7 +19,7 @@
 
 package org.jafer.zserver.authenticate;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.interfaces.*;
 
 import java.io.*;

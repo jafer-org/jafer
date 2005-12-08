@@ -9,6 +9,7 @@ import org.jafer.util.xml.*;
 import org.jafer.zclient.*;
 import org.w3c.dom.*;
 import java.io.*;
+import org.jafer.util.*;
 
 public class ZeerexFactory extends DatabeanFactory {
   URL url;

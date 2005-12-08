@@ -37,8 +37,8 @@ public class TestClient {
     Node query = builder.and(a, builder.or(b, c));// title = shindig AND (author = Wright OR author = Aldrich)
 
     ZClient bean = new ZClient();
-    bean.setHost("127.0.0.1");
-    bean.setPort(211);
+    bean.setHost("library.ox.ac.uk");
+    bean.setPort(210);
     bean.setDatabases("advance");
     bean.setAutoReconnect(0);
 //    bean.setRecordSchema("http://www.openarchives.org/OAI/oai_marc");

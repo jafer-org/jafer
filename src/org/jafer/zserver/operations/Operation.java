@@ -19,11 +19,11 @@
 
 package org.jafer.zserver.operations;
 
-import org.jafer.util.PDUDriver;
+import org.jafer.transport.PDUDriver;
 import org.jafer.zserver.ZServerThread;
 import org.jafer.zserver.Session;
-import org.jafer.conf.Config;
-import org.jafer.util.ConnectionException;
+import org.jafer.util.Config;
+import org.jafer.transport.ConnectionException;
 import org.jafer.zserver.operations.OperationException;
 
 import z3950.v3.PDU;

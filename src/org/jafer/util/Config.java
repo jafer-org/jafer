@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package org.jafer.conf;
+package org.jafer.util;
 
 import org.jafer.exception.JaferException;
 import org.jafer.util.xml.DOMFactory;
@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
   public final static String BIB1_DIAGNOSTICS_FILE  = "org/jafer/conf/bib1Diagnostics.xml";
   public final static String SEARCH_PROFILES_FILE   = "org/jafer/conf/searchProfiles.xml";
   public static final String CHARACTER_SETS_FILE    = "org/jafer/conf/characterSets/characterSets.xml";
-  public static final String SERVER_CONFIG_FILE     = "org/jafer/conf/server.xml";
+  public static final String SERVER_CONFIG_FILE     = "org/jafer/conf/server/server.xml";
   public static final String SERVER_DECODE_FILE     = "org/jafer/xsl/server/server-decode.xsl";
   public static final String SERVER_ENCODE_FILE     = "org/jafer/xsl/server/server-encode.xsl";
 
@@ -595,7 +595,7 @@ import org.w3c.dom.NodeList;
       symbol = getValue(selectSingleNode(node, "@symbol"));
     return symbol;
   }
-  
+
   public static String getRelationName(String attributeValue) throws JaferException {
       /** @todo rename method................ */
       /** @todo convert all methods to use XPath? */
