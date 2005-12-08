@@ -239,6 +239,11 @@ test/org/jafer/query/QueryBuilderTest.java -text
 test/org/jafer/query/converter/CQLQueryConverterTest.java -text
 test/org/jafer/query/converter/JaferQueryConverterTest.java -text
 test/org/jafer/query/converter/RPNQueryConverterTest.java -text
+test/org/jafer/sru/SRUroSRWBridgeTestSuite.java -text
+test/org/jafer/sru/SRUtoSRWBridgeTest.java -text
+test/org/jafer/sru/bridge/ExplainBridgeTest.java -text
+test/org/jafer/sru/bridge/ScanBridgeTest.java -text
+test/org/jafer/sru/bridge/SearchRetrieveBridgeTest.java -text
 webapps/Portlet/WEB-INF/jaferportlet_en.properties -text
 webapps/Portlet/WEB-INF/portlet.xml -text
 webapps/Portlet/WEB-INF/tld/portlet.tld -text
