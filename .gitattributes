@@ -29,6 +29,15 @@ lib/jdbc/jtds-0.4.jar -text
 lib/jdbc/mysql-connector-java-2.0.14-bin.jar -text
 lib/portlets/portlet-api-1.0.jar -text
 lib/registries/uddi4j.jar -text
+lib/struts/antlr.jar -text
+lib/struts/commons-beanutils.jar -text
+lib/struts/commons-collections.jar -text
+lib/struts/commons-digester.jar -text
+lib/struts/commons-fileupload.jar -text
+lib/struts/commons-logging.jar -text
+lib/struts/commons-validator.jar -text
+lib/struts/jakarta-oro.jar -text
+lib/struts/struts.jar -text
 lib/util/commons-lang-2.1.jar -text
 lib/util/servlet.jar -text
 lib/xml/xalan.jar -text
