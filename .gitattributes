@@ -332,7 +332,6 @@ test/org/jafer/sru/bridge/SearchRetrieveBridgeTest.java -text
 webapps/JaferRegistry/Install[!!-~]Notes.txt -text
 webapps/JaferRegistry/META-INF/MANIFEST.MF -text
 webapps/JaferRegistry/MicrosoftUBR.cer -text
-webapps/JaferRegistry/WEB-INF/.cvsignore -text
 webapps/JaferRegistry/WEB-INF/struts-bean.tld -text
 webapps/JaferRegistry/WEB-INF/struts-config.xml -text
 webapps/JaferRegistry/WEB-INF/struts-html.tld -text
