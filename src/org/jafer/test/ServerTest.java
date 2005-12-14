@@ -5,9 +5,7 @@ import org.jafer.util.xml.*;
 import org.jafer.query.*;
 import org.jafer.record.*;
 import org.jafer.zclient.*;
-import org.jafer.conf.*;
 import org.jafer.zserver.*;
-import org.jafer.zserver.authenticate.*;
 import org.jafer.exception.JaferException;
 import org.w3c.dom.*;
 
