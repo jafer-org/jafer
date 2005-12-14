@@ -43,7 +43,7 @@ public class JaferQueryConverterTest extends TestCase
      * Checks the normailisation is correct
      *
      * @param testName the name of the test being run
-     * @param inputJQNode The starting jaffer query before normailsation as a
+     * @param inputJQNode The starting jafer query before normailsation as a
      *        node
      * @param expectedJQ The expected normailsed jafer query XML
      */

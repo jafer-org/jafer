@@ -23,26 +23,26 @@ import org.jafer.query.converter.JaferQueryConverterTest;
 import org.jafer.query.converter.RPNQueryConverterTest;
 
 /**
- * This class runs the entire JAFER test suite. 
+ * This class runs the entire JAFER test suite.
  */
-public class JafferTestSuite
+public class JaferTestSuite
 {
 
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(JafferTestSuite.suite());
+        junit.textui.TestRunner.run(JaferTestSuite.suite());
     }
 
     public static Test suite()
     {
-        
+
         TestSuite suite = new TestSuite("Test for org.jafer");
         //$JUnit-BEGIN$
         suite.addTestSuite(QueryBuilderTest.class);
         suite.addTestSuite(JaferQueryConverterTest.class);
         suite.addTestSuite(CQLQueryConverterTest.class);
         suite.addTestSuite(RPNQueryConverterTest.class);
-  
+
         //$JUnit-END$
         return suite;
     }
