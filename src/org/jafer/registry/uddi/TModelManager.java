@@ -61,31 +61,31 @@ public class TModelManager
 
     /**
      * Stores a reference to the Z3950 TMODEL key. This key must map exactly to
-     * a jaffertmodel in the tmodels.xml configuration file.
+     * a jafertmodel in the tmodels.xml configuration file.
      */
     public final static String PROTOCOL_Z3950 = "Z3950";
 
     /**
      * Stores a reference to the SRW TMODEL key. This key must map exactly to a
-     * jaffertmodel in the tmodels.xml configuration file.
+     * jafertmodel in the tmodels.xml configuration file.
      */
     public final static String PROTOCOL_SRW = "SRW";
 
     /**
      * Stores a reference to the DDC TMODEL key. This key must map exactly to a
-     * jaffertmodel in the tmodels.xml configuration file.
+     * jafertmodel in the tmodels.xml configuration file.
      */
     public final static String CATEGORY_DDC = "DDC";
 
     /**
      * Stores a reference to the LCSH TMODEL key. This key must map exactly to a
-     * jaffertmodel in the tmodels.xml configuration file.
+     * jafertmodel in the tmodels.xml configuration file.
      */
     public final static String CATEGORY_LCSH = "LCSH";
 
     /**
      * Stores a reference to the general keywords TMODEL key. This key must map
-     * exactly to a jaffertmodel in the tmodels.xml configuration file.
+     * exactly to a jafertmodel in the tmodels.xml configuration file.
      */
     public final static String CATEGORY_GENERAL_KEYWORDS = "uddi-org:general_keywords";
 
@@ -239,25 +239,25 @@ public class TModelManager
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream(TMODEL_CONFIG_FILE);
             Document document = ParseFactory.parse(stream);
 
-            // get the list of jaffer tmodels
-            NodeList jafferTModels = document.getElementsByTagName("jaffertmodel");
+            // get the list of jafer tmodels
+            NodeList jaferTModels = document.getElementsByTagName("jafertmodel");
             // make sure we found atleast one tmodel
-            if (jafferTModels.getLength() == 0)
+            if (jaferTModels.getLength() == 0)
             {
-                throw new RegistryExceptionImpl("No Jaffer TModels found in configuration file");
+                throw new RegistryExceptionImpl("No Jafer TModels found in configuration file");
             }
 
             if (logger.isLoggable(Level.FINE))
             {
-                logger.fine("Processing " + jafferTModels.getLength() + " jaffer TModels");
+                logger.fine("Processing " + jaferTModels.getLength() + " jafer TModels");
             }
 
             // now iterate and process each tmodel
-            for (int i = 0; i < jafferTModels.getLength(); i++)
+            for (int i = 0; i < jaferTModels.getLength(); i++)
             {
-                Node jafferTModelNode = jafferTModels.item(i);
+                Node jaferTModelNode = jaferTModels.item(i);
                 // build the TModel
-                TModel tmodel = createJafferTModel(registryConnection, username, credential, createIfNotFound, jafferTModelNode);
+                TModel tmodel = createJaferTModel(registryConnection, username, credential, createIfNotFound, jaferTModelNode);
                 // add the tmodel to the TModels map
                 tModels.put(tmodel.getName(), tmodel);
             }
@@ -273,7 +273,7 @@ public class TModelManager
     }
 
     /**
-     * Creates a complete Jaffer TModel that encapsulates the set of defined
+     * Creates a complete Jafer TModel that encapsulates the set of defined
      * UDDI TModels.
      *
      * @param registryConnection The connection to the UDDI registry
@@ -281,16 +281,16 @@ public class TModelManager
      * @param credential The credential required to authenticate user
      * @param createIfNotFound Flag to indicate if the the TModel should be
      *        created if not found
-     * @param jafferTModelNode The XML node representing a jaffer tmodel in the
+     * @param jaferTModelNode The XML node representing a jafer tmodel in the
      *        configuration file
-     * @return The jaffer TModel that encapsulates the UDDI TModels
+     * @return The jafer TModel that encapsulates the UDDI TModels
      * @throws RegistryNotInitialisedException
      * @throws RegistryExceptionImpl
      * @throws JaferException
      * @throws InvalidAuthorisationDetailsException
      */
-    private TModel createJafferTModel(UDDIProxy registryConnection, String username, String credential, boolean createIfNotFound,
-            Node jafferTModelNode) throws RegistryNotInitialisedException, RegistryException, ParsingException,
+    private TModel createJaferTModel(UDDIProxy registryConnection, String username, String credential, boolean createIfNotFound,
+            Node jaferTModelNode) throws RegistryNotInitialisedException, RegistryException, ParsingException,
             InvalidAuthorisationDetailsException
     {
         logger.entering("TModelManager", "buildTModel");
@@ -301,15 +301,15 @@ public class TModelManager
         try
         {
             models = new Vector();
-            name = ParsingUtils.getValue(ParsingUtils.selectSingleNode(jafferTModelNode, "@name"));
+            name = ParsingUtils.getValue(ParsingUtils.selectSingleNode(jaferTModelNode, "@name"));
             // make sure we got a name
             if (name == null || name.length() == 0)
             {
-                throw new RegistryExceptionImpl("No name attrb specified for JAFFER tmodel");
+                throw new RegistryExceptionImpl("No name attrb specified for JAFER tmodel");
             }
 
             // get each defined tmodel tag
-            NodeList tmodels = ParsingUtils.selectNodeList(jafferTModelNode, "tmodel");
+            NodeList tmodels = ParsingUtils.selectNodeList(jaferTModelNode, "tmodel");
             // make sure we found atleast one tmodel
             if (tmodels.getLength() == 0)
             {

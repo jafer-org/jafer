@@ -49,7 +49,7 @@ public class RPNQueryConverter extends Converter
 {
     /**
      * This method converts a z3950.v3.RPNQuery to the JaferQuery format
-     * 
+     *
      * @param rpnQuery The z3950.v3.RPNQuery
      * @return the constructed jafer query
      * @throws QueryException
@@ -62,7 +62,7 @@ public class RPNQueryConverter extends Converter
     /**
      * This method converts a jafer query to the z3950.v3.RPNQuery format. It
      * expects that the jafer querie has been normalised first
-     * 
+     *
      * @param jaferQuery TThe jafer query to convert
      * @return the constructed rpn query
      * @throws QueryException
@@ -83,7 +83,7 @@ public class RPNQueryConverter extends Converter
      * This method processes the supplied jafer querey node and converts it to
      * an RPN structure. It can be called recursively to process nodes lower in
      * the query tree.
-     * 
+     *
      * @param node The jafer query node to process
      * @return The constructed RPNStructure for the node being processed
      * @throws QueryException
@@ -129,9 +129,9 @@ public class RPNQueryConverter extends Converter
     }
 
     /**
-     * Process an AND jaffer query node. Expects the Node to have already been
+     * Process an AND jafer query node. Expects the Node to have already been
      * normalised
-     * 
+     *
      * @param node The AND node to process
      * @return A constructed RPNStructure for the AND node
      * @throws QueryException
@@ -185,9 +185,9 @@ public class RPNQueryConverter extends Converter
     }
 
     /**
-     * Process an OR jaffer query node. Expects the Node to have already been
+     * Process an OR jafer query node. Expects the Node to have already been
      * normalised
-     * 
+     *
      * @param node The OR node to process
      * @return A constructed RPNStructure for the OR node
      * @throws QueryException
@@ -233,7 +233,7 @@ public class RPNQueryConverter extends Converter
 
     /**
      * This method processes a constraint model Node.
-     * 
+     *
      * @param constraintModel The constraint model node to process
      * @return An RPNStructure representation of the constraint
      * @throws QueryException
@@ -301,7 +301,7 @@ public class RPNQueryConverter extends Converter
      * This method creates a jafer query node for the supplied RPNStructure. It
      * is a recursive method that calls itself in order to process the sub
      * RPNStructures
-     * 
+     *
      * @param structure The rpn structure to process
      * @return A jafer query node representation of the structure
      * @throws QueryException
@@ -351,7 +351,7 @@ public class RPNQueryConverter extends Converter
 
     /**
      * Builds a jafer constraint model node from the supplied rpnStructure
-     * 
+     *
      * @param structure The structure to process
      * @param builder Instance of a query builder to use to create the node
      * @return The constructed constarint model node
@@ -387,6 +387,6 @@ public class RPNQueryConverter extends Converter
 
         return constraintModel;
     }
-    
-    
+
+
 }
