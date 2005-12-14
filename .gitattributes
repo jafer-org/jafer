@@ -36,6 +36,7 @@ lib/xml/xercesImpl.jar -text
 lib/xml/xml-apis.jar -text
 lib/xml/xmlParserAPIs.jar -text
 lib/zebulun.jar -text
+src/MessageResources.properties -text
 src/org/jafer/conf/OpenURL/openURL.xml -text
 src/org/jafer/conf/SRWSchemaMappings.xml -text
 src/org/jafer/conf/ZGet/bib1.xml -text
