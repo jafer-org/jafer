@@ -258,6 +258,9 @@ webapps/Portlet/images/return.gif -text
 webapps/Portlet/images/right.gif -text
 webapps/Portlet/images/viewHTML.gif -text
 webapps/Portlet/images/viewXML.gif -text
+webapps/Portlet/xsl/item.xsl -text
+webapps/Portlet/xsl/list.xsl -text
+webapps/Portlet/xsl/search.xsl -text
 webapps/SRUServer/WEB-INF/.cvsignore -text
 webapps/SRUServer/WEB-INF/lib/axis-ant.jar -text
 webapps/SRUServer/WEB-INF/lib/axis.jar -text

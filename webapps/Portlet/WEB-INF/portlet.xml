@@ -27,15 +27,19 @@
     </init-param>
     <init-param>
       <name>search</name>
-      <value>/org/jafer/xsl/portlets/search.xsl</value>
+      <value>xsl/search.xsl</value>
     </init-param>
     <init-param>
       <name>list</name>
-      <value>/org/jafer/xsl/portlets/list.xsl</value>
+      <value>xsl/list.xsl</value>
     </init-param>
     <init-param>
       <name>item</name>
-      <value>/org/jafer/xsl/portlets/item.xsl</value>
+      <value>xsl/item.xsl</value>
+    </init-param>
+    <init-param>
+      <name>images</name>
+      <value>images/</value>
     </init-param>
 
     <expiration-cache>-1</expiration-cache>
