@@ -27,9 +27,9 @@ import org.jafer.registry.RegistryNotInitialisedException;
 import org.jafer.registry.model.CategoryType;
 import org.jafer.registry.model.Protocol;
 import org.jafer.registry.uddi.model.TModel;
-import org.jafer.utils.xml.ParseFactory;
-import org.jafer.utils.xml.ParsingException;
-import org.jafer.utils.xml.ParsingUtils;
+import org.jafer.util.xml.ParseFactory;
+import org.jafer.util.xml.ParsingException;
+import org.jafer.util.xml.ParsingUtils;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.OverviewDoc;
 import org.uddi4j.response.AuthToken;
@@ -92,7 +92,7 @@ public class TModelManager
     /**
      * Stores a reference to the configuration file location
      */
-    public final static String TMODEL_CONFIG_FILE = "org/jafer/conf/tmodels.xml";
+    public final static String TMODEL_CONFIG_FILE = "org/jafer/conf/registry/tmodels.xml";
 
     /**
      * Stores a reference to the Logger
@@ -111,7 +111,7 @@ public class TModelManager
      * allow callers to initialise seperatley to their application so that user
      * names and credentials do not have to be supplied when only providing a
      * search interface.
-     * 
+     *
      * @param registryConnection The instance to use to comunicate with the
      *        registry
      * @throws RegistryNotInitialisedException
@@ -135,7 +135,7 @@ public class TModelManager
     /**
      * This constructor assumes that all TModels are not set up in the registry
      * and hence attempts to define them if it is unable to locate them first.
-     * 
+     *
      * @param registryConnection The connection to the UDDI registry
      * @param username The username of the user using the registry.
      * @param credential The credential required to authenticate user
@@ -152,7 +152,7 @@ public class TModelManager
 
     /**
      * Gets the specified TModel instance
-     * 
+     *
      * @param tModelName The name of the TModel required
      * @return The required TModel or NULL if it does not exist in cache
      */
@@ -163,7 +163,7 @@ public class TModelManager
 
     /**
      * This method returns a TModel representing the category type
-     * 
+     *
      * @param categoryType The category type to check against
      * @return The TModel instance
      * @throws RegistryException
@@ -191,7 +191,7 @@ public class TModelManager
 
     /**
      * This method returns a TModel representing the protocol
-     * 
+     *
      * @param protocol The protocol type to check against
      * @return The TModel instance
      * @throws RegistryException
@@ -219,7 +219,7 @@ public class TModelManager
      * should search for as the construction information required if it is not
      * found. This method will only create TModels if they are not found and the
      * create if not found flag has been set.
-     * 
+     *
      * @param registryConnection The connection to the UDDI registry
      * @param username The username of the user using the registry.
      * @param credential The credential required to authenticate user
@@ -275,7 +275,7 @@ public class TModelManager
     /**
      * Creates a complete Jaffer TModel that encapsulates the set of defined
      * UDDI TModels.
-     * 
+     *
      * @param registryConnection The connection to the UDDI registry
      * @param username The username of the user using the registry.
      * @param credential The credential required to authenticate user
@@ -380,7 +380,7 @@ public class TModelManager
 
     /**
      * This method creates the TModel in the registry and then returns it.
-     * 
+     *
      * @param registryConnection The connection to the UDDI registry
      * @param username The username of the user using the registry.
      * @param credential The credential required to authenticate user
@@ -449,7 +449,7 @@ public class TModelManager
 
     /**
      * This method creates the TModel by retrieving it from the UDDI registry
-     * 
+     *
      * @param registryConnection The connection to the UDDI registry
      * @param key The key for the TModel
      * @return The fully created TModel from the UDDI registry
