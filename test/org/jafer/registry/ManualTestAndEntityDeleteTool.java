@@ -29,9 +29,9 @@ import org.jafer.registry.uddi.model.BusinessEntity;
 import org.uddi4j.client.UDDIProxy;
 
 /**
- * 
+ *
  */
-public class ManualTestAndEntitiyDeleteTool
+public class ManualTestAndEntityDeleteTool
 {
 
     public static RegistryManager regman = null;
@@ -168,7 +168,7 @@ public class ManualTestAndEntitiyDeleteTool
 
             //testProvider();
             //testServices();
-            
+
             /* JUST FOR CRETING BASIC VALUES WITHOUT DELETE AT END
             ServiceProvider p = servman.registerServiceProvider("JAFER REGISTRY TEST COMPANY");
             p.setDescription("This is the jafer registry test company");
@@ -186,9 +186,9 @@ public class ManualTestAndEntitiyDeleteTool
             service.setWSDLUrl(Protocol.PROTOCOL_SRW, "www.srw.wsdl.com");
             service.setWSDLUrl(Protocol.PROTOCOL_Z3950, "www.z3950.wsdl.com");
             servman.updateService(service);
-            */ 
-            
-            
+            */
+
+
             System.out.println("Deleting data Please Wait... ");
             if (provider != null)
             {
@@ -293,7 +293,7 @@ public class ManualTestAndEntitiyDeleteTool
         provider.addCategory(regman.getCategory(CategoryType.CATEGORY_GENERAL_KEYWORDS, "Andy test cat"));
         provider.addCategory(regman.getCategory(CategoryType.CATEGORY_GENERAL_KEYWORDS, "Steve test cat"));
         provider = servman.updateServiceProvider(provider);
-        
+
         System.out.println("");
         System.out.println("** SERVICE PROVIDER TESTS **");
         System.out.println("");
@@ -375,13 +375,13 @@ public class ManualTestAndEntitiyDeleteTool
         System.out.print("Check registered 'JAFER TEST COMPANY' on UBR for changes then press enter here to delete ---->");
         input.readLine();
         System.out.println("");
-        
+
         if (provider != null)
         {
             servman.deleteServiceProvider(provider);
             provider = null;
         }
     }
-    
- 
+
+
 }
