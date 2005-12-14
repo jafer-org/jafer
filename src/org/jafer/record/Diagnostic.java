@@ -30,7 +30,6 @@
  */
 
 package org.jafer.record;
-import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.Config;
 
 import asn1.BEREncoding;
