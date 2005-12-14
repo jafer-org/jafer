@@ -1,0 +1,184 @@
+<attributeSets syntax="1.2.840.10003.3.1">
+<attributeSet default="true" name="bib1" version="Z39-50">
+<attributeType name="semantic" value="1">
+<attribute name="personal_name" value="1" />
+<attribute name="corporate_name" value="2" />
+<attribute name="conference_name" value="3" />
+<attribute name="title" value="4" />
+<attribute name="title_series" value="5" />
+<attribute name="title_uniform" value="6" />
+<attribute name="isbn" value="7" />
+<attribute name="issn" value="8" />
+<attribute name="lc_card_number" value="9" />
+<attribute name="bnb_card_number" value="10" />
+<attribute name="bgf_number" value="11" />
+<attribute name="local_number" value="12" />
+<attribute name="dewey_classification" value="13" />
+<attribute name="udc_classification" value="14" />
+<attribute name="bliss_classification" value="15" />
+<attribute name="lc_call_number" value="16" />
+<attribute name="nlm_call_number" value="17" />
+<attribute name="nal_call_number" value="18" />
+<attribute name="mos_call_number" value="19" />
+<attribute name="local_classification" value="20" />
+<attribute name="subject_heading" value="21" />
+<attribute name="subject_rameau" value="22" />
+<attribute name="bdi_index_subject" value="23" />
+<attribute name="inspec_subject" value="24" />
+<attribute name="mesh_subject" value="25" />
+<attribute name="pa_subject" value="26" />
+<attribute name="lc_subject_heading" value="27" />
+<attribute name="rvm_subject_heading" value="28" />
+<attribute name="local_subject_index" value="29" />
+<attribute name="date" value="30" />
+<attribute name="date_of_publication" value="31" />
+<attribute name="date_of_acquisition" value="32" />
+<attribute name="title_key" value="33" />
+<attribute name="title_collective" value="34" />
+<attribute name="title_parallel" value="35" />
+<attribute name="title_cover" value="36" />
+<attribute name="title_added_title_page" value="37" />
+<attribute name="title_caption" value="38" />
+<attribute name="title_running" value="39" />
+<attribute name="title_spine" value="40" />
+<attribute name="title_other_variant" value="41" />
+<attribute name="title_former" value="42" />
+<attribute name="title_abbreviated" value="43" />
+<attribute name="title_expanded" value="44" />
+<attribute name="subject_precis" value="45" />
+<attribute name="subject_rswk" value="46" />
+<attribute name="subject_subdivision" value="47" />
+<attribute name="no_natl_biblio" value="48" />
+<attribute name="no_legal_deposit" value="49" />
+<attribute name="no_govt_pub" value="50" />
+<attribute name="no_music_publisher" value="51" />
+<attribute name="number_db" value="52" />
+<attribute name="number_local_call" value="53" />
+<attribute name="code_language" value="54" />
+<attribute name="code_geographic_area" value="55" />
+<attribute name="code_institution" value="56" />
+<attribute name="name_and_title" value="57" />
+<attribute name="name_geographic" value="58" />
+<attribute name="place_publication" value="59" />
+<attribute name="coden" value="60" />
+<attribute name="microform_generation" value="61" />
+<attribute name="abstract" value="62" />
+<attribute name="note" value="63" />
+<attribute name="author_title" value="1000" />
+<attribute name="record_type" value="1001" />
+<attribute name="name" value="1002" />
+<attribute name="author" value="1003" />
+<attribute name="author_name_personal" value="1004" />
+<attribute name="author_name_corporate" value="1005" />
+<attribute name="author_name_conference" value="1006" />
+<attribute name="identifier_standard" value="1007" />
+<attribute name="subject_lc_children" value="1008" />
+<attribute name="subject_name_personal" value="1009" />
+<attribute name="body_of_text" value="1010" />
+<attribute name="date_time_added_to_db" value="1011" />
+<attribute name="date_time_last_modified" value="1012" />
+<attribute name="authority_format_id" value="1013" />
+<attribute name="concept_text" value="1014" />
+<attribute name="concept_reference" value="1015" />
+<attribute name="any" value="1016" />
+<attribute name="server_choice" value="1017" />
+<attribute name="publisher" value="1018" />
+<attribute name="record_source" value="1019" />
+<attribute name="editor" value="1020" />
+<attribute name="bib_level" value="1021" />
+<attribute name="geographic_class" value="1022" />
+<attribute name="indexed_by" value="1023" />
+<attribute name="map_scale" value="1024" />
+<attribute name="music_key" value="1025" />
+<attribute name="related_periodical" value="1026" />
+<attribute name="report_number" value="1027" />
+<attribute name="stock_number" value="1028" />
+<attribute name="thematic_number" value="1030" />
+<attribute name="material_type" value="1031" />
+<attribute name="doc_id" value="1032" />
+<attribute name="host_item" value="1033" />
+<attribute name="content_type" value="1034" />
+<attribute name="anywhere" value="1035" />
+<attribute name="author_title_subject" value="1036" />
+</attributeType>
+<attributeType name="relation" value="2">
+<attribute name="lt" value="1" symbol="&lt;"/>
+<attribute name="le" value="2" symbol="&lt;=" />
+<attribute name="eq" value="3" symbol="=" />
+<attribute name="ge" value="4" symbol="&gt;=" />
+<attribute name="gt" value="5" symbol="&gt;" />
+<attribute name="ne" value="6" symbol="&lt;&gt;" />
+<attribute name="phonetic" value="100" />
+<attribute name="stem" value="101" />
+<attribute name="relevance" value="102" />
+<attribute name="always_matches" value="103" />
+</attributeType>
+<attributeType name="position" value="3">
+<attribute name="first_in_field" value="1" />
+<attribute name="first_in_subfield" value="2" />
+<attribute name="any_position_in_field" value="3" />
+</attributeType>
+<attributeType name="structure" value="4">
+<attribute name="phrase" value="1" />
+<attribute name="word" value="2" />
+<attribute name="key" value="3" />
+<attribute name="year" value="4" />
+<attribute name="date" value="5" />
+<attribute name="word_list" value="6" />
+<attribute name="date_un_normalised" value="100" />
+<attribute name="name" value="101" />
+<attribute name="name_un_normalised" value="102" />
+<attribute name="structure" value="103" />
+<attribute name="urx" value="104" />
+<attribute name="free_form_text" value="105" />
+<attribute name="document_text" value="106" />
+<attribute name="local_number" value="107" />
+<attribute name="string" value="108" />
+<attribute name="numeric_string" value="109" />
+</attributeType>
+<attributeType name="truncation" value="5">
+<attribute name="right" value="1" />
+<attribute name="left" value="2" />
+<attribute name="left_and_right" value="3" />
+<attribute name="no_truncation" value="100" />
+<attribute name="process_#_in_search_term" value="101" />
+<attribute name="regexpr_1" value="102" />
+<attribute name="regexpr_2" value="103" />
+</attributeType>
+<attributeType name="completeness" value="6">
+<attribute name="incomplete_subfield" value="1" />
+<attribute name="complete_subfield" value="2" />
+<attribute name="complete_field" value="3" />
+</attributeType>
+</attributeSet>
+<attributeSet name="openURL" version="1.0f-2000-05-16">
+<attributeType name="semantic" value="1">
+<attribute name="aulast" value="1003" />
+<attribute name="aufirst" value="1003" />
+<attribute name="auinit" value="1003" />
+<attribute name="auinit1" value="1003" />
+<attribute name="issn" value="8" />
+<attribute name="eissn" value="8" />
+<attribute name="coden" value="60" />
+<attribute name="isbn" value="7" />
+<attribute name="sici" value="1037" />
+<attribute name="bici" value="1016" /><!--use = any-->
+<attribute name="title" value="4" />
+<attribute name="atitle" value="4" />
+<attribute name="stitle" value="4" />
+<attribute name="volume" value="1066" />
+<attribute name="part" value="1066" />
+<attribute name="issue" value="1066" />
+<attribute name="spage" value="1016" /><!--use = any-->
+<attribute name="epage" value="1016" /><!--use = any-->
+<attribute name="pages" value="1016" /><!--use = any-->
+<attribute name="artnum" value="1016" /><!--use = any-->
+<attribute name="date" value="30" />
+<attribute name="ssn" value="1066" />
+<attribute name="quarter" value="1066" />
+<attribute name="pid" value="1032" />
+<attribute name="sid" value="1032" /><!-- ignore -->
+<attribute name="id" value="1032" /><!-- ignore -->
+</attributeType>
+</attributeSet>
+</attributeSets>

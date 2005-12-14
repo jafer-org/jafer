@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+  <display-name>JAFER Reading List</display-name>
+  <description>JAFER Toolkit Project, www.jafer.org</description>
+  <context-param>
+    <param-name>webmaster</param-name>
+    <param-value>yourname@yourpost.com</param-value>
+    <description>The EMAIL address of the administrator to whom questions and comments about this application should be addressed.</description>
+  </context-param>
+  <servlet>
+    <servlet-name>ReadingList</servlet-name>
+    <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+    <init-param>
+      <param-name>hostName</param-name>
+      <param-value>library.ox.ac.uk</param-value>
+    </init-param>
+    <init-param>
+      <param-name>port</param-name>
+      <param-value>210</param-value>
+    </init-param>
+    <init-param>
+      <param-name>database</param-name>
+      <param-value>advance</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ReadingList</servlet-name>
+    <url-pattern>/search.jsp</url-pattern>
+  </servlet-mapping>
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+</web-app>

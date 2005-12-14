@@ -1,0 +1,52 @@
+<!DOCTYPE html public "-//W3C//DTD HTML 4.0 Final//EN">
+<html>
+  <head>
+    <title>JAFER search</title>
+  </head>
+
+  <body bgcolor="#eeeeee">
+    <form action="list.jsp" method="get">
+      <input type="hidden" name="ipAddress" value="library.ox.ac.uk">
+      <input type="hidden" name="portNumber" value="210">
+      <input type="hidden" name="dbName" value="advance">
+
+      <!--<input type="hidden" name="ipAddress" value="voyager.aber.ac.uk">-->
+      <!--<input type="hidden" name="portNumber" value="7090">-->
+      <!--<input type="hidden" name="dbName" value="voyager">-->
+      <input type="hidden" name="start" value="1">
+      <input type="hidden" name="max" value="10">
+      <input type="hidden" name="query" value="true">
+
+      <table cellspacing = "20">
+        <tr>
+          <td width="45"></td>
+          <td align = "right" width="70"><img src="find.gif"></td>
+          <td align = "left"><font face="Arial" size="+1">Simple Search</font></td>
+          <td align = "right"><font face="Arial" size="-1"><a href = "advancedSearch.html">Advanced Search</a></font></td>
+          </tr>
+        <tr>
+          <td></td>
+          <td colspan="3"><hr/></td></tr>
+        <tr>
+          <td colspan="2"></td>
+          <td colspan="2" align = "left"><font face="Arial">Oxford University Library Catalogue</font></td></tr>
+        <tr>
+          <td width="45"></td>
+          <td align = "right" width="70"><font face="Arial" size="-1">Title</font></td>
+          <td colspan="2"><input type="text" name="title" value="" size="45" tabindex="1"></td></tr>
+        <tr>
+          <td width="45"></td>
+          <td align = "right" width="70"><font face="Arial" size="-1">Author</font></td>
+          <td colspan="2"><input type="text" name="author" value="" size="45" tabindex="2"></td></tr>
+        <tr>
+          <td width="45"></td>
+          <td width="70"></td>
+          <td align = "left"><input type="submit" name="search" value="Submit" tabindex="3"></td>
+          <td align = "right"><input type="reset" name="reset" value=" Clear " tabindex="4"></td></tr>
+        <tr>
+          <td></td>
+          <td colspan="3"><hr/></td></tr>
+      </table>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+Installing the Jafer Registry Web Site
+--------------------------------------
+
+These installation details are written for Apache Tomcat.
+
+There are two steps to installing the web screens:
+
+1) deploying the war file
+2) registering the microsoft uddi website certificate
+
+Deploying War
+-------------
+
+Place the JaferRegistry.war in the tomcat webapps directory and 
+start the server. This will extract the JaferRegistry.war file 
+and create a new directory under webapps called JaferRegistry. 
+Once this is done the website should be available by entering: 
+
+http://163.1.3.13:8080/JaferRegistry
+
+Note 163.1.3.13 is the address of the server you have installed 
+tomcat on. This can also be set to localhost if running locally.
+
+Once completed you should be able to view the welcome screen and 
+use the search functionality. You can not logon till the 
+certificate has been installed. 'Unable to obtain autorisation token'
+will be displayed if you attempt a logon.
+
+
+Registering the Microsoft UDDI Certificate
+------------------------------------------
+
+Logon requires a HTTPs connection to access the Microsoft UDDI website.
+For the java code to use this connection the Microsoft certificate 
+must be registered in the java JRE certificate store.
+
+Tomcat uses the Java JRE at the system variable $JAVA_HOME.
+
+
+To install:
+
+1) locate the JRE directory under JAVA_HOME
+2) Change directory to JAVA_HOME/lib/security
+3) Copy the file MicrosoftUBR.cer from webapps/JaferRegistry into this driectory
+   
+4) Run the following command line
+
+../../bin/keytool -import -v -trustcacerts -alias uddi-alias -file MicrosoftUBR.cer -keystore cacerts -keypass changeit -storepass changeit
+
+5) You should see some HEX characters for the key.
+   Enter 'yes' and press enter to accept the key
+   
+6) Restart tomcat and you should now be able to logon.
+
+If you still get error 'Unable to obtain autorisation token' then check:
+
+a) you installed to correct JRE
+b) the MicrosoftUBR.cer included in the distribution has not expired.
+   If it has obtain a new one and repeat above directions by going to 
+   	https://uddi.microsoft.com/login.aspx?publish=true
+   	Click on padlock select 'details tab' and then 'copy to file' button
+   	
+

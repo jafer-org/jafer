@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bib1Diagnostics syntax="1.2.840.10003.4.1">
+	<condition value="0">unknown</condition>
+	<condition value="1">permanent system error</condition>
+	<condition value="2">temporary system error</condition>
+	<condition value="3">unsupported search</condition>
+	<condition value="4">Terms only exclusion (stop) words</condition>
+	<condition value="5">Too many argument words</condition>
+	<condition value="6">Too many boolean operators</condition>
+	<condition value="7">Too many truncated words</condition>
+	<condition value="8">Too many incomplete subfields</condition>
+	<condition value="9">Truncated words too short</condition>
+	<condition value="10">Invalid format for record number (search term)</condition>
+	<condition value="11">Too many characters in search statement</condition>
+	<condition value="12">Too many records retrieved</condition>
+	<condition value="13">Present request out-of-range</condition>
+	<condition value="14">System error in presenting records</condition>
+	<condition value="15">Record not authorized to be sent intersystem</condition>
+	<condition value="16">Record exceeds Preferred-condition-size</condition>
+	<condition value="17">Record exceeds Exceptional-record-size</condition>
+	<condition value="18">Result set not supported as a search term</condition>
+	<condition value="19">Only single result set as search term supported</condition>
+	<condition value="20">Only ANDing of a single result set as search term</condition>
+	<condition value="21">Result set exists and replace indicator off</condition>
+	<condition value="22">Result set naming not supported</condition>
+	<condition value="23">Specified combination of databases not supported</condition>
+	<condition value="24">Element set names not supported</condition>
+	<condition value="25">Specified element set name not valid for specified database</condition>
+	<condition value="26">Only generic form of element set name supported</condition>
+	<condition value="27">Result set no longer exists - unilaterally deleted by target</condition>
+	<condition value="28">Result set is in use</condition>
+	<condition value="29">One of the specified databases is locked</condition>
+	<condition value="30">Specified result set does not exist</condition>
+	<condition value="31">Resources exhausted - no results available</condition>
+	<condition value="32">Resources exhausted - unpredictable partial results available</condition>
+	<condition value="33">Resources exhausted - valid subset of results available</condition>
+	<condition value="100">(unspecified) error</condition>
+	<condition value="101">Access-control failure</condition>
+	<condition value="102">Challenge required, could not be issued - operation terminated</condition>
+	<condition value="103">Challenge required, could not be issued - record not included</condition>
+	<condition value="104">Challenge failed - record not included</condition>
+	<condition value="105">Terminated at origin request</condition>
+	<condition value="106">No abstract syntaxes agreed to for this record</condition>
+	<condition value="107">Query type not supported</condition>
+	<condition value="108">Malformed query</condition>
+	<condition value="109" addInfo="database name">Database unavailable</condition>
+	<condition value="110" addInfo="operator">Operator unsupported</condition>
+	<condition value="111" addInfo="maximum">Too many databases specified</condition>
+	<condition value="112" addInfo="maximum">Too many result sets created</condition>
+	<condition value="113" addInfo="type">Unsupported attribute type</condition>
+	<condition value="114" addInfo="value">Unsupported Use attribute</condition>
+	<condition value="115" addInfo="term">Unsupported term value for Use attribute</condition>
+	<condition value="116">Use attribute required but not supplied</condition>
+	<condition value="117" addInfo="value">Unsupported Relation attribute</condition>
+	<condition value="118" addInfo="value">Unsupported Structure attribute</condition>
+	<condition value="119" addInfo="value">Unsupported Position attribute</condition>
+	<condition value="120" addInfo="value">Unsupported Truncation attribute</condition>
+	<condition value="121" addInfo="oid">Unsupported Attribute Set</condition>
+	<condition value="122" addInfo="value">Unsupported Completeness attribute</condition>
+	<condition value="123">Unsupported attribute combination</condition>
+	<condition value="124" addInfo="value">Unsupported coded value for term</condition>
+	<condition value="125">Malformed search term</condition>
+	<condition value="126" addInfo="term">Illegal term value for attribute</condition>
+	<condition value="127" addInfo="value">Unparsable format for un-normalized value</condition>
+	<condition value="128" addInfo="name">Illegal result set name</condition>
+	<condition value="129">Proximity search of sets not supported</condition>
+	<condition value="130" addInfo="result set name">Illegal result set in proximity search</condition>
+	<condition value="131" addInfo="value">Unsupported proximity relation</condition>
+	<condition value="132" addInfo="value">Unsupported proximity unit code</condition>
+	<condition value="201" addInfo="attribute list">Proximity not supported with this attribute combination</condition>
+	<condition value="202" addInfo="distance">Unsupported distance for proximity</condition>
+	<condition value="203">Ordered flag not supported for proximity</condition>
+	<condition value="205">Only zero step size supported for Scan</condition>
+	<condition value="206" addInfo="step size">Specified step size not supported for Scan</condition>
+	<condition value="207" addInfo="sequence">Cannot sort according to sequence</condition>
+	<condition value="208">No result set name supplied on Sort</condition>
+	<condition value="209">Generic sort not supported (database-specific sort only supported)</condition>
+	<condition value="210">Database specific sort not supported</condition>
+	<condition value="211" addInfo="number">Too many sort keys</condition>
+	<condition value="212" addInfo="key">Duplicate sort keys</condition>
+	<condition value="213" addInfo="value">Unsupported missing data action</condition>
+	<condition value="214" addInfo="relation">Illegal sort relation</condition>
+	<condition value="215" addInfo="value">Illegal case value</condition>
+	<condition value="216" addInfo="value">Illegal missing data action</condition>
+	<condition value="217">Segmentation: Cannot guarantee records will fit in specified segments</condition>
+	<condition value="218" addInfo="name">ES: Package name already in use</condition>
+	<condition value="219" addInfo="name">ES: no such package, on modify/delete</condition>
+	<condition value="220">ES: quota exceeded</condition>
+	<condition value="221" addInfo="type">ES: extended service type not supported</condition>
+	<condition value="222">ES: permission denied on ES - id not authorized</condition>
+	<condition value="223">ES: permission denied on ES - cannot modify or delete</condition>
+	<condition value="224">ES: immediate execution failed</condition>
+	<condition value="225">ES: immediate execution not supported for this service</condition>
+	<condition value="226">ES: immediate execution not supported for these parameters</condition>
+	<condition value="227">No data available in requested record syntax</condition>
+	<condition value="228">Scan: malformed scan</condition>
+	<condition value="229" addInfo="type">Term type not supported</condition>
+	<condition value="230" addInfo="max">Sort: too many input results</condition>
+	<condition value="231">Sort: incompatible record formats</condition>
+	<condition value="232" addInfo="alternative term list">Scan: term list not supported</condition>
+	<condition value="233" addInfo="value">Scan: unsupported value of position-in-response</condition>
+	<condition value="234" addInfo="number of terms">Too many index terms processed</condition>
+	<condition value="235" addInfo="database name">Database does not exist</condition>
+	<condition value="236" addInfo="database name">Access to specified database denied</condition>
+	<condition value="237">Sort: illegal sort</condition>
+	<condition value="238" addInfo="alternative suggested syntax(es)">Record not available in requested syntax</condition>
+	<condition value="239" addInfo="syntax">Record syntax not supported</condition>
+	<condition value="240">Scan: Resources exhausted looking for satisfying terms</condition>
+	<condition value="241">Scan: Beginning or end of term list</condition>
+	<condition value="242" addInfo="smallest acceptable size">Segmentation: max-segment-size too small to segment record</condition>
+	<condition value="243">Present: additional-ranges parameter not supported</condition>
+	<condition value="244">Present: comp-spec parameter not supported</condition>
+	<condition value="245">Type-1 query: restriction ('resultAttr') operand not supported</condition>
+	<condition value="246">Type-1 query: 'complex' attributeValue not supported</condition>
+	<condition value="247">Type-1 query: 'attributeSet' as part of AttributeElement not supported</condition>
+</bib1Diagnostics>

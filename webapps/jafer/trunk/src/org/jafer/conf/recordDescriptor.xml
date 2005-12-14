@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<recordDescriptor>
+ <oid name="MARC21" syntax="1.2.840.10003.5.10" priority="1">
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/mods/">org/jafer/xsl/record/OAIMARC2MODS.xsl</transform>
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/MARC21/slim">org/jafer/xsl/record/OAIMARC2MARC21slim.xsl</transform>
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0">org/jafer/xsl/record/OAIMARC2RLI.xsl</transform>
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://ltsc.ieee.org/xsd/LOM">org/jafer/xsl/record/OAIMARC2LOM.xsl</transform>
+  <transform sourceSchema="http://www.loc.gov/MARC21/slim" targetSchema="http://purl.org/dc/elements/1.1/">org/jafer/xsl/record/MARC21slim2DC.xsl</transform>
+  <transform sourceSchema="http://www.loc.gov/MARC21/slim" targetSchema="http://www.loc.gov/mods/v3">org/jafer/xsl/record/MARC21slim2MODS3.xsl</transform> -->
+  <transform sourceSchema="http://www.loc.gov/MARC21/slim" targetSchema="http://www.openarchives.org/OAI/1.1/oai_marc">org/jafer/xsl/record/MARC21slim2OAIMARC.xsl</transform>
+  <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0">org/jafer/xsl/record/DC2RLI.xsl</transform>
+  <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://ltsc.ieee.org/xsd/LOM">org/jafer/xsl/record/DC2LOM.xsl</transform>
+  <transform sourceSchema="http://purl.org/dc/elements/1.1/" targetSchema="http://www.loc.gov/MARC21/slim">org/jafer/xsl/record/DC2MARC21slim.xsl</transform>
+  <serializer targetSchema="http://www.openarchives.org/OAI/1.1/oai_marc">org.jafer.record.MARCRecord</serializer>
+ </oid>
+ <oid name="UKMARC" syntax="1.2.840.10003.5.11" priority="2">
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/mods/">org/jafer/xsl/record/OAIMARC2MODS.xsl</transform>
+  <serializer targetSchema="http://www.openarchives.org/OAI/1.1/oai_marc">org.jafer.record.MARCRecord</serializer>
+ </oid>
+ <oid name="UNIMARC" syntax="1.2.840.10003.5.1" priority="3">
+  <serializer targetSchema="http://www.openarchives.org/OAI/1.1/oai_marc">org.jafer.record.MARCRecord</serializer>
+ </oid>
+ <oid name="GRS1" syntax="1.2.840.10003.5.105" priority="3">
+  <transform sourceSchema="http://www.jafer.org/formats/grs1" targetSchema="http://www.gils.net/xml-grs.xsd">org/jafer/xsl/record/GRS12GILS.xsl</transform>
+  <transform sourceSchema="http://www.gils.net/xml-grs.xsd" targetSchema="http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0">org/jafer/xsl/record/GILS2RLI.xsl</transform>
+  <serializer targetSchema="http://www.jafer.org/formats/grs1">org.jafer.record.GRS1Record</serializer>
+ </oid>
+ <oid name="OPAC" syntax="1.2.840.10003.5.102">
+  <serializer targetSchema="http://www.jafer.org/formats/opac">org.jafer.record.OPACRecord</serializer>
+ </oid>
+ <oid name="SUTRS" syntax="1.2.840.10003.5.101">
+  <serializer targetSchema="http://www.jafer.org/formats/sutrs">org.jafer.record.SUTRSRecord</serializer>
+ </oid>
+ <oid name="XML" syntax="1.2.840.10003.5.109.10">
+  <serializer targetSchema="http://www.jafer.org/formats/xml">org.jafer.record.XMLRecord</serializer>
+ </oid>
+ <oid name="DIAG_BIB1" syntax="1.2.840.10003.4.1">
+  <serializer targetSchema="http://srx.z3950.org/types/diagnostic.xsd">org.jafer.record.Diagnostic</serializer>
+ </oid>
+ <oid name="IBERMARC" syntax="1.2.840.10003.5.21"/>
+ <oid name="EXPLAIN" syntax="1.2.840.10003.5.100"/>
+ <oid name="SUMMARY" syntax="1.2.840.10003.5.103"/>
+ <oid name="JAFER" syntax="1.2.840.10003.4.1000.176.1"/>
+<!--    <oid name="USMARC" syntax="1.2.840.10003.5.10"/>     -->
+</recordDescriptor>

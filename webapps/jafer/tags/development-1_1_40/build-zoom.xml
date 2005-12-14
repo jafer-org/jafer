@@ -1,0 +1,83 @@
+<project name="JAFER-Zoom" default="client" basedir=".">
+
+
+  <!-- set global properties for this build -->
+
+  <property name="src" value="src"/>
+  <property name="classes"  value="classes"/>
+  <property name="distrib"  value="distrib"/>
+  <property name="lib"  value="lib"/>
+  <property name="doc"  value="doc"/>
+  <property name="webapps"  value="webapps"/>
+  <property name="temp"  value="temp"/>
+  <property name="publishDir"  value="publish"/>
+  <property name="buildVersion"  value="1.0"/>
+
+	
+  <path id="base.classpath">
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+	<path id="axis.classpath">
+	    <fileset dir="lib/axis">
+	      <include name="**/*.jar" />
+	    </fileset>
+	  </path>
+  
+  <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
+
+
+	<!-- ZOOM Targets -->
+
+	<target name="clear-zoom-classes" >
+		<delete dir="${classes}/org/jafer/zoom" />
+		<delete dir="${classes}/org/z3950/" />
+	</target>
+
+	<target name="compile-zoom" >
+    <mkdir dir="${classes}"/>
+    <javac classpathref="base.classpath" destdir="${classes}" debug="on">
+    <src path="${src}"/>
+      <!-- Ant includes dependent files, so don't really need to list all -->
+      <include name="org/z3950/**"/>
+      <include name="org/jafer/zoom/**"/>
+    </javac>
+		<copy todir="${classes}" >
+			<fileset dir="${src}/org/jafer/zoom">
+				<include name="META-INF/**" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="run-zoomtests" depends="compile-zoom" >
+		<mkdir dir="testtemp" />
+		<unzip src="publish/jafer-client-1.0.zip" dest="testtemp" />
+		<java classname="org.jafer.zoom.test.Tester" >
+			 <classpath>
+				 <pathelement location="${classes}"/>
+				 <pathelement location="testtemp"/>
+					<fileset dir="lib">
+						<include name="**/*.jar" />
+					</fileset>
+			 </classpath>
+			<arg value="this is a dummy arg" />
+		</java>
+		<delete dir="testtemp" />
+	</target>
+
+	<!-- Make a copy of all the zoom stuff only -->
+	<target name="zip-zoom" depends="compile-zoom">
+		<zip destfile="distrib/jafer-zoom-only.zip" update="false">
+			<zipfileset dir=".">
+				<include name="lib/commons-beanutils.jar" />
+				<include name="src/org/jafer/zoom/**" />
+				<include name="src/org/z3950/**" />
+				<include name="build-zoom.xml" />
+				<include name="zoom-notes.txt" />
+			</zipfileset>
+		</zip>
+	</target>
+
+</project>

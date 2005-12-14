@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<servers>
+  <server>
+  <!-- simple server set up on port 211 -->
+    <property name="bindingAddress" type="string">127.0.0.1</property>
+    <property name="bindingPort" type="int">211</property>
+    <property name="databeanFactory" class="org.jafer.zclient.ZClientFactory">
+      <property name="databases" array="java.lang.String">
+        <arrayMember type="string">Advance</arrayMember>
+      </property>
+      <property name="host" type="string">library.ox.ac.uk</property>
+      <property name="port" type="int">210</property>
+      <property name="recordSchema" type="string">http://www.openarchives.org/OAI/oai_marc</property>
+    </property>
+  </server>
+  <server>
+  <!-- server on port 212 with query adaption specified in org/jafer/xsl/beans/queryAdaptor.xsl -->
+    <property name="bindingAddress" type="string">127.0.0.1</property>
+    <property name="bindingPort" type="int">212</property>
+    <property name="databeanFactory" class="org.jafer.databeans.QueryAdaptorFactory">
+      <property name="name" type="string">xxdefault</property>
+      <property name="transform" type="string">org/jafer/xsl/beans/queryAdaptor.xsl</property>
+      <property name="databeanFactory" class="org.jafer.zclient.ZClientFactory">
+       <property name="databases" array="java.lang.String">
+        <arrayMember type="string">Advance</arrayMember>
+       </property>
+       <property name="host" type="string">library.ox.ac.uk</property>
+       <property name="port" type="int">210</property>
+     </property>
+    </property>
+  </server>
+  <server>
+  <!-- server on port 213 with authentication -->
+    <property name="bindingAddress" type="string">127.0.0.1</property>
+    <property name="bindingPort" type="int">213</property>
+    <property name="databeanFactory" class="org.jafer.zclient.ZClientFactory">
+      <property name="databases" array="java.lang.String">
+        <arrayMember type="string">Advance</arrayMember>
+      </property>
+      <property name="host" type="string">library.ox.ac.uk</property>
+      <property name="port" type="int">210</property>
+      <property name="recordSchema" type="string">http://www.openarchives.org/OAI/oai_marc</property>
+    </property>
+    <!-- adds authentication -->
+    <property name="authenticate" class="org.jafer.zserver.authenticate.BasicAuthenticate">
+      <property name="users" array="org.jafer.zserver.authenticate.UserCredentials">
+        <arrayMember class="org.jafer.zserver.authenticate.UserCredentials">
+          <!-- authentication based on group/username/password -->
+          <property name="password" type="string">password</property>
+          <property name="username" type="string">username</property>
+          <property name="group" type="string">group</property>
+          <!-- authentication based on ipAddress -->
+          <property name="ipAddress" type="string">127.0.0.0</property>
+          <property name="ipAddressMask" type="string">255.0.0.0</property>
+        </arrayMember>
+      </property>
+    </property>
+  </server>
+
+
+  <!-- server on port 214 for distributed searches --><!--
+  <server>
+    <property name="bindingAddress" type="string">127.0.0.1</property>
+    <property name="bindingPort" type="int">214</property>
+    <property name="databeanFactory" class="org.jafer.databeans.DatabeanManagerFactory">
+      <property name="name" type="string">xxdefault</property>
+      <property name="mode" type="string">serial</property>
+      <property name="databeanFactories" array="org.jafer.interfaces.DatabeanFactory">
+        <arrayMember class="org.jafer.zclient.ZClientFactory">
+          <property name="name" type="string">DB1</property>
+          <property name="databases" array="java.lang.String">
+            <arrayMember type="string">Advance</arrayMember>
+          </property>
+          <property name="host" type="string">library.ox.ac.uk</property>
+          <property name="port" type="int">210</property>
+          <property name="recordSchema" type="string">http://www.openarchives.org/OAI/oai_marc</property>
+        </arrayMember>
+        <arrayMember class="org.jafer.databeans.DatabeanManagerFactory">
+          <property name="name" type="string">DB2</property>
+          <property name="mode" type="string">parallel</property>
+          <property name="databeanFactories" array="org.jafer.interfaces.DatabeanFactory">
+            <arrayMember class="org.jafer.zclient.ZClientFactory">
+              <property name="databases" array="java.lang.String">
+                <arrayMember type="string">Advance</arrayMember>
+              </property>
+              <property name="host" type="string">library.ox.ac.uk</property>
+              <property name="port" type="int">210</property>
+              <property name="recordSchema" type="string">http://www.openarchives.org/OAI/oai_marc</property>
+            </arrayMember>
+            <arrayMember class="org.jafer.zclient.ZClientFactory">
+              <property name="databases" array="java.lang.String">
+                <arrayMember type="string">Advance</arrayMember>
+              </property>
+              <property name="host" type="string">library.ox.ac.uk</property>
+              <property name="port" type="int">210</property>
+              <property name="recordSchema" type="string">http://www.openarchives.org/OAI/oai_marc</property>
+            </arrayMember>
+          </property>
+        </arrayMember>
+      </property>
+    </property>
+  </server>
+  -->
+</servers>

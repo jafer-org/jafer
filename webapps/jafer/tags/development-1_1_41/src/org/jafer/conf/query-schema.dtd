@@ -1,0 +1,21 @@
+<!ELEMENT boolean         (and | or | not |
+                           constraintModel) >
+<!ELEMENT and             ((and | or | not |
+                            constraintModel),
+                           (and | or | not |
+                            constraintModel))>
+<!ELEMENT or              ((and | or | not |
+                            constraintModel),
+                           (and | or | not |
+                            constraintModel))>
+<!ELEMENT not             (and | or | not |
+                           constraintModel)>
+<!ELEMENT constraintModel (constraint, model)>
+<!ELEMENT constraint     (semantic, relation?, position?, structure?, truncation?, completeness?)>
+<!ELEMENT model          (#PCDATA)>
+<!ELEMENT semantic       (#PCDATA)>
+<!ELEMENT relation       (#PCDATA)>
+<!ELEMENT position       (#PCDATA)>
+<!ELEMENT structure      (#PCDATA)>
+<!ELEMENT truncation     (#PCDATA)>
+<!ELEMENT completeness   (#PCDATA)>

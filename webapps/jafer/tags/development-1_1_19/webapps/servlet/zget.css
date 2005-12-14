@@ -1,0 +1,74 @@
+/* NB is called after, and overrides, main www.lib.ox.ac.uk CSS */
+body {
+	color:#fff; 
+	background:#006;
+}
+table, tr, td {
+	color:#000;
+	background:#fff;
+}
+tr.outer, td.outer {
+	color:#fff;
+	background:#006;
+}
+
+div.footer {
+	font-size: 80%;
+	text-align: right;
+	color:#fff; 
+	background:#006;
+}
+div.footer a {
+	color:#fff; 
+	background:#006;
+}
+
+span.title {
+	font-weight:bold;
+}
+a:hover, a:active {
+	color:red;
+}
+ul, ol {
+	font-size:80%;
+}
+li {
+	padding-bottom:0.5em;
+}
+h1.header {
+	text-align: right;
+}
+
+table.bib {
+	font-size: 80%;
+}
+table.bib th {
+	color: #000;
+	background: #eee;
+	text-align: right;	
+}
+
+table.libraryholdings {
+	color: #000;
+	background: #eee;
+	font-size: 80%;	
+}
+table.libraryholdings th {
+	color: #000;
+	background: #eee;
+	text-align: center;
+}
+table.libraryholdings td {
+	color: #000;
+	background: #fff;
+	text-align: center;
+}
+
+table.electronicresources {
+	font-size: 80%;
+}
+table.electronicresources th {
+	color: #000;
+	background: #eee;
+	text-align: right;	
+}

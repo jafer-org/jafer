@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="boolean">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="and"/>
+                <xs:element ref="or"/>
+                <xs:element ref="not"/>
+                <xs:element ref="constraintModel"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="and">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice>
+                    <xs:element ref="and"/>
+                    <xs:element ref="or"/>
+                    <xs:element ref="not"/>
+                    <xs:element ref="constraintModel"/>
+                </xs:choice>
+                <xs:choice>
+                    <xs:element ref="and"/>
+                    <xs:element ref="or"/>
+                    <xs:element ref="not"/>
+                    <xs:element ref="constraintModel"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="or">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice>
+                    <xs:element ref="and"/>
+                    <xs:element ref="or"/>
+                    <xs:element ref="not"/>
+                    <xs:element ref="constraintModel"/>
+                </xs:choice>
+                <xs:choice>
+                    <xs:element ref="and"/>
+                    <xs:element ref="or"/>
+                    <xs:element ref="not"/>
+                    <xs:element ref="constraintModel"/>
+                </xs:choice>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="not">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="and"/>
+                <xs:element ref="or"/>
+                <xs:element ref="not"/>
+                <xs:element ref="constraintModel"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="constraintModel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="constraint"/>
+                <xs:element ref="model"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="constraint">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="semantic"/>
+                <xs:element minOccurs="0" ref="relation"/>
+                <xs:element minOccurs="0" ref="position"/>
+                <xs:element minOccurs="0" ref="structure"/>
+                <xs:element minOccurs="0" ref="truncation"/>
+                <xs:element minOccurs="0" ref="completeness"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="model" type="xs:string"/>
+    <xs:element name="semantic" type="xs:string"/>
+    <xs:element name="relation" type="xs:string"/>
+    <xs:element name="position" type="xs:string"/>
+    <xs:element name="structure" type="xs:string"/>
+    <xs:element name="truncation" type="xs:string"/>
+    <xs:element name="completeness" type="xs:string"/>
+</xs:schema>

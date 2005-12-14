@@ -1,0 +1,77 @@
+<!DOCTYPE html public "-//W3C//DTD HTML 4.0 Final//EN">
+<html>
+  <head>
+    <title>JAFER advancedSearch</title>
+  </head>
+
+  <body bgcolor="#eeeeee">
+    <form action="" method="get">
+    <!--<form action="client.jsp" method="get">-->
+      <input type="hidden" name="ipAddress" value="library.ox.ac.uk">
+      <input type="hidden" name="portNumber" value="210">
+      <input type="hidden" name="dbName" value="advance">
+      <input type="hidden" name="start" value="1">
+      <input type="hidden" name="max" value="10">
+      <input type="hidden" name="query" value="true">
+      <input type="hidden" name="list" value="true">
+      <input type="hidden" name="method" value="html">
+
+      <table cellspacing="20">
+        <tr>
+          <td width="45"></td>
+          <td align = "right" width="70"><img src="find.gif"></td>
+          <td align = "left"><font face="Arial" size="+1">Advanced Search</font></td>
+          <td align = "right"><font face="Arial" size="-1"><a href = "simpleSearch.html">Simple Search</a></font></td>
+          <td></td></tr>
+        <tr>
+          <td colspan="5"><hr/></td></tr>
+        <tr>
+          <td align="right" valign = "top" width="45"><input type="checkbox" name="nop1" value="not">not</td>
+          <td width="70" align = "right"><select name="use1">
+              <option selected value="4">Title
+              <option value="7">ISBN
+              <option value="21">Subject
+              <option value="1003">Author
+              <option value="1016">Any
+              </select></td>
+          <td colspan="2"><input type="text" name="term1" value="" size="45"></td>
+          <td><select name="op2">
+              <option selected value="and">and
+              <option value="or">or
+              </select></td></tr>
+        <tr>
+          <td align="right" valign = "top" width="45"><input type="checkbox" name="nop2" value="not">not</td>
+          <td width="70" align = "right"><select name="use2">
+              <option selected value="4">Title
+              <option value="7">ISBN
+              <option value="21">Subject
+              <option value="1003">Author
+              <option value="1016">Any
+              </select></td>
+          <td colspan="2"><input type="text" name="term2" value="" size="45"></td>
+          <td><select name="op3">
+              <option selected value="and">and
+              <option value="or">or
+              </select></td></tr>
+        <tr>
+          <td align="right" valign = "top" width="45"><input type="checkbox" name="nop3" value="not">not</td>
+          <td width="70" align = "right"><select name="use3">
+              <option selected value="4">Title
+              <option value="7">ISBN
+              <option value="21">Subject
+              <option value="1003">Author
+              <option value="1016">Any
+              </select></td>
+          <td colspan="2"><input type="text" name="term3" value="" size="45"></td>
+          <td></td></tr>
+        <tr>
+          <td colspan ="2"></td>
+          <td align = "left"><input type="submit" name="search" value="Submit"></td>
+          <td align = "right"><input type="reset" name="reset" value=" Clear "></td>
+          <td></td></tr>
+        <tr>
+          <td colspan="5"><hr/></td></tr>
+      </table>
+    </form>
+  </body>
+</html>

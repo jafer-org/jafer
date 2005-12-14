@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  <display-name>JAFER Servlet 2.0</display-name>
+  <description>JAFER Servlet web to Z39.50 gateway suitable for use in reference linking. Includes configurations for a bib-1 style url and OpenURL.</description>
+  <servlet>
+    <servlet-name>OpenURL</servlet-name>
+    <display-name>OpenURL</display-name>
+    <description>OpenURL configured version of JAFER Servlet</description>
+    <servlet-class>org.jafer.servlet.ZServlet</servlet-class>
+    <init-param>
+      <param-name>target</param-name>
+      <param-value>library.ox.ac.uk</param-value>
+    </init-param>
+    <init-param>
+      <param-name>port</param-name>
+      <param-value>210</param-value>
+    </init-param>
+    <init-param>
+      <param-name>databaseName</param-name>
+      <param-value>advance</param-value>
+    </init-param>
+    <init-param>
+      <param-name>maxHits</param-name>
+      <param-value>15</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recordSchema</param-name>
+      <param-value>http://www.loc.gov/mods/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recordXSLT</param-name>
+      <param-value>org/jafer/xsl/OpenURL/MODS_single.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>listXSLT</param-name>
+      <param-value>org/jafer/xsl/OpenURL/MODS_list.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>errorXSLT</param-name>
+      <param-value>org/jafer/xsl/OpenURL/exception.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultAttributes</param-name>
+      <param-value>org/jafer/conf/OpenURL/openURL.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>searchProfile</param-name>
+      <param-value>0.0.0.0.0.0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>fetchSize</param-name>
+      <param-value>1</param-value>
+    </init-param>
+  </servlet>
+  <servlet>
+    <servlet-name>ZGet</servlet-name>
+    <display-name>ZGet</display-name>
+    <description>bib-1 style url configuration for JAFER Servlet</description>
+    <servlet-class>org.jafer.servlet.ZServlet</servlet-class>
+    <init-param>
+      <param-name>target</param-name>
+      <param-value>library.ox.ac.uk</param-value>
+    </init-param>
+    <init-param>
+      <param-name>port</param-name>
+      <param-value>210</param-value>
+    </init-param>
+    <init-param>
+      <param-name>databaseName</param-name>
+      <param-value>advance</param-value>
+    </init-param>
+    <init-param>
+      <param-name>maxHits</param-name>
+      <param-value>15</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recordSchema</param-name>
+      <param-value>http://www.loc.gov/mods/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>recordXSLT</param-name>
+      <param-value>org/jafer/xsl/ZGet/MODS_single.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>listXSLT</param-name>
+      <param-value>org/jafer/xsl/ZGet/MODS_list.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>errorXSLT</param-name>
+      <param-value>org/jafer/xsl/ZGet/exception.xsl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>defaultAttributes</param-name>
+      <param-value>org/jafer/conf/ZGet/bib1.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>searchProfile</param-name>
+      <param-value>0.0.0.0.0.0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>fetchSize</param-name>
+      <param-value>1</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>OpenURL</servlet-name>
+    <url-pattern>/OpenURL</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ZGet</servlet-name>
+    <url-pattern>/ZGet</url-pattern>
+  </servlet-mapping>
+</web-app>
+

@@ -1,0 +1,107 @@
+<!--
+JAFER Web site library Created on 12-September-2005
+-->
+
+<project name="JaferWeb" basedir="." default="build-all">
+
+	<!-- set up machine specific properties
+		 tomcat.dir should point to tomcat root (tomcat 5.5)
+		 where bin, common,webapps directries are so that build
+		 can find the servlet-api.jar include file -->
+
+	<property name="tomcat.dir" value="C:/Program Files/Apache Software Foundation/Tomcat 5.5" />
+
+
+	<!-- set up standard build properties -->
+	<property name="src.dir" value="src" />
+	<property name="build.dir" value="build" />
+	<property name="jafferregistry.webapp.dir" value="JaferRegistry" />
+	<property name="jafferregistry.webinf.dir" value="${jafferregistry.webapp.dir}/web-inf" />
+	<property name="lib.dir" value="${jafferregistry.webinf.dir}/lib" />
+
+	<property name="manifest.dir" value="manifest" />
+	<property name="classes.dir" value="${jafferregistry.webinf.dir}/classes" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+	<property name="doc.dir" value="${build.dir}/doc" />
+
+	<property name="servlet-api.jar.file" value="${tomcat.dir}/common/lib/servlet-api.jar" />
+
+	<property name="dist.installjaferuddiweb.filename" value="JaferRegistry.war" />
+
+	<!-- set up the project path to all jars in lib for compiling-->
+	<path id="support.libs">
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset file="${servlet-api.jar.file}"/>
+	</path>
+
+	<!-- clean up the entire build directory -->
+	<target name="clean">
+		<echo message="Cleaning ${build.dir}" />
+		<delete failonerror="false" includeEmptyDirs="true">
+		    <fileset dir="${build.dir}"/>
+			<fileset dir="${classes.dir}"/>
+		  </delete>
+	</target>
+
+	<!-- create the entire build directory -->
+	<target name="create-support-dirs">
+		<echo message="Creating build support directories" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${doc.dir}" />
+	</target>
+
+	<!-- compile the source code  -->
+	<target name="compile-jaferuddiweb" depends="create-support-dirs">
+		<echo message="Starting compilation" />
+		<echo message="   SRC   Path = ${src.dir}" />
+		<echo message="   Dest  Path = ${classes.dir}" />
+
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="1.4" target="1.4">
+			<classpath refid="support.libs" />
+		</javac>
+		<echo message="Compilation completed" />
+	</target>
+
+	<!-- copy UDDI resource files -->
+		<target name="copy-resources" depends="create-support-dirs">
+			<echo message="Copying resource files" />
+
+			<copy todir="${classes.dir}">
+				<fileset dir="${src.dir}">
+					<include name="*.properties" />
+					<include name="**/*.xsl" />
+				</fileset>
+				
+			</copy>
+			
+		</target>
+
+
+	<!-- Build installer war files -->
+	<target name="build-war" depends="compile-jaferuddiweb,copy-resources">
+		<echo message="Building jaffer uddi installer" />
+
+		<zip destfile="${dist.dir}/${dist.installjaferuddiweb.filename}">
+			<zipfileset file="${dist.dir}/${dist.jaferuddiweb.filename}" prefix="${lib.dir}"/>
+			<zipfileset  dir="${jafferregistry.webapp.dir}"   />
+		</zip>
+
+		<echo message="Completed building installer" />
+	</target>
+
+	<!-- MAIN BUILD TARGETS -->
+	<target name="build-all" depends="build-war">
+		<echo message="Completed full build" />
+	</target>
+
+	<target name="clean-build-all" depends="clean,build-all">
+		<echo message="Completed clean full build" />
+	</target>
+
+
+</project>
+
+

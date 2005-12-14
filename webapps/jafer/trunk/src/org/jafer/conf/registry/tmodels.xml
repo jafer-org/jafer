@@ -1,0 +1,22 @@
+<jafertmodelcollection>
+	<jafertmodel name="Z3950">
+		<tmodel name="Z3950" desc="A Search Retrieve WebService based on Z39.50" docurl="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" />
+		<tmodel name="ISO23950" desc="A Search Retrieve WebService based on Z39.50" docurl="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" />
+		<tmodel name="iso:23950(z3950)" desc="A Search Retrieve WebService based on Z39.50" docurl="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" />
+		<tmodel name="Z39.50 Protocol for Information Search and Retrieval" desc="A Search Retrieve WebService based on Z39.50" docurl="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" />
+	</jafertmodel>
+	<jafertmodel name="SRW">
+		<tmodel name="SRW" desc="A Search Retrieve WebService based on Z39.50" docurl="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" />
+	</jafertmodel>
+	<jafertmodel name="uddi-org:general_keywords">
+		<tmodel name="uddi-org:general_keywords" desc="Other Taxonomy" docurl="http://www.uddi.org/taxonomies/UDDI_Taxonomy_tModels.htm#GenKW" />
+	</jafertmodel>
+	<jafertmodel name="LCSH">
+		<tmodel name="LCSH" desc="Library of congress subject headings" docurl="http://www.loc.gov/cds/lcsh.html" />
+	</jafertmodel>
+	<jafertmodel name="DDC">
+		<tmodel name="DDC" desc="Dewey decimal characterisation" docurl="http://www.oclc.org/dewey/" />
+	</jafertmodel>
+</jafertmodelcollection>
+
+

@@ -1,0 +1,25 @@
+<oai_marc xmlns="http://www.openarchives.org/OAI/oai_marc" xmlns:jafer="urn://www.jafer.org/jdbc/config">
+<jafer:insertElement name="fixfield" id="001" column="tablename.Id"/>
+<!-- <jafer:insertElement name="fixfield" id="008" column=""/> can't have empty column attribute in fixfield-->
+
+<jafer:insertElement name="varfield" id="100" i1=" " i2=" ">
+ <jafer:insertElement name="subfield" label="d" column="tablename.Author"/>
+</jafer:insertElement>
+
+<jafer:insertElement name="varfield" id="245" i1=" " i2=" ">
+ <jafer:insertElement name="subfield" label="a" column="tablename.Title"/>
+</jafer:insertElement>
+
+<jafer:insertElement name="varfield" id="500" i1=" " i2=" ">
+ <jafer:insertElement name="subfield" label="a" column="tablename.Description"/>
+</jafer:insertElement>
+
+<jafer:insertElement name="varfield" id="650" i1=" " i2=" ">
+ <jafer:insertElement name="subfield" label="a" column="tablename.Subject"/>
+</jafer:insertElement>
+
+<jafer:insertElement name="varfield" id="856" i1=" " i2=" ">
+ <jafer:insertElement name="subfield" label="u" column="tablename.URI"/>
+</jafer:insertElement>
+
+</oai_marc>

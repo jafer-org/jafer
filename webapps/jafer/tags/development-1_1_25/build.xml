@@ -1,0 +1,350 @@
+<project name="JAFER" default="client" basedir=".">
+
+  <!-- set global properties for this build -->
+
+  <property name="src" value="src"/>
+  <property name="classes"  value="classes"/>
+  <property name="distrib"  value="distrib"/>
+  <property name="lib"  value="lib"/>
+  <property name="doc"  value="doc"/>
+  <property name="webapps"  value="webapps"/>
+  <property name="temp"  value="temp"/>
+
+  <path id="base.classpath">
+    <fileset dir="${lib}">
+      <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <path id="axis.classpath">
+    <fileset dir="/var/luntbuild/ant/lib/axis">
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+  
+  <taskdef resource="axis-tasks.properties" classpathref="axis.classpath" />
+
+  <target name="init">
+    <delete dir="${classes}"/>
+    <delete dir="${temp}"/>
+    <mkdir dir="${temp}"/>
+
+    <axis-wsdl2java
+      output="${src}"
+      testcase="false"
+      verbose="true"
+      url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
+    </axis-wsdl2java>
+    <axis-wsdl2java
+      output="${src}"
+      testcase="false"
+      serverSide="true"
+      verbose="true"
+      url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
+    </axis-wsdl2java>
+  </target>
+
+  <target name="compile-client" depends="init">
+    <mkdir dir="${classes}"/>
+    <javac classpathref="base.classpath" destdir="${classes}" debug="on">
+    <src path="${src}"/>
+      <!-- Ant includes dependent files, so don't really need to list all -->
+      <include name="org/jafer/conf/*"/>
+      <include name="org/jafer/exception/*"/>
+      <include name="org/jafer/interfaces/*"/>
+      <include name="org/jafer/query/*"/>
+      <include name="org/jafer/record/*"/>
+      <include name="org/jafer/test/Demo.java"/>
+      <include name="org/jafer/util/**"/>
+      <include name="org/jafer/zclient/**"/>
+    </javac>
+  </target>
+
+  <target name="compile-server" depends="init">
+    <mkdir dir="${classes}"/>
+    <javac classpathref="base.classpath" destdir="${classes}" debug="on">
+    <src path="${src}"/>
+      <!-- Ant includes dependent files, so don't really need to list all -->
+      <include name="org/jafer/conf/*"/>
+      <include name="org/jafer/databeans/*"/>
+      <include name="org/jafer/exception/*"/>
+      <include name="org/jafer/interfaces/*"/>
+      <include name="org/jafer/query/*"/>
+      <include name="org/jafer/record/*"/>
+      <include name="org/jafer/test/ServerStart.java"/>
+      <include name="org/jafer/test/ServerTest.java"/>
+      <include name="org/jafer/test/TestClient.java"/>
+      <include name="org/jafer/util/**"/>
+      <include name="org/jafer/zclient/**"/>
+      <include name="org/jafer/zserver/**"/>
+    </javac>
+  </target>
+
+  <target name="compile-all" depends="init">
+    <mkdir dir="${classes}"/>
+    <javac classpathref="base.classpath" srcdir="${src}" destdir="${classes}"/>
+    <copy todir="${classes}">
+      <fileset dir="${src}" includes="**/*.xsl"/>
+    </copy>
+    <copy todir="${classes}">
+      <fileset dir="${src}" includes="**/*.xml"/>
+    </copy>
+    <copy todir="${classes}">
+      <fileset dir="${src}" includes="**/*.properties"/>
+    </copy>
+  </target>
+
+  <target name="javadoc" depends="compile-all">
+    <mkdir dir="${doc}"/>
+    <javadoc classpathref="base.classpath" sourcepath="${src}" destdir="${doc}" packagenames="org.jafer.*" private="true"/>
+  </target>
+
+  <target name="jardoc" depends="javadoc">
+    <zip zipfile="${publishDir}/jaferdoc-${buildVersion}.jar" basedir="${doc}"/><!-- zip or jar? -->
+  </target>
+
+  <target name="zebulun" depends="compile-all">
+    <mkdir dir="${publishDir}"/>
+    <copy todir="${temp}">
+      <fileset dir="${classes}">
+        <include name="z3950/**"/>
+        <include name="asn1/**"/>
+      </fileset>
+    </copy>
+    <zip zipfile="${publishDir}/zebulun-${buildVersion}.jar" basedir="${temp}"/>
+  </target>
+
+  <target name="client" depends="compile-client">
+    <copy todir="${temp}">
+      <fileset dir="${distrib}/client">
+       <include name="license.txt"/>
+       <include name="readme.html"/>
+       <include name="Demo.bat"/>
+      </fileset>
+      <fileset dir="${publishDir}">
+       <include name="jaferdoc-${buildVersion}.jar"/>
+      </fileset>
+      <!-- copies all class files, but uses compile-client target to compile client-only classes -->
+      <fileset dir="${classes}">
+	<include name="org/jafer/**"/>
+      </fileset>
+      <fileset dir="${src}">
+        <!-- XML, XSL, properties files: -->
+        <include name="org/jafer/conf/characterSets/*"/>
+	<include name="org/jafer/conf/logging.properties"/>
+        <include name="org/jafer/conf/bib1Attributes.xml"/>
+	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
+	<include name="org/jafer/conf/recordDescriptor.xml"/>
+	<include name="org/jafer/conf/searchProfiles.xml"/>
+	<!-- following 2 not necessary, but included as e.g.'s: -->
+        <include name="org/jafer/xsl/beans/queryAdaptor.xsl"/>
+        <include name="org/jafer/xsl/beans/recordAdaptor.xsl"/>
+        <include name="org/jafer/xsl/GRS1-GILS.xsl"/>
+        <include name="org/jafer/xsl/MARC21.xsl"/>
+        <include name="org/jafer/xsl/MARC21slim2DC.xsl"/>
+        <include name="org/jafer/xsl/OAI2OPAC.xsl"/>
+        <include name="org/jafer/xsl/OAIMARC2MARC21slim.xsl"/>
+	<!-- also test src file: -->
+	<include name="org/jafer/test/Demo.java"/>
+      </fileset>
+
+    </copy>
+    <copy todir="${temp}/lib">
+      <fileset dir="${lib}">
+	<include name="xalan.jar"/>
+	<include name="xercesImpl.jar"/>
+	<include name="xml-apis.jar"/>
+	<include name="xmlParserAPIs.jar"/>
+	<include name="zebulun.jar"/>
+      </fileset>
+    </copy>
+    <zip zipfile="${publishDir}/jafer-client-${buildVersion}.zip" basedir="${temp}"/>
+    <delete dir="${temp}" />
+  </target>
+
+  <target name="client-src">
+    <copy todir="${temp}">
+     <fileset dir="${src}">
+        <include name="org/jafer/conf/Config.java"/>
+        <include name="org/jafer/conf/CompressedXMLDecoder.java"/>
+	<include name="org/jafer/conf/logging.properties"/>
+        <include name="org/jafer/conf/bib1Attributes.xml"/>
+	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
+	<include name="org/jafer/conf/recordDescriptor.xml"/>
+	<include name="org/jafer/conf/searchProfiles.xml"/>
+	<include name="org/jafer/conf/characterSets/*"/>
+	<exclude name="org/jafer/conf/jdbcConfig"/>
+        <include name="org/jafer/exception/*"/>
+        <include name="org/jafer/interfaces/*"/>
+        <include name="org/jafer/query/*"/>
+        <include name="org/jafer/record/*"/>
+        <include name="org/jafer/test/Demo.java"/>
+        <include name="org/jafer/util/**"/>
+	<!-- following 2 not necessary, but included as e.g.'s: -->
+        <include name="org/jafer/xsl/beans/queryAdaptor.xsl"/>
+        <include name="org/jafer/xsl/beans/recordAdaptor.xsl"/>
+        <include name="org/jafer/xsl/server/*"/>
+        <include name="org/jafer/xsl/GRS1-GILS.xsl"/>
+        <include name="org/jafer/xsl/MARC21.xsl"/>
+        <include name="org/jafer/xsl/MARC21slim2DC.xsl"/>
+        <include name="org/jafer/xsl/OAI2OPAC.xsl"/>
+        <include name="org/jafer/xsl/OAIMARC2MARC21slim.xsl"/>
+        <include name="org/jafer/zclient/**"/>
+      </fileset>
+     </copy>
+    <zip zipfile="${publishDir}/jafer-client-src-${buildVersion}.jar" basedir="${temp}"/>
+    <delete dir="${temp}" />
+  </target>
+
+  <target name="server" depends="compile-server">
+     <copy todir="${temp}">
+      <fileset dir="${distrib}/server">
+       <include name="license.txt"/>
+       <include name="readme.html"/>
+       <include name="ServerTest.bat"/>
+       <include name="ServerStart.bat"/>
+       <include name="TestClient.bat"/>
+      </fileset>
+      <fileset dir="${publishDir}">
+       <include name="jaferdoc-${buildVersion}.jar"/>
+      </fileset>
+
+      <!-- copies all class files, but uses compile-server target to compile server-only classes -->
+      <fileset dir="${classes}">
+	<include name="org/jafer/**"/>
+      </fileset>
+      <fileset dir="${src}">
+        <!-- XML, XSL, properties files: -->
+        <include name="org/jafer/conf/characterSets/*"/>
+	<include name="org/jafer/conf/jdbcConfig/*"/>
+	<include name="org/jafer/conf/logging.properties"/>
+        <include name="org/jafer/conf/bib1Attributes.xml"/>
+	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
+	<include name="org/jafer/conf/recordDescriptor.xml"/>
+	<include name="org/jafer/conf/searchProfiles.xml"/>
+	<include name="org/jafer/conf/server.xml"/>
+        <include name="org/jafer/xsl/beans/*"/>
+	<include name="org/jafer/xsl/server/*"/>
+        <include name="org/jafer/xsl/GRS1-GILS.xsl"/>
+        <include name="org/jafer/xsl/MARC21.xsl"/>
+        <include name="org/jafer/xsl/MARC21slim2DC.xsl"/>
+        <include name="org/jafer/xsl/OAI2OPAC.xsl"/>
+        <include name="org/jafer/xsl/OAIMARC2MARC21slim.xsl"/>
+	<!-- also test src files: -->
+	<include name="org/jafer/test/ServerStart.java"/>
+	<include name="org/jafer/test/ServerTest.java"/>
+	<include name="org/jafer/test/TestClient.java"/>
+      </fileset>
+    </copy>
+    <copy todir="${temp}/lib">
+      <fileset dir="${lib}">
+        <include name="xalan.jar"/>
+        <include name="xercesImpl.jar"/>
+        <include name="xml-apis.jar"/>
+        <include name="xmlParserAPIs.jar"/>
+        <include name="zebulun.jar"/>
+      </fileset>
+    </copy>
+    <copy todir="${temp}/lib/jdbc">
+      <fileset dir="${lib}/jdbc">
+        <include name="*"/>
+      </fileset>
+    </copy>
+    <zip zipfile="${publishDir}/jafer-server-${buildVersion}.zip" basedir="${temp}"/>
+    <delete dir="${temp}" />
+  </target>
+
+  <target name="server-src">
+   <copy todir="${temp}">
+    <fileset dir="${src}">
+	<include name="org/jafer/conf/characterSets/*"/>
+	<include name="org/jafer/conf/jdbcConfig/*"/>
+	<include name="org/jafer/conf/Config.java"/>
+        <include name="org/jafer/conf/CompressedXMLDecoder.java"/>
+	<include name="org/jafer/conf/logging.properties"/>
+        <include name="org/jafer/conf/bib1Attributes.xml"/>
+	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
+	<include name="org/jafer/conf/recordDescriptor.xml"/>
+	<include name="org/jafer/conf/searchProfiles.xml"/>
+	<include name="org/jafer/conf/server.xml"/>
+        <include name="org/jafer/databeans/*"/>
+        <include name="org/jafer/exception/*"/>
+        <include name="org/jafer/interfaces/*"/>
+        <include name="org/jafer/query/*"/>
+        <include name="org/jafer/record/*"/>
+	<include name="org/jafer/test/ServerStart.java"/>
+	<include name="org/jafer/test/ServerTest.java"/>
+	<include name="org/jafer/test/TestClient.java"/>
+        <include name="org/jafer/util/**"/>
+        <include name="org/jafer/xsl/beans/*"/>
+        <include name="org/jafer/xsl/server/*"/>
+        <include name="org/jafer/xsl/GRS1-GILS.xsl"/>
+        <include name="org/jafer/xsl/MARC21.xsl"/>
+        <include name="org/jafer/xsl/MARC21slim2DC.xsl"/>
+        <include name="org/jafer/xsl/OAI2OPAC.xsl"/>
+        <include name="org/jafer/xsl/OAIMARC2MARC21slim.xsl"/>
+        <include name="org/jafer/zclient/**"/>
+        <include name="org/jafer/zserver/**"/>
+      </fileset>
+     </copy>
+    <zip zipfile="${publishDir}/jafer-server-src-${buildVersion}.jar" basedir="${temp}"/>
+    <delete dir="${temp}" />
+  </target>
+
+  <target name="build-all" depends="server, server-src, client, client-src"/>
+
+<!-- WEBAPPS: Move to another linked build file? -->
+
+ <target name="sample" depends="compile-client">
+    <copy todir="${temp}">
+      <fileset dir="${distrib}/client">
+	<include name="license.txt"/>
+	<include name="readme.html"/>
+      </fileset>
+      <fileset dir="${webapps}/sample">
+	<include name="*"/>
+	<include name="WEB-INF/web.xml"/>
+      </fileset>
+    <!--
+      <fileset dir="${distrib}">
+	<include name="jaferdoc.jar"/>
+      </fileset>
+      -->
+    </copy>
+    <copy todir="${temp}/WEB-INF/classes">
+      <!-- copies all class files, but uses compile-client target to compile client-only classes -->
+      <fileset dir="${classes}">
+	<include name="org/jafer/**"/>
+      </fileset>
+      <fileset dir="${src}">
+        <!-- XML, XSL, properties files: -->
+        <include name="org/jafer/conf/characterSets/*"/>
+	<include name="org/jafer/conf/logging.properties"/>
+        <include name="org/jafer/conf/bib1Attributes.xml"/>
+	<include name="org/jafer/conf/bib1Diagnostics.xml"/>
+	<include name="org/jafer/conf/recordDescriptor.xml"/>
+	<include name="org/jafer/conf/searchProfiles.xml"/>
+	<!-- following 2 not necessary, but included as e.g.'s: -->
+        <include name="org/jafer/xsl/beans/queryAdaptor.xsl"/>
+        <include name="org/jafer/xsl/beans/recordAdaptor.xsl"/>
+        <include name="org/jafer/xsl/GRS1-GILS.xsl"/>
+        <include name="org/jafer/xsl/MARC21.xsl"/>
+        <include name="org/jafer/xsl/MARC21slim2DC.xsl"/>
+        <include name="org/jafer/xsl/OAI2OPAC.xsl"/>
+        <include name="org/jafer/xsl/OAIMARC2MARC21slim.xsl"/>
+      </fileset>
+    </copy>
+    <copy todir="${temp}/WEB-INF/lib">
+      <fileset dir="${lib}">
+	<include name="xalan.jar"/>
+	<include name="xercesImpl.jar"/>
+	<include name="xml-apis.jar"/>
+	<include name="xmlParserAPIs.jar"/>
+	<include name="zebulun.jar"/>
+      </fileset>
+    </copy>
+    <zip zipfile="${publishDir}/JaferSample-${buildVersion}.war" basedir="${temp}"/>
+    <delete dir="${temp}" />
+  </target>
+
+</project>

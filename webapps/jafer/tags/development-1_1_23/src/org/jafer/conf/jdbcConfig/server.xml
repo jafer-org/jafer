@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- When a Z39.50 interface is required to an existing SQL database via JDBC, edit the following fields, and replace org.jafer.conf.server.xml with this version: -->
+
+<servers>
+ <server>
+<!-- Details of host providing z39.50 interface: -->
+<!-- IP Address: -->
+  <property name="bindingAddress" type="string">computername.ox.ac.uk</property>
+<!-- port: -->
+  <property name="bindingPort" type="int">210</property>
+  <property name="databeanFactory" class="org.jafer.databeans.JDBCFactory">
+<!-- JDBC subclass to use for the jdbc driver in use: -->
+   <property name="className" type="string">org.jafer.databeans.TDSDatabean</property>
+<!-- SQLServer host address: -->
+   <property name="host" type="string">SQLServerHost.ox.ac.uk</property>
+<!-- SQLServer host port number: -->
+   <property name="port" type="int">1433</property>
+<!-- Note: SQL Server database name is set in org.jafer.conf.jdbcConfig.config.xml -->
+
+  </property>
+ </server>
+ </servers>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+/**
+ * JAFER Toolkit Poject.
+ * Copyright (C) 2002, JAFER Toolkit Project, Oxford University.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ *
+ */
+-->
+
+<bib1 version ="Bib1-Z39-50">
+  <personal_name>1</personal_name>
+  <corporate_name>2</corporate_name>
+  <conference_name>3</conference_name>
+  <title>4</title>
+  <title_series>5</title_series>
+  <title_uniform>6</title_uniform>
+  <isbn>7</isbn>
+  <issn>8</issn>
+  <lc_card_number>9</lc_card_number>
+  <bnb_card_number>10</bnb_card_number>
+  <bgf_number>11</bgf_number>
+  <local_number>12</local_number>
+  <dewey_classification>13</dewey_classification>
+  <udc_classification>14</udc_classification>
+  <bliss_classification>15</bliss_classification>
+  <lc_call_number>16</lc_call_number>
+  <nlm_call_number>17</nlm_call_number>
+  <nal_call_number>18</nal_call_number>
+  <mos_call_number>19</mos_call_number>
+  <local_classification>20</local_classification>
+  <subject_heading>21</subject_heading>
+  <subject_rameau>22</subject_rameau>
+  <bdi_index_subject>23</bdi_index_subject>
+  <inspec_subject>24</inspec_subject>
+  <mesh_subject>25</mesh_subject>
+  <pa_subject>26</pa_subject>
+  <lc_subject_heading>27</lc_subject_heading>
+  <rvm_subject_heading>28</rvm_subject_heading>
+  <local_subject_index>29</local_subject_index>
+  <date>30</date>
+  <date_of_publication>31</date_of_publication>
+  <date_of_acquisition>32</date_of_acquisition>
+  <title_key>33</title_key>
+  <title_collective>34</title_collective>
+  <title_parallel>35</title_parallel>
+  <title_cover>36</title_cover>
+  <title_added_title_page>37</title_added_title_page>
+  <title_caption>38</title_caption>
+  <title_running>39</title_running>
+  <title_spine>40</title_spine>
+  <title_other_variant>41</title_other_variant>
+  <title_former>42</title_former>
+  <title_abbreviated>43</title_abbreviated>
+  <title_expanded>44</title_expanded>
+  <subject_precis>45</subject_precis>
+  <subject_rswk>46</subject_rswk>
+  <subject_subdivision>47</subject_subdivision>
+  <no_natl_biblio>48</no_natl_biblio>
+  <no_legal_deposit>49</no_legal_deposit>
+  <no_govt_pub>50</no_govt_pub>
+  <no_music_publisher>51</no_music_publisher>
+  <number_db>52</number_db>
+  <code_language>54</code_language>
+  <code_geographic_area>55</code_geographic_area>
+  <code_institution>56</code_institution>
+  <name_and_title>57</name_and_title>
+  <name_geographic>58</name_geographic>
+  <place_publication>59</place_publication>
+  <coden>60</coden>
+  <microform_generation>61</microform_generation>
+  <abstract>62</abstract>
+  <note>63</note>
+  <author_title>1000</author_title>
+  <record_type>1001</record_type>
+  <name>1002</name>
+  <author>1003</author>
+  <author_name_personal>1004</author_name_personal>
+  <author_name_corporate>1005</author_name_corporate>
+  <author_name_conference>1006</author_name_conference>
+  <identifier_standard>1007</identifier_standard>
+  <subject_lc_children>1008</subject_lc_children>
+  <subject_name_personal>1009</subject_name_personal>
+  <body_of_text>1010</body_of_text>
+  <date_time_added_to_db>1011</date_time_added_to_db>
+  <date_time_last_modified>1012</date_time_last_modified>
+  <authority_format_id>1013</authority_format_id>
+  <concept_text>1014</concept_text>
+  <concept_reference>1015</concept_reference>
+  <any>1016</any>
+  <server_choice>1017</server_choice>
+  <publisher>1018</publisher>
+  <record_source>1019</record_source>
+  <editor>1020</editor>
+  <bib_level>1021</bib_level>
+  <geographic_class>1022</geographic_class>
+  <indexed_by>1023</indexed_by>
+  <map_scale>1024</map_scale>
+  <music_key>1025</music_key>
+  <related_periodical>1026</related_periodical>
+  <report_number>1027</report_number>
+  <stock_number>1028</stock_number>
+  <thematic_number>1030</thematic_number>
+  <material_type>1031</material_type>
+  <docid>1032</docid>
+  <doc_id>1032</doc_id>
+  <host_item>1033</host_item>
+  <content_type>1034</content_type>
+  <anywhere>1035</anywhere>
+  <author_title_subject>1036</author_title_subject>
+</bib1>

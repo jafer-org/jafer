@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+/**
+ * JAFER Toolkit Poject.
+ * Copyright (C) 2002, JAFER Toolkit Project, Oxford University.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ *
+ */
+-->
+
+<openURL version = "1.0f-2000-05-16">
+  <aulast>1003</aulast>
+  <aufirst>1003</aufirst>
+  <auinit>1003</auinit>
+  <auinit1>1003</auinit1>
+  <auinitm>1003</auinitm>
+  <issn>8</issn>
+  <eissn>8</eissn>
+  <coden>60</coden>
+  <isbn>7</isbn>
+  <sici>1037</sici>
+  <bici>1016</bici><!--use = any-->
+  <title>4</title>
+  <stitle>4</stitle>
+  <atitle>4</atitle>
+  <volume>1066</volume>
+  <part>1066</part>
+  <issue>1066</issue>
+  <spage>1016</spage><!--use = any-->
+  <epage>1016</epage><!--use = any-->
+  <pages>1016</pages><!--use = any-->
+  <artnum>1016</artnum><!--use = any-->
+  <date>30</date>
+  <ssn>1066</ssn>
+  <quarter>1066</quarter>
+  <pid>1032</pid>
+  <sid>ignore</sid> <!-- ignore -->
+  <id>ignore</id> <!-- ignore -->
+</openURL>

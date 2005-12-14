@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--JBuilder XML Project-->
+<project>
+  <property category="build" name="CopyExtensions.1" value="xml" />
+  <property category="build" name="CopyExtensions.2" value="xsl" />
+  <property category="runtime" name="ConfigurationCount" value="2" />
+  <property category="runtime.1" name="ConfigurationName" value="ZGet" />
+  <property category="runtime.1" name="RunnableType" value="com.borland.jbuilder.runtime.JspRunner" />
+  <property category="runtime.1" name="jsprunner.launchuri" value="/ZGet" />
+  <property category="runtime.1" name="jsprunner.querystring" value="title=tatham" />
+  <property category="runtime.2" name="ConfigurationName" value="OpenURL" />
+  <property category="runtime.2" name="RunnableType" value="com.borland.jbuilder.runtime.JspRunner" />
+  <property category="runtime.2" name="jsprunner.launchuri" value="/OpenURL" />
+  <property category="runtime.2" name="jsprunner.querystring" value="title=tatham" />
+  <property category="sys" name="BackupPath" value="bak" />
+  <property category="sys" name="Company" value="" />
+  <property category="sys" name="CompanyLabel" value="Company:" />
+  <property category="sys" name="Copyright" value="Copyright (c) 2001" />
+  <property category="sys" name="CopyrightLabel" value="Copyright:" />
+  <property category="sys" name="DocPath" value="doc" />
+  <property category="sys" name="JDK" value="java 1.4.0-b92" />
+  <property category="sys" name="Libraries" value="lib" />
+  <property category="sys" name="OutPath" value="classes" />
+  <property category="sys" name="SourcePath" value="src" />
+  <property category="sys" name="WorkingDirectory" value="." />
+  <property category="team" name="ignorePath.0" value="servlet.jpx~" />
+  <property category="team" name="ignorePath.1" value="bak" />
+  <property category="team" name="ignorePath.2" value="classes" />
+  <node type="WebContext" name="">
+    <property category="archiving" name="archiverClass" value="com.borland.jbuilder.wizard.webapp.WarArchiver" />
+    <property category="archiving" name="buildWithProject" value="0" />
+    <property category="archiving" name="defaultLibraryState" value="3" />
+    <property category="archiving" name="libraryStates.1" value="0:Servlet" />
+    <property category="archiving" name="libraryStates.2" value="0:Tomcat 3.2 Servlet" />
+    <property category="archiving" name="targetPath" value="ZServlet.war" />
+    <property category="webapp" name="docroot" value="defaultroot" />
+  </node>
+  <node type="Archive" name="Source">
+    <property category="archiving" name="archiverClass" value="com.borland.jbuilder.wizard.archive.SourceArchiver" />
+    <property category="archiving" name="buildWithProject" value="0" />
+    <property category="archiving" name="targetPath" value="src.jar" />
+  </node>
+</project>
+

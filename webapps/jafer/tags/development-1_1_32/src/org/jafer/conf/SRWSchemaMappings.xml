@@ -1,0 +1,5 @@
+<schemaMappings>
+  <schema srwSchema="info:srw/schema/1/dc-v1.1" schemaNamespace="http://purl.org/dc/elements/1.1/" />
+  <schema srwSchema="info:srw/schema/1/mods-v3.0" schemaNamespace="http://www.loc.gov/mods/v3" />
+  <schema srwSchema="info:srw/schema/1/marcxml-v1.1" schemaNamespace="http://www.loc.gov/MARC21/slim" />
+</schemaMappings>
