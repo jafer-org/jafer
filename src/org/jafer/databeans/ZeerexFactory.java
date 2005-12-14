@@ -2,7 +2,6 @@ package org.jafer.databeans;
 
 import java.net.*;
 
-import org.jafer.conf.*;
 import org.jafer.exception.*;
 import org.jafer.interfaces.*;
 import org.jafer.util.xml.*;

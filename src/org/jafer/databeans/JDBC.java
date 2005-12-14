@@ -39,7 +39,6 @@ import javax.sql.*;
 import javax.xml.transform.*;
 
 import org.apache.xpath.*;
-import org.jafer.conf.*;
 import org.jafer.exception.*;
 import org.jafer.interfaces.*;
 import org.jafer.record.*;
