@@ -247,7 +247,6 @@ test/org/jafer/sru/bridge/ScanBridgeTest.java -text
 test/org/jafer/sru/bridge/SearchRetrieveBridgeTest.java -text
 webapps/Portlet/WEB-INF/jaferportlet_en.properties -text
 webapps/Portlet/WEB-INF/portlet.xml -text
-webapps/Portlet/WEB-INF/tld/portlet.tld -text
 webapps/Portlet/WEB-INF/web.xml -text
 webapps/Portlet/images/Thumbs.db -text
 webapps/Portlet/images/cross.gif -text
