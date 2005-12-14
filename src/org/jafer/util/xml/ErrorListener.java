@@ -19,7 +19,6 @@
 package org.jafer.util.xml;
 
 import javax.xml.transform.TransformerException;
-import org.jafer.exception.JaferException;
 
 /**
  * <p>Implements methods for handling transformation and parsing errors.</p>
