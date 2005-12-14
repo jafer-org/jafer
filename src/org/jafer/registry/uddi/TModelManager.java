@@ -27,9 +27,6 @@ import org.jafer.registry.RegistryNotInitialisedException;
 import org.jafer.registry.model.CategoryType;
 import org.jafer.registry.model.Protocol;
 import org.jafer.registry.uddi.model.TModel;
-import org.jafer.util.xml.ParseFactory;
-import org.jafer.util.xml.ParsingException;
-import org.jafer.util.xml.ParsingUtils;
 import org.uddi4j.client.UDDIProxy;
 import org.uddi4j.datatype.OverviewDoc;
 import org.uddi4j.response.AuthToken;
@@ -41,6 +38,9 @@ import org.uddi4j.transport.TransportException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.jafer.util.xml.DOMFactory;
+import org.jafer.exception.JaferException;
+import org.jafer.util.Config;
 
 /**
  * This class manages TModel instances in the registry it is connected to. These
@@ -237,7 +237,7 @@ public class TModelManager
         {
             // parse the configuration document
             InputStream stream = this.getClass().getClassLoader().getResourceAsStream(TMODEL_CONFIG_FILE);
-            Document document = ParseFactory.parse(stream);
+            Document document = DOMFactory.parse(stream);
 
             // get the list of jafer tmodels
             NodeList jaferTModels = document.getElementsByTagName("jafertmodel");
@@ -262,7 +262,7 @@ public class TModelManager
                 tModels.put(tmodel.getName(), tmodel);
             }
         }
-        catch (ParsingException e)
+        catch (JaferException e)
         {
             throw new RegistryExceptionImpl("Error parsing TModel configuration file ", e);
         }
@@ -290,7 +290,7 @@ public class TModelManager
      * @throws InvalidAuthorisationDetailsException
      */
     private TModel createJaferTModel(UDDIProxy registryConnection, String username, String credential, boolean createIfNotFound,
-            Node jaferTModelNode) throws RegistryNotInitialisedException, RegistryException, ParsingException,
+            Node jaferTModelNode) throws RegistryNotInitialisedException, RegistryException, JaferException,
             InvalidAuthorisationDetailsException
     {
         logger.entering("TModelManager", "buildTModel");
@@ -301,7 +301,7 @@ public class TModelManager
         try
         {
             models = new Vector();
-            name = ParsingUtils.getValue(ParsingUtils.selectSingleNode(jaferTModelNode, "@name"));
+            name = Config.getValue(Config.selectSingleNode(jaferTModelNode, "@name"));
             // make sure we got a name
             if (name == null || name.length() == 0)
             {
@@ -309,7 +309,7 @@ public class TModelManager
             }
 
             // get each defined tmodel tag
-            NodeList tmodels = ParsingUtils.selectNodeList(jaferTModelNode, "tmodel");
+            NodeList tmodels = Config.selectNodeList(jaferTModelNode, "tmodel");
             // make sure we found atleast one tmodel
             if (tmodels.getLength() == 0)
             {
@@ -322,9 +322,9 @@ public class TModelManager
                 Node tModelNode = tmodels.item(i);
 
                 // get the TModel attributes
-                String tModelName = ParsingUtils.getValue(ParsingUtils.selectSingleNode(tModelNode, "@name"));
-                String tModelDesc = ParsingUtils.getValue(ParsingUtils.selectSingleNode(tModelNode, "@desc"));
-                String tModeldocURL = ParsingUtils.getValue(ParsingUtils.selectSingleNode(tModelNode, "@docurl"));
+                String tModelName = Config.getValue(Config.selectSingleNode(tModelNode, "@name"));
+                String tModelDesc = Config.getValue(Config.selectSingleNode(tModelNode, "@desc"));
+                String tModeldocURL = Config.getValue(Config.selectSingleNode(tModelNode, "@docurl"));
 
                 // make sure we have no empty strings returned.
                 if ((tModelName == null || tModelName.length() == 0) || (tModelDesc == null || tModelDesc.length() == 0)

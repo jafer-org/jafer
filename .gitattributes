@@ -182,9 +182,6 @@ src/org/jafer/util/Config.java -text
 src/org/jafer/util/XMLFileUriResolver.java -text
 src/org/jafer/util/xml/DOMFactory.java -text
 src/org/jafer/util/xml/ErrorListener.java -text
-src/org/jafer/util/xml/ParseFactory.java -text
-src/org/jafer/util/xml/ParsingException.java -text
-src/org/jafer/util/xml/ParsingUtils.java -text
 src/org/jafer/util/xml/XMLSerializer.java -text
 src/org/jafer/util/xml/XMLTransformer.java -text
 src/org/jafer/util/xml/XMLTree.java -text
