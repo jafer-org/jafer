@@ -12,11 +12,13 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package org.jafer.utils.xml;
+package org.jafer.util.xml;
 
 import org.apache.xpath.CachedXPathAPI;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import org.jafer.utils.xml.*;
 
 /**
  * This class contains a number of parsing utility functions
@@ -31,7 +33,7 @@ public class ParsingUtils
 
     /**
      * Select a list of nodes
-     * 
+     *
      * @param node The node to process from
      * @param xPath the path to the list
      * @return the list of nodes
@@ -44,7 +46,7 @@ public class ParsingUtils
 
     /**
      * Select a list of nodes
-     * 
+     *
      * @param node The node to process from
      * @param xPath the path to the list
      * @param retry Used to fix cache error
@@ -88,7 +90,7 @@ public class ParsingUtils
 
     /**
      * Select a single node
-     * 
+     *
      * @param node The node to process from
      * @param xPath the XPath to select
      * @return The selected node
@@ -101,7 +103,7 @@ public class ParsingUtils
 
     /**
      * Select a single node
-     * 
+     *
      * @param node the node to select from
      * @param xPath the XPath to select
      * @param retry Used to fix cache error
@@ -145,7 +147,7 @@ public class ParsingUtils
 
     /**
      * Gets the value of the node
-     * 
+     *
      * @param node The node to process from
      * @return The returned value
      */

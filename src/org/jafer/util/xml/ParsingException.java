@@ -12,7 +12,7 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package org.jafer.utils.xml;
+package org.jafer.util.xml;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -25,7 +25,7 @@ public class ParsingException extends Exception
 
     /**
      * Constructor supplying a message
-     * 
+     *
      * @param message
      */
     public ParsingException(String message)
@@ -35,7 +35,7 @@ public class ParsingException extends Exception
 
     /**
      * Constructor supplying a message
-     * 
+     *
      * @param exc
      */
     public ParsingException(Exception exc)
@@ -45,7 +45,7 @@ public class ParsingException extends Exception
 
     /**
      * Constructor supplying a message and exception
-     * 
+     *
      * @param message
      * @param exc
      */
@@ -58,7 +58,7 @@ public class ParsingException extends Exception
      * This method returns the error message with a full stack trace. This is
      * done by calling printStackTrace on Exception that internally calls
      * toString() to get our message.
-     * 
+     *
      * @return The full stack trace string of the exception
      */
     public String toStackTraceString()

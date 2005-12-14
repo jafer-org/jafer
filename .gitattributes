@@ -62,8 +62,8 @@ src/org/jafer/conf/logging.properties -text
 src/org/jafer/conf/query-schema.dtd -text
 src/org/jafer/conf/query/query-schema.xsd -text
 src/org/jafer/conf/recordDescriptor.xml -text
+src/org/jafer/conf/registry/tmodels.xml -text
 src/org/jafer/conf/searchProfiles.xml -text
-src/org/jafer/conf/tmodels.xml -text
 src/org/jafer/databeans/Adaptor.java -text
 src/org/jafer/databeans/AdaptorFactory.java -text
 src/org/jafer/databeans/DatabeanManager.java -text
@@ -182,12 +182,12 @@ src/org/jafer/util/Config.java -text
 src/org/jafer/util/XMLFileUriResolver.java -text
 src/org/jafer/util/xml/DOMFactory.java -text
 src/org/jafer/util/xml/ErrorListener.java -text
+src/org/jafer/util/xml/ParseFactory.java -text
+src/org/jafer/util/xml/ParsingException.java -text
+src/org/jafer/util/xml/ParsingUtils.java -text
 src/org/jafer/util/xml/XMLSerializer.java -text
 src/org/jafer/util/xml/XMLTransformer.java -text
 src/org/jafer/util/xml/XMLTree.java -text
-src/org/jafer/utils/xml/ParseFactory.java -text
-src/org/jafer/utils/xml/ParsingException.java -text
-src/org/jafer/utils/xml/ParsingUtils.java -text
 src/org/jafer/xsl/OpenURL/MODS_list.xsl -text
 src/org/jafer/xsl/OpenURL/MODS_single.xsl -text
 src/org/jafer/xsl/OpenURL/OAI_list.xsl -text

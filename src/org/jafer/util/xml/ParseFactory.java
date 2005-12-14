@@ -12,7 +12,7 @@
  * Place, Suite 330, Boston, MA 02111-1307 USA
  */
 
-package org.jafer.utils.xml;
+package org.jafer.util.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.jafer.utils.xml.*;
 
 
 /**
@@ -224,5 +225,5 @@ public class ParseFactory
 
         return document;
     }
-    
+
 }
