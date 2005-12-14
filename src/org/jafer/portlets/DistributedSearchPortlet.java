@@ -6,13 +6,9 @@ import javax.portlet.*;
 
 import org.jafer.exception.*;
 import org.jafer.interfaces.*;
-import org.jafer.zclient.*;
 import java.util.Enumeration;
-import org.w3c.dom.*;
-import org.jafer.conf.*;
 import org.jafer.databeans.*;
 import java.util.Hashtable;
-import java.net.*;
 
 class TargetConfig {
 
