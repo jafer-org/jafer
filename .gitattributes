@@ -159,6 +159,7 @@ src/org/jafer/registry/uddi/model/ServiceInfo.java -text
 src/org/jafer/registry/uddi/model/TModel.java -text
 src/org/jafer/servlet/ServletUtil.java -text
 src/org/jafer/servlet/ZServlet.java -text
+src/org/jafer/servlet/xslt/XSLTRequestDispatcher.java -text
 src/org/jafer/sru/SRUException.java -text
 src/org/jafer/sru/SRUtoSRWBridgeConfig.xml -text
 src/org/jafer/sru/SRUtoSRWConfig.java -text
