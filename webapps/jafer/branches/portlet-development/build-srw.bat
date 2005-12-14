@@ -1,3 +1,0 @@
-java -cp .\lib\axis\axis.jar;.\lib\axis\commons-discovery-0.2.jar;.\lib\axis\commons-logging-1.0.4.jar;.\lib\axis\jaxrpc.jar;.\lib\axis\log4j-1.2.8.jar;.\lib\axis\;.\lib\axis\saaj.jar;.\lib\axis\wsdl4j-1.5.1.jar org.apache.axis.wsdl.WSDL2Java -o src http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl
-
-java -cp .\lib\axis\axis.jar;.\lib\axis\commons-discovery-0.2.jar;.\lib\axis\commons-logging-1.0.4.jar;.\lib\axis\jaxrpc.jar;.\lib\axis\log4j-1.2.8.jar;.\lib\axis\;.\lib\axis\saaj.jar;.\lib\axis\wsdl4j-1.5.1.jar org.apache.axis.wsdl.WSDL2Java -s -o src http://www.loc.gov/z3950/agency/zing/srw/srw-sample-service.wsdl
