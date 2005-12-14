@@ -11,9 +11,18 @@ import java.util.*;
 import org.w3c.dom.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.jafer.registry.model.ServiceInfo;
+import org.jafer.registry.model.Protocol;
+import org.jafer.registry.model.Service;
+import org.jafer.registry.RegistryFactory;
+import org.jafer.registry.RegistryException;
+import org.jafer.registry.RegistryManager;
+import org.jafer.registry.model.ServiceProviderInfo;
+import org.jafer.registry.ServiceLocator;
+import org.jafer.registry.model.CategoryType;
 
 public class XsltSearchPortlet extends AbstractXSLTPortlet {
-    private Hashtable targets = new Hashtable();
+    private TreeMap targets = new TreeMap();
     static {
         try {
             domBuilder = DocumentBuilderFactory.newInstance().
@@ -27,17 +36,72 @@ public class XsltSearchPortlet extends AbstractXSLTPortlet {
         super();
     }
 
-    public void init() throws PortletException {
-        Enumeration enumerate = this.getInitParameterNames();
+   private void addRegistryEntries() {
+       try {
+           String uddiInq = getInitParameter("uddiInquiryUrl");
+           String uddiPub = getInitParameter("uddiPublishUrl");
 
-        while (enumerate.hasMoreElements()) {
-            String key = (String) enumerate.nextElement();
-            if (key.startsWith("target.")) {
-                String targetName = key.substring(7);
-                targets.put(targetName, new ZurlFactory(getInitParameter(key)));
-            }
-        }
-    }
+           if (uddiInq == null || uddiInq.length() == 0 || uddiPub == null || uddiPub.length() == 0 ) {
+               return;
+           }
+           RegistryManager manager = RegistryFactory.createRegistryManager(
+                   uddiInq,
+                   uddiPub);
+           ServiceLocator locator = manager.getServiceLocator();
+
+           Vector protocols = new Vector();
+           protocols.add(Protocol.PROTOCOL_SRW);
+           protocols.add(Protocol.PROTOCOL_Z3950);
+
+           Vector categories = new Vector();
+           String uddikey = getInitParameter("uddipartition");
+           if (uddikey == null || uddikey.length() == 0) {
+               categories = null;
+           } else {
+               categories.add(manager.getCategory(CategoryType.
+                                                  CATEGORY_GENERAL_KEYWORDS,
+                                                  "uddipartition"));
+           }
+           List results = locator.findServiceProvider(null, null, protocols, true);
+           Iterator iterate = results.iterator();
+           while (iterate.hasNext()) {
+               ServiceProviderInfo provider = (ServiceProviderInfo)iterate.next();
+               List services = locator.findService(provider, null, categories, protocols, true);
+               Iterator iterate2 = services.iterator();
+               while (iterate2.hasNext()) {
+                   ServiceInfo info = (ServiceInfo) iterate2.next();
+                   Service service = locator.getService(info);
+                   String targetName = service.getName() + " - " + provider.getName();
+                   String endpoint = null;
+                   endpoint = service.getAccessUrl(Protocol.PROTOCOL_Z3950);
+                   if (endpoint != null && endpoint.length() > 0) {
+                       targets.put(targetName, new ZurlFactory(endpoint));
+                   }
+                   endpoint = service.getAccessUrl(Protocol.PROTOCOL_SRW);
+                   if (endpoint != null && endpoint.length() > 0) {
+                       targets.put(targetName, new ZurlFactory(endpoint));
+                   }
+               }
+           }
+       } catch (RegistryException ex) {
+           ex.printStackTrace();
+       }
+   }
+
+   private void addStaticEntries() {
+       Enumeration enumerate = this.getInitParameterNames();
+
+       while (enumerate.hasMoreElements()) {
+           String key = (String) enumerate.nextElement();
+           if (key.startsWith("target.")) {
+               String targetName = key.substring(7);
+               targets.put(targetName, new ZurlFactory(getInitParameter(key)));
+           }
+       }
+   }
+
+   public void init() throws PortletException {
+   }
 
     /**
      * createBean
@@ -244,11 +308,15 @@ public class XsltSearchPortlet extends AbstractXSLTPortlet {
         Document xml = domBuilder.newDocument();
         Element srNode = xml.createElement("databases");
 
-        Enumeration enumerate = targets.keys();
+        targets.clear();
+        addStaticEntries();
+        addRegistryEntries();
 
-        while (enumerate.hasMoreElements()) {
+        Iterator enumerate = targets.keySet().iterator();
+
+        while (enumerate.hasNext()) {
             Element ssrNode = xml.createElement("database");
-            Text textNode = xml.createTextNode((String) enumerate.nextElement());
+            Text textNode = xml.createTextNode((String) enumerate.next());
             ssrNode.appendChild(textNode);
             srNode.appendChild(ssrNode);
         }
@@ -283,8 +351,8 @@ public class XsltSearchPortlet extends AbstractXSLTPortlet {
                 srNode.appendChild(xml.importNode(((Present) bean).
                                                   getCurrentRecord().getXML(), true));
             } catch (Exception ex1) {
-                ex1.printStackTrace();
-                throw new PortletException(ex1.toString());
+                srNode.setAttribute("id", id);
+                srNode.setAttribute("total", "0");
             }
         }
         xml.appendChild(srNode);
@@ -334,8 +402,9 @@ public class XsltSearchPortlet extends AbstractXSLTPortlet {
                 srNode.appendChild(srrNode);
             }
         } catch (Exception ex1) {
-            ex1.printStackTrace();
-            throw new PortletException(ex1.toString());
+            srNode.setAttribute("start", "0");
+              srNode.setAttribute("end", "0");
+              srNode.setAttribute("total", "0");
         }
         xml.appendChild(srNode);
         return xml;
