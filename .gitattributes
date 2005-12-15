@@ -264,6 +264,7 @@ src/org/jafer/xsl/record/DC2MARC21slim.xsl -text
 src/org/jafer/xsl/record/DC2RLI.xsl -text
 src/org/jafer/xsl/record/GILS2RLI.xsl -text
 src/org/jafer/xsl/record/GRS12GILS.xsl -text
+src/org/jafer/xsl/record/MARC21TOMODS3.xsl -text
 src/org/jafer/xsl/record/MARC21slim2DC.xsl -text
 src/org/jafer/xsl/record/MARC21slim2MODS3.xsl -text
 src/org/jafer/xsl/record/MARC21slim2OAIMARC.xsl -text
