@@ -40,7 +40,7 @@ public class V1Bridge
 
     /**
      * Creates a diagnostic response for the explain record for fatal errors
-     * 
+     *
      * @param code The diagnostic code
      * @param message The diagnostic message
      * @param details The diagnostic details (null will extract stack trace from
@@ -99,7 +99,7 @@ public class V1Bridge
 
     /**
      * Creates a diagnostic response for the search record for fatal errors
-     * 
+     *
      * @param code The diagnostic code
      * @param message The diagnostic message
      * @param details The diagnostic details (null will extract stack trace from
@@ -139,7 +139,7 @@ public class V1Bridge
 
     /**
      * Creates a diagnostic response for the scan record for fatal errors
-     * 
+     *
      * @param code The diagnostic code
      * @param message The diagnostic message
      * @param details The diagnostic details (null will extract stack trace from
@@ -157,7 +157,7 @@ public class V1Bridge
                 ScanResponseType response = new ScanResponseType();
                 response.setVersion("1.1");
                 response.setDiagnostics(diagostics);
-                
+
                 // obtain the serialiser to return this to XML
                 QName scanQName = new QName("http://www.loc.gov/zing/srw/", "scanResponse");
                 Serializer ser = ScanResponseType.getSerializer(null, ScanResponseType.class, scanQName);
@@ -179,7 +179,7 @@ public class V1Bridge
 
     /**
      * Creates a diagnostic response type
-     * 
+     *
      * @param code The diagnostic code
      * @param message The diagnostic message
      * @param details The diagnostic details (null will extract stack trace from
@@ -199,7 +199,7 @@ public class V1Bridge
             }
 
             // create the diagnostic type
-            DiagnosticType diagnosticType = new DiagnosticType(details, message, uri);
+            DiagnosticType diagnosticType = new DiagnosticType( details, message, uri);
             DiagnosticType[] diag = { diagnosticType };
             return new DiagnosticsType(diag);
         }

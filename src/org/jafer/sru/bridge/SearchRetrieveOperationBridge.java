@@ -84,7 +84,7 @@ public class SearchRetrieveOperationBridge extends V1Bridge implements Operation
 
     /**
      * Execute the explain operation
-     * 
+     *
      * @param parameters map of paramaters to be sent
      * @param the URL to the web service
      * @return the response as XML
