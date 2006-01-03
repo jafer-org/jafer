@@ -66,7 +66,7 @@ public class ModsRecord
     private static String getSubNodeText(Field f, String n1) {
         Field s = f.getFirst(n1);
         if (f != null) {
-            return f.getValue();
+            return s.getValue();
         } else {
             return "";
         }
@@ -107,9 +107,9 @@ public class ModsRecord
         map.put("publisher", stripLastChar(getSubNodeText(modsroot, "originInfo", "publisher")));
         map.put("dateCreated", stripLastChar(getSubNodeText(modsroot, "originInfo", "dateCreated")));
         map.put("dateIssued", stripLastChar(getSubNodeText(modsroot, "originInfo", "dateIssued")));
-        map.put("isbn", modsroot.getFirst("identifier", "type", "isbn"));
-        map.put("issn", modsroot.getFirst("identifier", "type", "issn"));
-        map.put("annotation", modsroot.getFirst("note", "type", "annotation"));
+        map.put("isbn", modsroot.getFirst("identifier", "type", "isbn").getValue());
+        map.put("issn", modsroot.getFirst("identifier", "type", "issn").getValue());
+        map.put("annotation", modsroot.getFirst("note", "type", "annotation").getValue());
         map.put("abstract", getSubNodeText(modsroot, "abstract"));
         map.put("weburl", getSubNodeText(modsroot, "location", "url"));
         fields = map;

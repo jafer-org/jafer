@@ -49,7 +49,7 @@ public final class SearchAccessPointAction extends JaferRegistryAction
     /**
      * Stores a reference to the mods schema
      */
-    private final static String MODS_SCHEMA = "http://www.loc.gov/mods/";
+    private final static String MODS_SCHEMA = "http://www.loc.gov/mods/v3";
 
     /**
      * Execute the action
@@ -143,10 +143,10 @@ public final class SearchAccessPointAction extends JaferRegistryAction
                 {
                     // get the record to process
                     ((Present) client).setRecordCursor(i);
-                    Field field = ((Present) client).getCurrentRecord();
                     //XMLSerializer.out(field.getXML(), "xml", System.out);
 
-                    if (field.getXML().getNamespaceURI().contentEquals(MODS_SCHEMA))
+                    Field field = ((Present) client).getCurrentRecord();
+                    if (field.getRecordSchema().equals(MODS_SCHEMA))
                     {
                         ModsRecord record = new ModsRecord(field);
                         records.add(record);
