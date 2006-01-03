@@ -384,8 +384,6 @@ public class XsltSearchPortlet extends AbstractXSLTPortlet {
                 end = ((Search) bean).getNumberOfResults();
             }
 
-            System.out.println(((Search) bean).getNumberOfResults());
-
             srNode.setAttribute("start", Integer.toString(start));
             srNode.setAttribute("end", Integer.toString(end));
             srNode.setAttribute("total",
