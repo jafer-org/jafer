@@ -31,7 +31,6 @@
 
 package org.jafer.exception;
 import org.jafer.record.Diagnostic;
-import org.jafer.record.*;
 
 public class JaferException extends Exception{
 
