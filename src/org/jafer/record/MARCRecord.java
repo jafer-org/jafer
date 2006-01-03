@@ -31,7 +31,6 @@
 
 package org.jafer.record;
 
-import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.Config;
 import org.jafer.exception.JaferException;
 
@@ -41,10 +40,8 @@ import asn1.ASN1OctetString;
 import asn1.ASN1Exception;
 
 import java.io.IOException;
-//import java.io.UnsupportedEncodingException;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.Hashtable;
 
 // Imported DOM classes
 import org.w3c.dom.Node;

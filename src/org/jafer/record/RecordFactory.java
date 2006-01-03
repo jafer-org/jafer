@@ -178,18 +178,20 @@ public class RecordFactory {
   }
 
   private DataObject getRecordObject(Class recordClass, Object[] initArgs) throws JaferException {
-
     Constructor[] constructors = recordClass.getConstructors();
     Class[] paramTypes;
     int index;
     for (index = 0; index < constructors.length; index++) {
         paramTypes = constructors[index].getParameterTypes();
         int j = 0;
-        while (paramTypes[j].isInstance(initArgs[j]))
-            if (++j == paramTypes.length)
+        while (paramTypes[j].isInstance(initArgs[j])) {
+            if (++j == paramTypes.length) {
                 break;
-        if (j == paramTypes.length)
+            }
+        }
+        if (j == paramTypes.length) {
             break;
+        }
     }
     DataObject recordObject = null;
     try{
