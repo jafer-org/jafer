@@ -2,6 +2,7 @@
 <recordDescriptor>
  <oid name="MARC21" syntax="1.2.840.10003.5.10" priority="1">
   <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/mods/">org/jafer/xsl/record/OAIMARC2MODS.xsl</transform>
+  <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/mods/v3">org/jafer/xsl/record/OAIMARC2MODS3.xsl</transform>
   <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.loc.gov/MARC21/slim">org/jafer/xsl/record/OAIMARC2MARC21slim.xsl</transform>
   <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0">org/jafer/xsl/record/OAIMARC2RLI.xsl</transform>
   <transform sourceSchema="http://www.openarchives.org/OAI/1.1/oai_marc" targetSchema="http://ltsc.ieee.org/xsd/LOM">org/jafer/xsl/record/OAIMARC2LOM.xsl</transform>
