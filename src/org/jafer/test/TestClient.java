@@ -42,7 +42,7 @@ public class TestClient {
     bean.setDatabases("advance");
     bean.setAutoReconnect(0);
 //    bean.setRecordSchema("http://www.openarchives.org/OAI/oai_marc");
-    bean.setRecordSchema("http://www.loc.gov/mods/");
+    bean.setRecordSchema("http://www.loc.gov/mods/v3");
 
     int results = bean.submitQuery(query);
     System.out.println("results: "+results);
@@ -54,15 +54,15 @@ public class TestClient {
     for (int i=1; i <= results; i++){
       bean.setRecordCursor(i);
       org.jafer.record.Field field = bean.getCurrentRecord();
-//      org.jafer.util.xml.XMLSerializer.out(field.getXML(), "xml", "C:/record"+i+".xml");
+      org.jafer.util.xml.XMLSerializer.out(field.getXML(), "xml", System.out);
 
 
-      if (bean.getRecordSchema().equals("http://www.openarchives.org/OAI/oai_marc")) {
+      if (bean.getCurrentRecord().getRecordSchema().equals("http://www.openarchives.org/OAI/oai_marc")) {
 	// OAI record format:
 	title = field.getFirst("varfield", "id", "245").getFirst("subfield").getValue();
 	name = field.getFirst("varfield", "id", "100").getFirst("subfield").getValue();
       }
-      if (bean.getRecordSchema().equals("http://www.loc.gov/mods/")) {
+      if (bean.getCurrentRecord().getRecordSchema().equals("http://www.loc.gov/mods/")) {
 	// MODS record format:
 	name = field.getFirst("name").getValue();
 	title = field.getFirst("title").getValue();
