@@ -166,7 +166,7 @@ public abstract class AbstractClient extends
   /**
    * Cache cache
    */
-  protected Cache cache; // TODO: made protected due to fact that ZClientDB still needs the cache 
+  protected Cache cache; // TODO: made protected due to fact that ZClientDB still needs the cache
   /**
    * RecordFactory recordFactory
    */
