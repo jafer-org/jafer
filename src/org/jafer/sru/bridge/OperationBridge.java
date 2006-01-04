@@ -24,7 +24,7 @@ public interface OperationBridge
     /**
      * Execute the operation
      * @param parameters map of paramaters to be sent
-     * @param the URL to the web service
+     * @param serviceUrl the URL to the web service
      * @return the response as XML
      */
     public String execute(Map parameters,java.net.URL serviceUrl);
