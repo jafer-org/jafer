@@ -119,7 +119,7 @@ public abstract class JaferRegistryAction extends Action
      * Get the registry manager creating it if it does not exist
      * 
      * @return An instance of the the registry manager
-     * @RegistryException
+     * @throws RegistryException
      */
     protected RegistryManager getRegistryManager() throws RegistryException
     {
@@ -137,7 +137,7 @@ public abstract class JaferRegistryAction extends Action
      * Get the service locator creating it if it does not exist
      * 
      * @return An instance of the the service locator
-     * @RegistryException
+     * @throws RegistryException
      */
     protected ServiceLocator getServiceLocator() throws RegistryException
     {
@@ -155,7 +155,7 @@ public abstract class JaferRegistryAction extends Action
      * Get the service manager 
      * 
      * @return An instance of the the service manager
-     * @RegistryException
+     * @throws RegistryException
      */
     protected ServiceManager getServiceManager() throws RegistryException
     {
