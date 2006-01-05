@@ -1,0 +1,59 @@
+<!--
+    JAFER library Build Script Created on 04-January-2006
+    
+    This build script compiles and creates the Jafer UDDI library 
+    
+-->
+
+<project name="JaferUDDICompiler" basedir=".." default="build-jafer-UDDI">
+
+    <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
+    <import file="build_resources.xml"/>
+
+    <!-- import the compiler tasks -->
+    <import file="build_compilerscript.xml"/>
+    
+    <!-- define the UDDI output filenames -->
+    <property name="dist.jaferuddi.filename" value="jaferuddi.jar" />
+    <property name="dist.installjaferuddi.filename" value="JaferUDDIInstall.zip" />
+         
+    <!-- create the Jafer UDDI distribution JARS -->
+    <target name="distribute-jafer-uddi" depends="compile,copy-resources">
+        <echo message="Creating ${dist.jaferuddi.filename} distribution" />
+        
+        <delete file="${dist.dir}/${dist.jaferuddi.filename}" quiet="true" />
+        
+        <!-- create jar spricifying the files from the complete compile source that are required -->
+        <jar destfile="${dist.dir}/${dist.jaferuddi.filename}"  >
+            <fileset dir="${classes.dir}"> <include name="org/jafer/registry/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/registry/uddi/**/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/registry/model/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/conf/registry/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/conf/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/util/xml/*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/util/xml/Config.*" /> </fileset>
+        </jar>        
+        <echo message="${dist.jaferuddi.filename} JAR created" />
+    </target>
+    
+    <!-- Build installer zip files -->
+    <target name="build-jafer-uddi-installer" depends="distribute-jafer-uddi,create-documentation">
+        <echo message="Building jaffer uddi installer" />
+        
+        <zip destfile="${dist.dir}/${dist.installjaferuddi.filename}">
+            <fileset file="${dist.dir}/${dist.jaferuddi.filename}" />
+            <zipfileset  dir="${doc.dir}" prefix="doc"/>
+            <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${registries.lib.dir}" prefix="${lib.dir}"/>
+        </zip>
+        
+        <echo message="Completed building jaffer uddi installer" />
+    </target>        
+    
+    <!-- MAIN BUILD TARGETS -->
+    <target name="build-jafer-UDDI" depends="build-jafer-uddi-installer">
+          <echo message="Completed Jafer UDDI build" />
+    </target>           
+
+</project>

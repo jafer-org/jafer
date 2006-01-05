@@ -1,0 +1,75 @@
+<!--
+    JAFER library Build Script Created on 04-January-2006
+    
+    This build script compiles and creates the Jafer server library 
+    
+-->
+
+<project name="JaferServerCompiler" basedir=".." default="build-jafer-build_jaferclient.xml">
+    
+    <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
+    <import file="build_resources.xml"/>
+    <!-- import the compiler tasks -->
+    <import file="build_compilerscript.xml"/>
+    
+    <!-- define the jafer server output filenames -->
+    <property name="dist.jaferserver.filename" value="jaferserver.zip" />
+    <property name="dist.installjaferserver.filename" value="jaferserverInstall.zip" />
+    
+    <!-- create the jafer server distribution  -->
+    <target name="distribute-jafer-server" depends="compile,copy-resources">
+        <echo message="Creating ${dist.jaferserver.filename} distribution" />
+        
+        <delete file="${dist.dir}/${dist.jaferserver.filename}" quiet="true" />
+        
+        <zip destfile="${dist.dir}/${dist.jaferserver.filename}">
+            <zipfileset dir="${classes.dir}" >
+                <include name="org/jafer/conf/*" />
+                <include name="org/jafer/conf/zserver/*" /> 
+                <include name="org/jafer/conf/characterSets/*" /> 
+                <include name="org/jafer/conf/jdbcConfig/*" /> 
+                <include name="org/jafer/databeans/*" /> 
+                <include name="org/jafer/exception/*" /> 
+                <include name="org/jafer/interfaces/*" /> 
+                <include name="org/jafer/query/**/*" /> 
+                <include name="org/jafer/record/*" /> 
+                <include name="org/jafer/transport/*" /> 
+                <include name="org/jafer/util/**/*" /> 
+                <include name="org/jafer/xsl/*" /> 
+                <include name="org/jafer/xsl/beans/*" /> 
+                <include name="org/jafer/xsl/cql/*" /> 
+                <include name="org/jafer/xsl/record/*" /> 
+                <include name="org/jafer/xsl/server/*" /> 
+                <include name="org/jafer/zclient/**/*" /> 
+                <include name="org/jafer/zserver/**/*" />                 
+                <include name="gov/**/*" />                
+            </zipfileset>
+            <zipfileset  dir="${lib.dir}" prefix="${lib.dir}">
+                <include name="zebulun.jar" />   
+                <include name="cqljava.jar" />   
+            </zipfileset>
+            <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
+        </zip>
+        
+        <echo message="${dist.jaferserver.filename} JAR created" />
+    </target>
+    
+    <!-- Build installer zip files -->
+    <target name="build-jafer-server-installer" depends="distribute-jafer-server,create-documentation">
+        <echo message="Building jafer server installer" />
+        
+        <zip destfile="${dist.dir}/${dist.installjaferserver.filename}">
+            <fileset file="${dist.dir}/${dist.jaferserver.filename}" />
+            <zipfileset  dir="${doc.dir}" prefix="doc"/>
+        </zip>
+        
+        <echo message="Completed building jafer server installer" />
+    </target>         
+    
+    <!-- MAIN BUILD TARGETS -->
+    <target name="build-jafer-server" depends="build-jafer-server-installer">
+        <echo message="Completed jafer server build" />
+    </target>           
+    
+</project>

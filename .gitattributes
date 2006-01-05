@@ -4,6 +4,13 @@
 /build-srw.bat -text
 /build-zoom.xml -text
 /build.xml -text
+buildscripts/build_compilerscript.xml -text
+buildscripts/build_jaferclient.xml -text
+buildscripts/build_jaferregistry.xml -text
+buildscripts/build_jaferserver.xml -text
+buildscripts/build_jaferuddi.xml -text
+buildscripts/build_resources.xml -text
+buildscripts/build_sruserver.xml -text
 distrib/client/license.txt -text
 distrib/client/readme.html -text
 distrib/server/ServerStart.bat -text
