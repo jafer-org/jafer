@@ -31,7 +31,7 @@
             <fileset dir="${classes.dir}"> <include name="org/jafer/conf/registry/*" /> </fileset>
             <fileset dir="${classes.dir}"> <include name="org/jafer/conf/*" /> </fileset>
             <fileset dir="${classes.dir}"> <include name="org/jafer/util/xml/*" /> </fileset>
-            <fileset dir="${classes.dir}"> <include name="org/jafer/util/xml/Config.*" /> </fileset>
+            <fileset dir="${classes.dir}"> <include name="org/jafer/util/Config.*" /> </fileset>
         </jar>        
         <echo message="${dist.jaferuddi.filename} JAR created" />
     </target>

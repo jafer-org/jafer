@@ -30,9 +30,10 @@
                 <include name="org/jafer/conf/registry/*" /> 
                 <include name="org/jafer/conf/*" /> 
                 <include name="org/jafer/util/xml/*" /> 
-                <include name="org/jafer/util/xml/Config.*" /> 
+                <include name="org/jafer/util/Config.*" /> 
                 <include name="org/jafer/record/*" /> 
                 <include name="org/jafer/exception/*" /> 
+                <include name="MessageResources.properties" /> 
             </zipfileset>
             <zipfileset  dir="${lib.dir}" prefix="${webinf.lib.dir}">
                 <include name="zebulun.jar" />   
