@@ -1,7 +1,4 @@
 * text=auto !eol
-/HTMLEntities.res -text
-/XMLEntities.res -text
-/build-srw.bat -text
 /build.xml -text
 /build_userresources.properties -text
 buildscripts/build-jaferportlet.xml -text
