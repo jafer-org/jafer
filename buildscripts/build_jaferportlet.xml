@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Exported by JBuilder on 08-Dec-2005 23:17:08-->
+<!--It is RECOMMENDED that JBuilder builds and Ant builds done with
+this exported Ant file be kept separate and be written to different
+directories. For example, the JBuilder output directory might be "classes"
+and the Ant output directory might be "classes.ant".-->
+<project basedir="." default="rebuild" name="JAFER.jpx">
+<property name="jbuilder.home" value="C:/Borland/JBuilder2006"/>
+<property name="Tomcat.home" value="${jbuilder.home}/thirdparty/jakarta-tomcat-5.5.9"/>
+<property name="jdk.home" value="${jbuilder.home}/jdk1.5"/>
+<property name="dest" value="classes.ant"/>
+<property name="Generated.Source" value="${dest}/Temporary_Files"/>
+<property name="JAFER.home" value="lib/axis"/>
+<property name="JUnit.home" value="${jbuilder.home}/thirdparty/junit3.8"/>
+<property name="Unit.Test.home" value="${jbuilder.home}/lib"/>
+<property name="[C:/Development/JAFER/lib/portlet-api-1.0.jar].home" value="lib"/>
+<property name="[C:/Development/JAFER/lib/pluto-1.0.1-rc2.jar].home" value="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}"/>
+<property name="src" value="src"/>
+<property name="src2" value="test"/>
+<property name="testsrc" value="${src2}"/>
+<property name="compiled.jsp" value="${Generated.Source}/.jsp"/>
+<property name="jsp.cache" value="${Generated.Source}/jsp cache"/>
+<path id="project.class.path">
+<pathelement location="${dest}"/>
+<pathelement location="${JAFER.home}/wsdl4j.jar"/>
+<pathelement location="${JAFER.home}/saaj.jar"/>
+<pathelement location="${JAFER.home}/log4j-1.2.8.jar"/>
+<pathelement location="${JAFER.home}/jaxrpc.jar"/>
+<pathelement location="${JAFER.home}/axis.jar"/>
+<pathelement location="${JAFER.home}/commons-logging.jar"/>
+<pathelement location="${JAFER.home}/axis-ant.jar"/>
+<pathelement location="${JAFER.home}/commons-discovery.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/zebulun.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/xalan.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/jdbc/jtds-0.4.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/jdbc/mysql-connector-java-2.0.14-bin.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/xercesImpl.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/xmlParserAPIs.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/servlet.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/xml-apis.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/cql-java.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/java-zoom-api.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/jasig-XsltPortlet.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/servlet-api.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/jsp-api.jar"/>
+<pathelement location="${JUnit.home}/junit.jar"/>
+<pathelement location="${Unit.Test.home}/unittest.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/portlet-api-1.0.jar"/>
+<pathelement location="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/pluto-1.0.1-rc2.jar"/>
+<pathelement location="${jdk.home}/jre/lib/plugin.jar"/>
+<pathelement location="${jdk.home}/jre/lib/rt.jar"/>
+<pathelement location="${jdk.home}/jre/lib/ext/dnsns.jar"/>
+<pathelement location="${jdk.home}/jre/lib/ext/sunpkcs11.jar"/>
+<pathelement location="${jdk.home}/jre/lib/ext/sunjce_provider.jar"/>
+<pathelement location="${jdk.home}/jre/lib/ext/localedata.jar"/>
+<pathelement location="${jdk.home}/jre/lib/im/indicim.jar"/>
+<pathelement location="${jdk.home}/jre/lib/im/thaiim.jar"/>
+<pathelement location="${jdk.home}/jre/lib/javaws.jar"/>
+<pathelement location="${jdk.home}/jre/lib/deploy.jar"/>
+<pathelement location="${jdk.home}/jre/lib/jsse.jar"/>
+<pathelement location="${jdk.home}/jre/lib/jce.jar"/>
+<pathelement location="${jdk.home}/jre/lib/charsets.jar"/>
+<pathelement location="${jdk.home}/lib/tools.jar"/>
+<pathelement location="${jdk.home}/lib/jconsole.jar"/>
+<pathelement location="${jdk.home}/lib/htmlconverter.jar"/>
+<pathelement location="${jdk.home}/lib/dt.jar"/>
+</path>
+<path id="jspc.class.path">
+<pathelement location="${Tomcat.home}/common/lib/naming-resources.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/commons-el.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/servlet-api.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/jasper-runtime.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/jasper-compiler-jdt.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/jsp-api.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/naming-factory.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/naming-factory-dbcp.jar"/>
+<pathelement location="${Tomcat.home}/common/lib/jasper-compiler.jar"/>
+<pathelement location="${Tomcat.home}/bin/commons-daemon.jar"/>
+<pathelement location="${Tomcat.home}/bin/tomcat-juli.jar"/>
+<pathelement location="${Tomcat.home}/bin/commons-logging-api.jar"/>
+<pathelement location="${Tomcat.home}/bin/bootstrap.jar"/>
+<pathelement location="${Unit.Test.home}/ant.jar"/>
+</path>
+<!--Patternset to exclude files from the output directory:-->
+<patternset id="dest.exclude">
+<exclude name="Temporary_Files/"/>
+<exclude name="Generated Source/"/>
+<exclude name="package cache/"/>
+<exclude name="dependency cache/"/>
+<exclude name="jsp cache/"/>
+<exclude name="cache files/"/>
+</patternset>
+<target depends="init" name="javacompile">
+<javac bootclasspathref="project.class.path" debug="true" deprecation="true" destdir="${dest}" nowarn="false" source="1.4" target="1.4">
+<src path="${src}"/>
+<src path="${src2}"/>
+<src path="${Generated.Source}"/>
+</javac>
+</target>
+<target name="jsp">
+<mkdir dir="${compiled.jsp}/Portlet"/>
+</target>
+<target depends="resource,jsp" name="WebModuleNode">
+<echo level="error" message="The &quot;Include class dependencies&quot; feature of JBuilder archives is not directly supported by Ant.  The JAR created by Ant may not have some required classes."/>
+<war compress="false" destfile="JaferPortlet.war" webxml="webapps/Portlet/WEB-INF/web.xml">
+<webinf dir="webapps/Portlet/WEB-INF">
+<include name="jaferportlet_en.properties"/>
+<include name="portlet.xml"/>
+</webinf>
+<zipfileset dir="webapps/Portlet/WEB-INF/tld" prefix="WEB-INF/tld">
+<include name="portlet.tld"/>
+</zipfileset>
+<zipfileset dir="webapps/Portlet/images" prefix="images">
+<include name="Thumbs.db"/>
+<include name="cross.gif"/>
+<include name="find.gif"/>
+<include name="info.gif"/>
+<include name="left.gif"/>
+<include name="return.gif"/>
+<include name="right.gif"/>
+<include name="viewHTML.gif"/>
+<include name="viewXML.gif"/>
+</zipfileset>
+<classes dir="${dest}">
+<patternset refid="dest.exclude"/>
+<include name="**/*.war"/>
+<include name="**/*.zip"/>
+<include name="**/*.ear"/>
+<include name="**/*.sar"/>
+<include name="**/*.rar"/>
+<include name="**/*.jar"/>
+<include name="**/*.jpe"/>
+<include name="**/*.png"/>
+<include name="**/*.gif"/>
+<include name="**/*.jpeg"/>
+<include name="**/*.jpg"/>
+<include name="**/*.html"/>
+<include name="**/*.tag"/>
+<include name="**/*.chtml"/>
+<include name="**/*.shtml"/>
+<include name="**/*.jspx"/>
+<include name="**/*.jspf"/>
+<include name="**/*.jsp"/>
+<include name="**/*.htm"/>
+<include name="**/*.asp"/>
+<include name="**/*.tagf"/>
+<include name="**/*.tagx"/>
+<include name="**/*.class"/>
+<include name="**/*.jnlp"/>
+<include name="**/*.js"/>
+<include name="**/*.tld"/>
+<include name="**/*.mf"/>
+<include name="**/*.opentools"/>
+<include name="**/*.properties"/>
+<include name="**/*.au"/>
+<include name="**/*.aiff"/>
+<include name="**/*.wav"/>
+<include name="**/*.mid"/>
+<include name="**/*.midi"/>
+<include name="**/*.rmf"/>
+<include name="**/*.wml"/>
+<include name="**/*.xsd"/>
+<include name="**/*.xconf"/>
+<include name="**/*.idl"/>
+<include name="**/*.hpp"/>
+<include name="**/*.vcs"/>
+<include name="**/*.sql"/>
+<include name="**/*.schema"/>
+<include name="**/*.schxmi"/>
+<include name="**/*.refactorstatus"/>
+<include name="**/*.config"/>
+<include name="**/*.wsdu"/>
+<include name="**/*.xsp"/>
+<include name="**/*.wsdl"/>
+<include name="**/*.codestyle"/>
+<include name="**/*.jad"/>
+<include name="**/*.res"/>
+<include name="**/*.sqlj"/>
+<include name="**/*.codetemplate"/>
+<include name="**/*.java"/>
+<include name="**/*.css"/>
+<include name="**/*.library"/>
+<include name="**/*.xml"/>
+<include name="**/*.keymap"/>
+<include name="**/*.xul"/>
+<include name="**/*.cpp"/>
+<include name="**/*.mapxmi"/>
+<include name="**/*.txt"/>
+<include name="**/*.packagefilter"/>
+<include name="**/*.map"/>
+<include name="**/*.h"/>
+<include name="**/*.c"/>
+<include name="**/*.dbxmi"/>
+<include name="**/*.ddl"/>
+<include name="**/*.generic.resource"/>
+<include name="**/*.xsl"/>
+<include name="**/*.xmap"/>
+<include name="**/*.xmi"/>
+<include name="**/*.tblxmi"/>
+<include name="**/*.refactor"/>
+<include name="**/*.num"/>
+<include name="**/*.dtd"/>
+<include name="**/*.wsdd"/>
+<include name="**/*.obj"/>
+<include name="**/*.jds"/>
+<include name="**/*.asx"/>
+<include name="**/*.dcu"/>
+<include name="**/*.asf"/>
+<include name="**/*.o"/>
+<include name="**/*.exe"/>
+<include name="**/*.ram"/>
+<include name="**/*.*"/>
+</classes>
+<lib dir="${JAFER.home}">
+<include name="wsdl4j.jar"/>
+<include name="saaj.jar"/>
+<include name="log4j-1.2.8.jar"/>
+<include name="jaxrpc.jar"/>
+<include name="axis.jar"/>
+<include name="commons-logging.jar"/>
+<include name="axis-ant.jar"/>
+<include name="commons-discovery.jar"/>
+</lib>
+<lib dir="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}">
+<include name="zebulun.jar"/>
+<include name="xalan.jar"/>
+<include name="xercesImpl.jar"/>
+<include name="xmlParserAPIs.jar"/>
+<include name="servlet.jar"/>
+<include name="xml-apis.jar"/>
+<include name="cql-java.jar"/>
+<include name="java-zoom-api.jar"/>
+<include name="jasig-XsltPortlet.jar"/>
+</lib>
+<lib dir="${[C:/Development/JAFER/lib/portlet-api-1.0.jar].home}/jdbc">
+<include name="jtds-0.4.jar"/>
+<include name="mysql-connector-java-2.0.14-bin.jar"/>
+</lib>
+</war>
+</target>
+<target name="cleanup">
+<delete file="JaferPortlet.war"/>
+<delete failonerror="false" includeemptydirs="true">
+<fileset dir="${dest}"/>
+</delete>
+</target>
+<target name="resource">
+<copy todir="${dest}">
+<fileset dir="${src}">
+<include name="**/*.xsd"/>
+<include name="**/*.au"/>
+<include name="**/*.midi"/>
+<include name="**/*.gif"/>
+<include name="**/*.xml"/>
+<include name="**/*.properties"/>
+<include name="**/*.aiff"/>
+<include name="**/*.num"/>
+<include name="**/*.jpe"/>
+<include name="**/*.jpeg"/>
+<include name="**/*.rmf"/>
+<include name="**/*.wav"/>
+<include name="**/*.mid"/>
+<include name="**/*.xsl"/>
+<include name="**/*.png"/>
+<include name="**/*.jpg"/>
+</fileset>
+<fileset dir="${src2}">
+<include name="**/*.xsd"/>
+<include name="**/*.au"/>
+<include name="**/*.midi"/>
+<include name="**/*.gif"/>
+<include name="**/*.xml"/>
+<include name="**/*.properties"/>
+<include name="**/*.aiff"/>
+<include name="**/*.num"/>
+<include name="**/*.jpe"/>
+<include name="**/*.jpeg"/>
+<include name="**/*.rmf"/>
+<include name="**/*.wav"/>
+<include name="**/*.mid"/>
+<include name="**/*.xsl"/>
+<include name="**/*.png"/>
+<include name="**/*.jpg"/>
+</fileset>
+</copy>
+</target>
+<target name="javadoc"/>
+<target name="ant">
+<ant antfile="build.xml" dir="."/>
+</target>
+<target depends="cleanup" name="clean"/>
+<target name="precompile"/>
+<target depends="javacompile" name="compile"/>
+<target name="postcompile"/>
+<target depends="WebModuleNode,javadoc,resource,jsp" name="package"/>
+<target name="deploy"/>
+<target depends="precompile,compile,postcompile,package,deploy" name="make"/>
+<target depends="clean,make" name="rebuild"/>
+<target name="init">
+<mkdir dir="${dest}"/>
+<mkdir dir="${Generated.Source}"/>
+</target>
+</project>
