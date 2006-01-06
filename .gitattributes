@@ -346,6 +346,7 @@ test/org/jafer/sru/SRUtoSRWBridgeTest.java -text
 test/org/jafer/sru/bridge/ExplainBridgeTest.java -text
 test/org/jafer/sru/bridge/ScanBridgeTest.java -text
 test/org/jafer/sru/bridge/SearchRetrieveBridgeTest.java -text
+/udditest.properties -text
 webapps/JaferRegistry/Install[!!-~]Notes.txt -text
 webapps/JaferRegistry/META-INF/MANIFEST.MF -text
 webapps/JaferRegistry/MicrosoftUBR.cer -text
