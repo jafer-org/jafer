@@ -2,7 +2,6 @@
 /HTMLEntities.res -text
 /XMLEntities.res -text
 /build-srw.bat -text
-/build-zoom.xml -text
 /build.xml -text
 /build_userresources.properties -text
 buildscripts/build_compilerscript.xml -text
