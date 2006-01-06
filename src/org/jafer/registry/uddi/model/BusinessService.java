@@ -84,7 +84,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Constructor of the business service
-     *
+     * 
      * @param tModelManager The tmodel manager for the registry being accessed
      *        by this service
      * @param service The actual UDDI Business Service
@@ -99,7 +99,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Returns the UDDI business service object. This is not exposed on the
      * interface to the caller and therefore should not be used outside of this
      * framework.
-     *
+     * 
      * @return Returns the businessEntity.
      */
     public org.uddi4j.datatype.service.BusinessService getUDDIBusinessService()
@@ -111,7 +111,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Sets the UDDI business service object. This is not exposed on the
      * interface to the caller and therefore should not be used outside of this
      * framework.
-     *
+     * 
      * @param businessService The businessService to set.
      */
     public void setUDDIBusinessService(org.uddi4j.datatype.service.BusinessService businessService)
@@ -121,7 +121,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Returns the uniquie id of this service.
-     *
+     * 
      * @return The service id.
      */
     public String getId()
@@ -131,7 +131,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Returns the ID of the service provider that owns this service
-     *
+     * 
      * @return The owning service provider ID
      */
     public String getServiceProviderId()
@@ -141,7 +141,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Returns the name of this service.
-     *
+     * 
      * @return The service name. An empty string will be returned if not found.
      */
     public String getName()
@@ -158,7 +158,7 @@ public class BusinessService implements org.jafer.registry.model.Service
     /**
      * Sets the name of this service. This will only actually be applied when
      * the service is updated with the registry via the service manager.
-     *
+     * 
      * @param name The name to set
      * @throws InvalidNameException
      * @throws InvalidLengthException
@@ -178,7 +178,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Returns the description of the service.
-     *
+     * 
      * @return The business service name. An empty string will be returned if
      *         not found.
      */
@@ -191,7 +191,7 @@ public class BusinessService implements org.jafer.registry.model.Service
     /**
      * Sets the description of th service. This will only actually be applied
      * when the service is updated with the registry via the service manager.
-     *
+     * 
      * @param description The description to set
      * @throws InvalidLengthException
      */
@@ -208,7 +208,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * This method returns all the categories supported linked to the service.
      * Some of these categories may represent categories outside of this toolkit
      * but they are returned to allow the caller to remove them if they wish.
-     *
+     * 
      * @return A list of categories
      */
     public List getCategories()
@@ -220,7 +220,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Adds a jafer defined category to the service if it does not already
      * exist. This will only actually be applied when the service provider is
      * updated with the registry via the service manager.
-     *
+     * 
      * @param category The category to add
      */
     public void addCategory(Category category)
@@ -234,7 +234,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Removes the category from the service if it exists. This will only
      * actually be applied when the service provider is updated with the
      * registry via the service manager.
-     *
+     * 
      * @param category The category to delete
      * @throws CategoryDoesNotExistException
      */
@@ -265,7 +265,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Returns the access url for the service. This can be used to connect to
      * the actual service. This will only actually be applied when the service
      * provider is updated with the registry via the service manager.
-     *
+     * 
      * @param protocol The protocol type of the accesspoint to find
      * @return The access point url. An empty string will be returned if not
      *         found.
@@ -273,14 +273,14 @@ public class BusinessService implements org.jafer.registry.model.Service
      */
     public String getAccessUrl(Protocol protocol) throws RegistryException
     {
-            return getAccessPointURL(protocol, END_POINT);
+        return getAccessPointURL(protocol, END_POINT);
     }
 
     /**
      * Sets the access url for the service. This can be used to connect to the
      * actual service. This will only actually be applied when the service
      * provider is updated with the registry via the service manager.
-     *
+     * 
      * @param protocol The protocol type of the accesspoint to set
      * @param url The url to the access point
      * @throws RegistryException
@@ -300,7 +300,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * also point to a connection point internally. This will only actually be
      * applied when the service provider is updated with the registry via the
      * service manager.
-     *
+     * 
      * @param protocol The protocol type of the accesspoint to find
      * @return The wsdl url. An empty string will be returned if not found.
      * @throws RegistryException
@@ -317,7 +317,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * also point to a connection point internally. This will only actually be
      * applied when the service provider is updated with the registry via the
      * service manager.
-     *
+     * 
      * @param url The url to the access point to set
      * @param protocol The protocol type of the accesspoint
      * @throws InvalidLengthException
@@ -334,7 +334,7 @@ public class BusinessService implements org.jafer.registry.model.Service
     /**
      * This method checks the service to see if it supports the specified
      * protocol
-     *
+     * 
      * @param protocol The protocol type of the accesspoint to set
      * @return true if the template supports the protocol
      * @throws RegistryException
@@ -360,7 +360,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * This method returns all the business services for the business entity.
      * This is not exposed on the interface to the caller and therefore should
      * not be used outside of this framework.
-     *
+     * 
      * @param tModelManager The tmodel manager for the registry being accessed
      *        by this service
      * @param uddiBusinessServices A list of uddi business service descriptions
@@ -383,7 +383,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Adds the service to the list of uddi4j business services. This is not
      * exposed on the interface to the caller and therefore should not be used
      * outside of this framework.
-     *
+     * 
      * @param uddiBusinessServices the list of uddi4j business services to add
      *        to
      */
@@ -409,13 +409,13 @@ public class BusinessService implements org.jafer.registry.model.Service
      * Removes the service from the list of uddi4j business services. This is
      * not exposed on the interface to the caller and therefore should not be
      * used outside of this framework.
-     *
+     * 
      * @param uddiBusinessServices The list of uddi services to remove from
      * @throws ServiceDoesNotExistException
      */
     public void removeFromServicesList(List uddiBusinessServices) throws ServiceDoesNotExistException
     {
-        //signals if the service was removed
+        // signals if the service was removed
         boolean removed = false;
 
         // check if this service already exists
@@ -442,7 +442,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * Returns the URL for the specified protocol access point
-     *
+     * 
      * @param protocol the protocol to search under
      * @param accessPointType The type of access point looking for
      * @return The URL found
@@ -469,7 +469,7 @@ public class BusinessService implements org.jafer.registry.model.Service
 
     /**
      * sets the URL for the specified protocol access point
-     *
+     * 
      * @param protocol the protocol to search under
      * @param accessPointType The type of access point looking to set URL on
      * @param url The URL to set
@@ -523,7 +523,7 @@ public class BusinessService implements org.jafer.registry.model.Service
      * supplied <br>
      * <b>Note: This needs changing to just check the useType when moving to
      * UDDI V3 </b>
-     *
+     * 
      * @param template The template to check
      * @param protocol The protocol type of the accesspoint to set
      * @param accessPointType The access point type to check for
@@ -536,9 +536,6 @@ public class BusinessService implements org.jafer.registry.model.Service
         // check it supports the protocol first
         if (supportsProtocol(template, protocol))
         {
-            return true;
-            /**
-             * @todo This seems overkill - simplify for now but check with Andy
             // first check the urlType match
             if (template.getAccessPoint().getURLType().equalsIgnoreCase(accessPointType))
             {
@@ -548,10 +545,30 @@ public class BusinessService implements org.jafer.registry.model.Service
                 if (template.getDefaultDescriptionString() != null
                         && template.getDefaultDescriptionString().equalsIgnoreCase(accessPointType))
                 {
+                    // we use URLType of other to mean WSDL file. However if the
+                    // accesspoint text stats Z39.50s then it is infact an
+                    // endpoint no matter what so if type is WDSL we must return
+                    // false
+                    if (template.getAccessPoint().getText().substring(0, 5).equalsIgnoreCase("z3950")
+                            && accessPointType.equalsIgnoreCase(WSDL_POINT))
+                    {
+                        return false;
+                    }
                     return true;
                 }
             }
-            */
+            else
+            {
+                // we use URLType of other to mean WSDL file. However if the
+                // accesspoint text stats Z39.50s then it is infact an
+                // accesspoint no matter what so if we mismatched but it starts
+                // Z3950 then we must return true
+                if (template.getAccessPoint().getText().substring(0, 5).equalsIgnoreCase("z3950")
+                        && accessPointType.equalsIgnoreCase(END_POINT))
+                {
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -559,7 +576,7 @@ public class BusinessService implements org.jafer.registry.model.Service
     /**
      * This method checks the template to see if it supports the specified
      * protocol
-     *
+     * 
      * @param template The template to check
      * @param protocol The protocol type of the accesspoint to set
      * @return true if the template supports the protocol
