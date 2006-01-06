@@ -310,7 +310,7 @@
 				<forward name="go_create_service" path="/set_returnPage.do"/> 
 				<forward name="go_edit_service" path="/set_returnPage.do"/> 
 				<forward name="delete_service" path="/delete_service.do"/>
-				<forward name="remove_service" path="/remove_service.do"/>  
+        		<forward name="remove_service" path="/set_returnPage.do"/>  
 				<forward name="go_add_service" path="/set_returnPage.do"/> 
 				<forward name="go_add_category" path="/set_returnPage.do"/> 	
 				<forward name="remove_category" path="/remove_category.do"/>  
