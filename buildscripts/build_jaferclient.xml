@@ -1,71 +1,76 @@
 <!--
     JAFER library Build Script Created on 04-January-2006
-    
-    This build script compiles and creates the Jafer client library 
-    
+
+    This build script compiles and creates the Jafer client library
+
 -->
 
 <project name="JaferClientCompiler" basedir=".." default="build-jafer-client">
-    
+
     <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
     <import file="build_resources.xml"/>
     <!-- import the compiler tasks -->
     <import file="build_compilerscript.xml"/>
-    
+
     <!-- define the jafer client output filenames -->
-    <property name="dist.jaferclient.filename" value="jaferclient.zip" />
+    <property name="dist.jaferclient.filename" value="jaferclient.jar" />
     <property name="dist.installjaferclient.filename" value="jaferclientInstall.zip" />
-    
+
     <!-- create the jafer client distribution  -->
     <target name="distribute-jafer-client" depends="compile,copy-resources">
         <echo message="Creating ${dist.jaferclient.filename} distribution" />
-        
+
         <delete file="${dist.dir}/${dist.jaferclient.filename}" quiet="true" />
-        
+
         <zip destfile="${dist.dir}/${dist.jaferclient.filename}">
-            <zipfileset dir="${classes.dir}" > 
-                <include name="org/jafer/conf/*" /> 
-                <include name="org/jafer/conf/characterSets/*" /> 
-                <include name="org/jafer/databeans/*" /> 
-                <include name="org/jafer/exception/*" /> 
-                <include name="org/jafer/interfaces/*" /> 
-                <include name="org/jafer/query/**/*" /> 
-                <include name="org/jafer/record/*" /> 
-                <include name="org/jafer/transport/*" /> 
-                <include name="org/jafer/util/**/*" /> 
-                <include name="org/jafer/xsl/*" /> 
-                <include name="org/jafer/xsl/beans/*" /> 
-                <include name="org/jafer/xsl/cql/*" /> 
-                <include name="org/jafer/xsl/record/*" /> 
-                <include name="org/jafer/zclient/**/*" /> 
-                <include name="gov/**/*" />                
+            <zipfileset dir="${classes.dir}" >
+                <include name="org/jafer/conf/*" />
+                <include name="org/jafer/conf/characterSets/*" />
+                <include name="org/jafer/databeans/*" />
+                <include name="org/jafer/exception/*" />
+                <include name="org/jafer/interfaces/*" />
+                <include name="org/jafer/query/**/*" />
+                <include name="org/jafer/record/*" />
+                <include name="org/jafer/transport/*" />
+                <include name="org/jafer/util/**/*" />
+                <include name="org/jafer/xsl/*" />
+                <include name="org/jafer/xsl/beans/*" />
+                <include name="org/jafer/xsl/cql/*" />
+                <include name="org/jafer/xsl/record/*" />
+                <include name="org/jafer/zclient/**/*" />
+                <include name="org/jafer/zoom/**/*" />
+                <include name="gov/**/*" />
             </zipfileset>
+            <zipfileset dir="${src.dir}/org/jafer/zoom" prefix="">
+              <include name="META-INF/**" />
+            </zipfileset>
+        </zip>
+
+        <echo message="${dist.jaferclient.filename} JAR created" />
+    </target>
+
+    <!-- Build installer zip files -->
+    <target name="build-jafer-client-installer" depends="distribute-jafer-client,create-documentation">
+        <echo message="Building jafer client installer" />
+
+        <zip destfile="${dist.dir}/${dist.installjaferclient.filename}">
+            <fileset file="${dist.dir}/${dist.jaferclient.filename}" />
+            <zipfileset  dir="${doc.dir}" prefix="doc"/>
             <zipfileset  dir="${lib.dir}" prefix="${lib.dir}">
-                <include name="zebulun.jar" />   
-                <include name="cqljava.jar" />   
+                <include name="zebulun.jar" />
+                <include name="cql-java.jar" />
+                <include name="java-zoom-api.jar" />
             </zipfileset>
             <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
         </zip>
-        
-        <echo message="${dist.jaferclient.filename} JAR created" />
-    </target>
-    
-    <!-- Build installer zip files -->
-    <target name="build-jafer-client-installer" depends="distribute-jafer-client,create-documentation">
-        <echo message="Building jafer client installer" />
-        
-        <zip destfile="${dist.dir}/${dist.installjaferclient.filename}">
-            <fileset file="${dist.dir}/${dist.jaferclient.filename}" />
-            <zipfileset  dir="${doc.dir}" prefix="doc"/>
-        </zip>
-        
+
         <echo message="Completed building jafer client installer" />
-    </target>         
-    
+    </target>
+
     <!-- MAIN BUILD TARGETS -->
     <target name="build-jafer-client" depends="build-jafer-client-installer">
         <echo message="Completed jafer server build" />
-    </target>           
-    
+    </target>
+
 </project>
