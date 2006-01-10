@@ -15,7 +15,7 @@
     <!-- define the jafer registry output filenames -->
     <property name="dist.jaferportlet.filename" value="JaferSearch.war" />
     <property name="dist.installjaferportlet.filename" value="JaferPortletInstall.zip" />
-    <property name="jaferportlet.webapp.dir" value="${webapp.dir}/JaferPortlet" />
+    <property name="jaferportlet.webapp.dir" value="${webapp.dir}/Portlet" />
 
     <!-- create the Jafer registry distribution WAR -->
     <target name="distribute-jafer-portlet" depends="compile,copy-resources">
@@ -31,9 +31,12 @@
                 <include name="org/jafer/databeans/*" />
                 <include name="org/jafer/exception/*" />
                 <include name="org/jafer/interfaces/*" />
-                <include name="org/jafer/portlet/**/*" />
+                <include name="org/jafer/portlets/**/*" />
                 <include name="org/jafer/query/**/*" />
                 <include name="org/jafer/record/*" />
+                <include name="org/jafer/registry/*" />
+                <include name="org/jafer/registry/model/**/*" />
+                <include name="org/jafer/registry/uddi/**/*" />
                 <include name="org/jafer/transport/*" />
                 <include name="org/jafer/util/**/*" />
                 <include name="org/jafer/xsl/*" />
@@ -43,12 +46,13 @@
                 <include name="org/jafer/zclient/**/*" />
                 <include name="gov/**/*" />
             </zipfileset>
-            <zipfileset  dir="${lib.dir}" prefix="${lib.dir}">
+            <zipfileset  dir="${lib.dir}" prefix="${webinf.lib.dir}">
                 <include name="zebulun.jar" />
-                <include name="cqljava.jar" />
+                <include name="cql-java.jar" />
             </zipfileset>
             <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${registries.lib.dir}" prefix="${webinf.lib.dir}"/>
         </zip>
 
         <echo message="${dist.jaferportlet.filename} WAR created" />
@@ -67,7 +71,7 @@
     </target>
 
     <!-- MAIN BUILD TARGETS -->
-    <target name="build-jafer-portlet" depends="build-jafer-registry-portlet">
+    <target name="build-jafer-portlet" depends="build-jafer-portlet-installer">
         <echo message="Completed Jafer Portlet build" />
     </target>
 
