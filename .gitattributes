@@ -1,15 +1,15 @@
 * text=auto !eol
 /build.xml -text
 /build_userresources.properties -text
-buildscripts/build-jaferportlet.xml -text
-buildscripts/build-srwserver.xml -text
 buildscripts/build_compilerscript.xml -text
 buildscripts/build_jaferclient.xml -text
+buildscripts/build_jaferportlet.xml -text
 buildscripts/build_jaferregistry.xml -text
 buildscripts/build_jaferserver.xml -text
 buildscripts/build_jaferuddi.xml -text
 buildscripts/build_resources.xml -text
 buildscripts/build_sruserver.xml -text
+buildscripts/build_srwserver.xml -text
 buildscripts/build_zoom.xml -text
 distrib/client/license.txt -text
 distrib/client/readme.html -text
