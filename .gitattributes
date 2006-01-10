@@ -10,7 +10,6 @@ buildscripts/build_jaferuddi.xml -text
 buildscripts/build_resources.xml -text
 buildscripts/build_sruserver.xml -text
 buildscripts/build_srwserver.xml -text
-buildscripts/build_zoom.xml -text
 distrib/client/license.txt -text
 distrib/client/readme.html -text
 distrib/server/ServerStart.bat -text
