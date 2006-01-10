@@ -1,34 +1,45 @@
 <!--
     JAFER library Build Script Created on 03-January-2006
-    
+
     This build script builds all the various aspects of JAFER:
-    
+
     Jafer Client
     Jafer Server
     JaferRegistry / JaferUDDI
     SRUServer
-    
+
 -->
 
 <project name="Jafer" basedir="." default="build-all">
-  
+
     <!-- import the compiler tasks -->
     <import file="./buildscripts/build_jaferuddi.xml"/>
     <import file="./buildscripts/build_jaferregistry.xml"/>
     <import file="./buildscripts/build_sruserver.xml"/>
     <import file="./buildscripts/build_jaferclient.xml"/>
     <import file="./buildscripts/build_jaferserver.xml"/>
+    <import file="./buildscripts/build_jaferportlet.xml"/>
   <!-- MAIN BUILD TARGETS -->
-    <target name="build-all" 
+    <target name="build-all"
         depends="build-jafer-UDDI,
                  build-jafer-registry,
                  build-sruserver,
                  build-jafer-client,
-                 build-jafer-server
+                 build-jafer-server,
+                 build-jafer-portlet
                  ">
         <echo message="Completed full build" />
-    </target>       
-    
-    
+    </target>
+
+    <target name="help">
+      <echo message="Available build targets" />
+      <echo />
+      <echo message="build-jafer-UDDI" />
+      <echo message="build-jafer-registry" />
+      <echo message="build-sruserver" />
+      <echo message="build-jafer-client" />
+      <echo message="build-jafer-server" />
+      <echo message="build-jafer-portlet" />
+    </target>
 </project>
-    
+
