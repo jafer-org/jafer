@@ -31,57 +31,163 @@
 
 package org.jafer.databeans;
 
-import java.io.*;
-import org.jafer.interfaces.Databean;
-import org.jafer.interfaces.DatabeanFactory;
 import java.util.Hashtable;
 
+import org.jafer.interfaces.Databean;
+import org.jafer.interfaces.DatabeanFactory;
+import org.jafer.record.CacheFactory;
 
-public class DatabeanManagerFactory extends DatabeanFactory {
-  public static final String MODE_SERIAL = "serial";
-  public static final String MODE_PARALLEL = "parallel";
+/**
+ * This class is responsible for creating DatabaseBeanManagers
+ */
+public class DatabeanManagerFactory extends DatabeanFactory
+{
 
-  private Hashtable databeanFactories = new Hashtable();
+    /**
+     * Stores a reference to the SERIAL MODE definition
+     */
+    public static final String MODE_SERIAL = "serial";
 
-  private String mode = MODE_PARALLEL;
-  private String[] allDatabases;
+    /**
+     * Stores a reference to the PARALLEL MODE definition
+     */
+    public static final String MODE_PARALLEL = "parallel";
 
-  public Databean getDatabean() {
-    DatabeanManager bean = new DatabeanManager();
-    bean.setDatabeanFactories(databeanFactories);
-    bean.setMode(mode);
-    bean.setName(this.getName());
-    bean.setAllDatabases(allDatabases);
-    bean.setDatabases(this.getName());
-    return bean;
-  }
+    /**
+     * Stores a reference to factories that can create databeans for specified
+     * databases. A map entry consists of key = database name and value =
+     * factory that creates a databean supporting Search and Present for the
+     * specified database
+     */
+    private Hashtable databeanFactories = new Hashtable();
 
-  public void setDatabeanFactories(org.jafer.interfaces.DatabeanFactory[] databeanFactories) {
-    this.databeanFactories.clear();
-    allDatabases = new String[databeanFactories.length];
-    java.util.Random rnd = new java.util.Random();
+    /**
+     * Stores a reference to cache factory that is passed to the databeanManager
+     */
+    private CacheFactory cacheFactory = null;
 
-    for (int n=0; n < databeanFactories.length; n++) {
-      String name = databeanFactories[n].getName();
+    /**
+     * Stores a reference to search mode. <br>
+     * <br>
+     * <ul>
+     * <li>serial - The first active bean to return a result set will be used,
+     * ignoring all other activebean results</li>
+     * <li>parallel - All ActiveBeans results will be combined to provide a
+     * super result set (DEFAULT)</li>
+     * </ul>
+     */
+    private String mode = MODE_PARALLEL;
 
-      if (name == null) {
-        name = "DB" + Integer.toHexString(rnd.nextInt());
-      }
+    /**
+     * Stores a reference to the complete set of configured databases for any
+     * new DatabeanManagers
+     */
+    private String[] allDatabases;
 
-      this.databeanFactories.put(name, databeanFactories[n]);
-      allDatabases[n] = name;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.DatabeanFactory#getDatabean()
+     */
+    public Databean getDatabean()
+    {
+        // create the DatabeanManager
+        DatabeanManager bean = new DatabeanManager();
+        // set the databean and cache factories to be used
+        bean.setDatabeanFactories(databeanFactories);
+        bean.setCacheFactory(cacheFactory);
+        // set the mode to serial or parrallel
+        bean.setMode(mode);
+        // set the name of the databean manager to the one defined in the factory
+        bean.setName(this.getName());
+        // set all the DatabeanManager
+        bean.setAllDatabases(allDatabases);
+        // Now set the databases. By supplying the name of the DatabeanManager
+        // will initialise it with the value of all databases
+        bean.setDatabases(this.getName());
+        return bean;
     }
-  }
 
-  public org.jafer.interfaces.DatabeanFactory[] getDatabeanFactories() {
-    return ((DatabeanFactory[])databeanFactories.values().toArray(new DatabeanFactory[databeanFactories.size()]));
-  }
+    /**
+     * set the database factories that this databeanmaagerfactory uses
+     * 
+     * @param databeanFactories An array of DatabeanFactories
+     */
+    public void setDatabeanFactories(org.jafer.interfaces.DatabeanFactory[] databeanFactories)
+    {
+        // clear the current set
+        this.databeanFactories.clear();
 
-  public void setMode(String mode) {
-    this.mode = mode;
-  }
+        // cretae a new array to hold all the supported databases
+        allDatabases = new String[databeanFactories.length];
+        java.util.Random rnd = new java.util.Random();
 
-  public String getMode() {
-    return mode;
-  }
+        // loop round the supplied databean factories
+        for (int index = 0; index < databeanFactories.length; index++)
+        {
+            // get the factories name
+            String name = databeanFactories[index].getName();
+
+            // if does not have a name then genererate one
+            if (name == null)
+            {
+                name = "DB" + Integer.toHexString(rnd.nextInt());
+            }
+
+            // add this factory to the set of all factories
+            this.databeanFactories.put(name, databeanFactories[index]);
+            // add the name to the list of all databases
+            allDatabases[index] = name;
+        }
+    }
+
+    /**
+     * Return the database factories that this databeanmaagerfactory uses
+     * 
+     * @return An array of databean factories
+     */
+    public org.jafer.interfaces.DatabeanFactory[] getDatabeanFactories()
+    {
+        return ((DatabeanFactory[]) databeanFactories.values().toArray(new DatabeanFactory[databeanFactories.size()]));
+    }
+
+    /**
+     * Set the mode that the factory should use when creating DatabeanManagers
+     * 
+     * @param mode The mode to use SERIAL or PARALLEL
+     */
+    public void setMode(String mode)
+    {
+        this.mode = mode;
+    }
+
+    /**
+     * Get the mode that this factory uses when creating databean managers
+     * 
+     * @return he mode being used SERIAL or PARALLEL
+     */
+    public String getMode()
+    {
+        return mode;
+    }
+
+    /**
+     * Sets the cache factory to be used by the DatabeanManagerFactory
+     * 
+     * @param cacheFactory the cache factory to use
+     */
+    public void setCacheFactory(CacheFactory cacheFactory)
+    {
+        this.cacheFactory = cacheFactory;
+    }
+
+    /**
+     * Returns the cache factory used by this databeanManagerFactory
+     * 
+     * @return The cache factory used
+     */
+    public CacheFactory getCacheFactory()
+    {
+        return cacheFactory;
+    }
 }
