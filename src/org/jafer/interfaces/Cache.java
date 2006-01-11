@@ -33,41 +33,66 @@ package org.jafer.interfaces;
 
 /**
  * Interface for cache configuration methods
+ * 
  * @author Antony Corfield, Matthew Dovey, Colin Tatham
  * @version 1.0
- *
  */
-public interface Cache {
-	/**
-   * Set the size of the internal cache
-   * @param dataCacheSize sizew of cache
-   */
-  public void setDataCacheSize(int dataCacheSize);
-	/**
-   * Get the current size of the cache
-   * @return cache size
-   */
-  public int getDataCacheSize();
+public interface Cache
+{
 
-	/**
-   * Set the size of the prefetch buffer
-   * @param fetchSize buffer size
-   */
-  public void setFetchSize(int fetchSize);
-	/**
-   * Get the current prefetch buffer size
-   * @return buffer size
-   */
-  public int getFetchSize();
+    /**
+     * Sets the record cache object to use
+     * 
+     * @param cache The concrete class implementing the org.jafer.record.Cache interface
+     */
+    public void setCache(org.jafer.record.Cache cache);
 
-	/**
-   * Set the prefetch buffer behaviour
-   * @param fetchView prefetch beheviour
-   */
-  public void setFetchView(double fetchView);
-	/**
-   * Get the current prefetch buffer behaviour setting
-   * @return prefetch behaviour
-   */
-  public double getFetchView();
+    /**
+     * Returns the current record cache object being used
+     * 
+     * @return The concrete class implementing the org.jafer.record.Cache interface
+     */
+    public org.jafer.record.Cache getCache();
+
+    /**
+     * Set the size of the internal cache
+     * 
+     * @param dataCacheSize sizew of cache
+     */
+    public void setDataCacheSize(int dataCacheSize);
+
+    /**
+     * Get the current size of the cache
+     * 
+     * @return cache size
+     */
+    public int getDataCacheSize();
+
+    /**
+     * Set the size of the prefetch buffer
+     * 
+     * @param fetchSize buffer size
+     */
+    public void setFetchSize(int fetchSize);
+
+    /**
+     * Get the current prefetch buffer size
+     * 
+     * @return buffer size
+     */
+    public int getFetchSize();
+
+    /**
+     * Set the prefetch buffer behaviour
+     * 
+     * @param fetchView prefetch beheviour
+     */
+    public void setFetchView(double fetchView);
+
+    /**
+     * Get the current prefetch buffer behaviour setting
+     * 
+     * @return prefetch behaviour
+     */
+    public double getFetchView();
 }
