@@ -42,7 +42,7 @@ public class ZurlFactory  extends DatabeanFactory {
      }
      int port = 210;
      try {
-       port = Integer.parseInt("210");
+       port = Integer.parseInt(portString);
      } catch (Exception ex) {
      }
      bean.setHost(host);
