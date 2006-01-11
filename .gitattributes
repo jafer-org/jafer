@@ -325,6 +325,7 @@ src/org/jafer/zserver/operations/Sort.java -text
 src/org/jafer/zserver/util/ContextListener.java -text
 src/org/jafer/zserver/util/Lock.java -text
 test/org/jafer/JaferTestSuite.java -text
+test/org/jafer/databeans/DatabeanManagerTest.java -text
 test/org/jafer/query/JaferQueryTestObject.java -text
 test/org/jafer/query/QueryBuilderTest.java -text
 test/org/jafer/query/converter/CQLQueryConverterTest.java -text
