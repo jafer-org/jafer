@@ -28,6 +28,7 @@
             <zipfileset dir="${classes.dir}" prefix="${webinf.classes.dir}" >
                 <include name="org/jafer/conf/*" />
                 <include name="org/jafer/conf/characterSets/*" />
+                <include name="org/jafer/conf/registry/*" />
                 <include name="org/jafer/databeans/*" />
                 <include name="org/jafer/exception/*" />
                 <include name="org/jafer/interfaces/*" />
@@ -53,6 +54,9 @@
             <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${registries.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}">
+                <include name="commons-lang-2.1.jar" />
+            </zipfileset>
         </zip>
 
         <echo message="${dist.jaferportlet.filename} WAR created" />
