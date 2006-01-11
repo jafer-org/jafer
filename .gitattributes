@@ -110,7 +110,6 @@ src/org/jafer/interfaces/Search.java -text
 src/org/jafer/interfaces/Sort.java -text
 src/org/jafer/interfaces/Z3950Connection.java -text
 src/org/jafer/portlets/AbstractXSLTPortlet.java -text
-src/org/jafer/portlets/DistributedSearchPortlet.java -text
 src/org/jafer/portlets/XsltSearchPortlet.java -text
 src/org/jafer/portlets/xslt/PortletContentSerializer.java -text
 src/org/jafer/portlets/xslt/SAXElement.java -text
