@@ -133,6 +133,7 @@ src/org/jafer/record/Diagnostic.java -text
 src/org/jafer/record/Field.java -text
 src/org/jafer/record/GRS1Record.java -text
 src/org/jafer/record/HashtableCache.java -text
+src/org/jafer/record/HashtableCacheFactory.java -text
 src/org/jafer/record/MARC8Unicode.java -text
 src/org/jafer/record/MARCRecord.java -text
 src/org/jafer/record/OPACRecord.java -text

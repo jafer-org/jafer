@@ -32,30 +32,14 @@
 
 package org.jafer.record;
 
-import org.jafer.zclient.*;
-import org.jafer.zclient.ZClient;
-import org.jafer.record.RecordFactory;
-import org.jafer.record.DataObject;
-import org.jafer.record.Field;
-import org.jafer.record.RecordException;
-import org.jafer.exception.JaferException;
-
 import java.util.Hashtable;
-import java.util.TreeMap;
-import java.util.Date;
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import java.util.Map;
 
 public class HashtableCache
     extends AbstractCache
     implements Cache {
 
-  public HashtableCache(RecordFactory recordFactory, int dataCacheSize) {
-    super(recordFactory, dataCacheSize);
+  public HashtableCache(int dataCacheSize) {
+    super(dataCacheSize);
     dataCache = new Hashtable((int)(dataCacheSize * 0.5));
     xmlCache = new Hashtable();
     berCache = new Hashtable();
