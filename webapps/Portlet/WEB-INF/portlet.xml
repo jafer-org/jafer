@@ -21,6 +21,14 @@
 
     <!-- Static target discovery -->
     <init-param>
+      <name>target.Tulane University</name>
+      <value>z3950s://voyager.tcs.tulane.edu:7090/VOYAGER</value>
+    </init-param>
+    <init-param>
+      <name>target.Library of Congress</name>
+      <value>z3950s://z3950.loc.gov:7090/VOYAGER</value>
+    </init-param>    
+    <init-param>
       <name>target.Hull University</name>
       <value>z3950s://library.hull.ac.uk:210/INNOPAC</value>
     </init-param>
