@@ -8,11 +8,11 @@
     <!-- Dynamic target discovery -->
     <init-param>
       <name>uddiInquiryUrl</name>
-      <value>http://uddi.microsoft.com/inquire</value>
+      <value></value>
     </init-param>
     <init-param>
       <name>uddiPublishUrl</name>
-      <value>https://uddi.microsoft.com/publish</value>
+      <value></value>
     </init-param>
     <init-param>
       <name>uddiPartition</name>
