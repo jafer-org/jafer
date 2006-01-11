@@ -13,8 +13,8 @@
     <import file="build_compilerscript.xml"/>
 
     <!-- define the jafer registry output filenames -->
-    <property name="dist.jaferportlet.filename" value="JaferSearch.war" />
-    <property name="dist.installjaferportlet.filename" value="JaferPortletInstall.zip" />
+    <property name="dist.jaferportlet.filename" value="JaferPortlets.war" />
+    <property name="dist.installjaferportlet.filename" value="JaferPortletsInstall.zip" />
     <property name="jaferportlet.webapp.dir" value="${webapp.dir}/Portlet" />
 
     <!-- create the Jafer registry distribution WAR -->
