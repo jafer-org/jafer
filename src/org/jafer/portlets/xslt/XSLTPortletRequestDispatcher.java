@@ -47,6 +47,28 @@ public class XSLTPortletRequestDispatcher implements PortletRequestDispatcher {
     private Map localeResources;
     private Templates templates;
 
+    /**
+     * Creates a XSLT based Dispatcher using the specified XSLT transform file
+     * note: for render Urls generate XML of the following form:<br>
+     *
+     *       &lt;a href="renderURL"&gt;
+     *         &lt;portlet:param name="action" value="item" /&gt;
+     *      &lt;/a&gt;
+     *
+     * <br>and for action Urls generate XML of the following form:<br>
+     *
+     *       &lt;form name="form" method="post" action="actionURL"&gt;
+     *        ...
+     *       &lt;/form&gt;
+     *
+     * <br>the dispatcher handles encoding these and any other URLs in the generated fragment according to JSR168/WSRP
+     *
+     * @param context PortletContext
+     * @param xslUrl String
+     * @param resource String
+     * @param locale Locale
+     * @throws TransformerConfigurationException
+     */
     private void constructor(PortletContext context, String xslUrl,
                              String resource, Locale locale) throws
             TransformerConfigurationException {
@@ -65,29 +87,131 @@ public class XSLTPortletRequestDispatcher implements PortletRequestDispatcher {
         }
     }
 
+    /**
+     * Creates a XSLT based Dispatcher using the specified XSLT transform file
+     * note: for render Urls generate XML of the following form:<br>
+     *
+     *       &lt;a href="renderURL"&gt;
+     *         &lt;portlet:param name="action" value="item" /&gt;
+     *      &lt;/a&gt;
+     *
+     * <br>and for action Urls generate XML of the following form:<br>
+     *
+     *       &lt;form name="form" method="post" action="actionURL"&gt;
+     *        ...
+     *       &lt;/form&gt;
+     *
+     * <br>the dispatcher handles encoding these and any other URLs in the generated fragment according to JSR168/WSRP
+     *
+     * @param context PortletContext
+     * @param xslUrl String
+     * @throws TransformerConfigurationException
+     */
     public XSLTPortletRequestDispatcher(PortletContext context, String xslUrl) throws
             TransformerConfigurationException {
         constructor(context, xslUrl, null, null);
     }
 
+    /**
+     * Creates a XSLT based Dispatcher using the specified XSLT transform file
+     * note: for render Urls generate XML of the following form:<br>
+     *
+     *       &lt;a href="renderURL"&gt;
+     *         &lt;portlet:param name="action" value="item" /&gt;
+     *      &lt;/a&gt;
+     *
+     * <br>and for action Urls generate XML of the following form:<br>
+     *
+     *       &lt;form name="form" method="post" action="actionURL"&gt;
+     *        ...
+     *       &lt;/form&gt;
+     *
+     * <br>the dispatcher handles encoding these and any other URLs in the generated fragment according to JSR168/WSRP
+     *
+     * @param context PortletContext
+     * @param xslUrl String
+     * @param resource String
+     * @throws TransformerConfigurationException
+     */
     public XSLTPortletRequestDispatcher(PortletContext context, String xslUrl,
                                         String resource) throws
             TransformerConfigurationException {
         constructor(context, xslUrl, resource, Locale.getDefault());
     }
 
+    /**
+     * Creates a XSLT based Dispatcher using the specified XSLT transform file
+     * note: for render Urls generate XML of the following form:<br>
+     *
+     *       &lt;a href="renderURL"&gt;
+     *         &lt;portlet:param name="action" value="item" /&gt;
+     *      &lt;/a&gt;
+     *
+     * <br>and for action Urls generate XML of the following form:<br>
+     *
+     *       &lt;form name="form" method="post" action="actionURL"&gt;
+     *        ...
+     *       &lt;/form&gt;
+     *
+     * <br>the dispatcher handles encoding these and any other URLs in the generated fragment according to JSR168/WSRP
+     *
+     * @param context PortletContext
+     * @param xslUrl String
+     * @param resource String
+     * @param locale String
+     * @throws TransformerConfigurationException
+     */
     public XSLTPortletRequestDispatcher(PortletContext context, String xslUrl,
                                         String resource, String locale) throws
             TransformerConfigurationException {
         constructor(context, xslUrl, resource, new Locale(locale));
     }
 
+    /**
+     * Creates a XSLT based Dispatcher using the specified XSLT transform file
+     * note: for render Urls generate XML of the following form:<br>
+     *
+     *       &lt;a href="renderURL"&gt;
+     *         &lt;portlet:param name="action" value="item" /&gt;
+     *      &lt;/a&gt;
+     *
+     * <br>and for action Urls generate XML of the following form:<br>
+     *
+     *       &lt;form name="form" method="post" action="actionURL"&gt;
+     *        ...
+     *       &lt;/form&gt;
+     *
+     * <br>the dispatcher handles encoding these and any other URLs in the generated fragment according to JSR168/WSRP
+     *
+     * @param context PortletContext
+     * @param xslUrl String
+     * @param resource String
+     * @param locale Locale
+     * @throws TransformerConfigurationException
+     */
     public XSLTPortletRequestDispatcher(PortletContext context, String xslUrl,
                                         String resource, Locale locale) throws
             TransformerConfigurationException {
         constructor(context, xslUrl, resource, locale);
     }
 
+
+    /**
+     * Passes the portletServlet to dispatch via an XSLT transform
+     * the renderRequest should have the following attributes set (by using
+     * renderRequest.setAttribute)
+     * org.jafer.portlets.xslt.xmlDocument - XML input to XSLT Transform (as a
+     * DOM Document)
+     * org.jafer.portlets.xslt.xslParams - Map of parameters to pass to the XSLT
+     * transform
+     * org.jafer.portlets.xslt.urlParams - Map of parameters to add to portlet
+     * action and renderUrls
+     *
+     * @param renderRequest RenderRequest
+     * @param renderResponse RenderResponse
+     * @throws PortletException
+     * @throws IOException
+     */
     public void include(RenderRequest renderRequest,
                         RenderResponse renderResponse) throws PortletException,
             IOException {

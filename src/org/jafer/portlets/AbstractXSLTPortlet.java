@@ -24,12 +24,64 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
         super();
     }
 
+    /**
+     * Get the Action dispatch table for processing JSR-168 action requests<p>
+     *
+     * Each row should be of the form:<p>
+     *
+     * action parameter value, java method, next action parameter<p>
+     *
+     * where action parameter value is the Action parameter passed by the portlet (first row used if no Action parameter present)<br>
+     *       java method is a java method in the class of the form  public void ...(ActionRequest request) to handle the action<br>
+     *       next action parameter is the Action parameter to set for the subsequent renderRequest<br>
+     *
+     * @return String[][]
+     */
     abstract protected String[][] getVTableAction();
 
+    /**
+     * Get the View dispatch table for processing JSR-168 View requests<p>
+     *
+     * Each row should be of the form:<p>
+     *
+     * action parameter value, java method, xslt path<p>
+     *
+     * where action parameter value is the Action parameter passed by the portlet (first row used if no Action parameter present)<br>
+     *       java method is a java method in the class of the form public Document ...(RenderRequest request) throws PortletException which should return the required XML<br>
+     *       xslt path is the relative path to an XSLT tranform to take the XML into a HTML fragment<br>
+     *
+     * @return String[][]
+     */
     abstract protected String[][] getVTableView();
 
+    /**
+     * Get the Help dispatch table for processing JSR-168 Help requests<p>
+     *
+     * Each row should be of the form:<p>
+     *
+     * action parameter value, java method, xslt path<p>
+     *
+     * where action parameter value is the Action parameter passed by the portlet (first row used if no Action parameter present)<br>
+     *       java method is a java method in the class of the form public Document ...(RenderRequest request) throws PortletException which should return the required XML<br>
+     *       xslt path is the relative path to an XSLT tranform to take the XML into a HTML fragment<br>
+     *
+     * @return String[][]
+     */
     abstract protected String[][] getVTableHelp();
 
+    /**
+     * Get the Edit dispatch table for processing JSR-168 Edit requests<p>
+     *
+     * Each row should be of the form:<p>
+     *
+     * action parameter value, java method, xslt path<p>
+     *
+     * where action parameter value is the Action parameter passed by the portlet (first row used if no Action parameter present)<br>
+     *       java method is a java method in the class of the form public Document ...(RenderRequest request) throws PortletException which should return the required XML<br>
+     *       xslt path is the relative path to an XSLT tranform to take the XML into a HTML fragment<br>
+     *
+     * @return String[][]
+     */
     abstract protected String[][] getVTableEdit();
 
     private String dispatchVTable(PortletRequest request,
