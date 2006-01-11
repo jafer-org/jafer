@@ -23,9 +23,9 @@ public class AbstractCache {
   private AbstractCache() {
   }
 
-  protected AbstractCache(RecordFactory recordFactory, int dataCacheSize) {
+  protected AbstractCache(int dataCacheSize) {
     this.dataCacheSize = dataCacheSize;
-    this.recordFactory = recordFactory;
+    this.recordFactory = new RecordFactory();
     dataTimeStamp = new TreeMap();
   }
 
