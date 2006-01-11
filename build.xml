@@ -10,7 +10,7 @@
 
 -->
 
-<project name="Jafer" basedir="." default="build-all">
+<project name="Jafer" basedir="." default="helpl">
 
     <!-- import the compiler tasks -->
     <import file="./buildscripts/build_jaferuddi.xml"/>
@@ -40,6 +40,7 @@
       <echo message="build-jafer-client" />
       <echo message="build-jafer-server" />
       <echo message="build-jafer-portlet" />
+      <echo message="build-all" />
     </target>
 </project>
 
