@@ -10,7 +10,7 @@
 
 -->
 
-<project name="Jafer" basedir="." default="helpl">
+<project name="Jafer" basedir="." default="help">
 
     <!-- import the compiler tasks -->
     <import file="./buildscripts/build_jaferuddi.xml"/>
