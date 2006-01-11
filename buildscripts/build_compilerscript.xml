@@ -1,16 +1,16 @@
 <!--
     JAFER library Build Script Created on 03-January-2006
-    
-    This build script compiles all the various aspects of JAFER: 
-         
+
+    This build script compiles all the various aspects of JAFER:
+
 -->
 
 <project name="JaferCompiler" basedir=".." default="compile">
-  
+
     <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
     <import file="build_resources.xml"/>
-  
-    <!-- clean up the entire build directory 
+
+    <!-- clean up the entire build directory
         If clean.enabled is not commented out in properties file this task will execute
     -->
     <target name="clean" if="clean.enabled">
@@ -19,7 +19,7 @@
             <fileset dir="${build.dir}"/>
         </delete>
     </target>
-    
+
     <!-- create the entire build directory -->
     <target name="create-support-dirs" depends="clean">
         <echo message="Creating build support directories" />
@@ -27,14 +27,14 @@
         <mkdir dir="${dist.dir}" />
         <mkdir dir="${doc.dir}" />
     </target>
-    
-    <!-- generates all the stubs required for compiling JAFER 
+
+    <!-- generates all the stubs required for compiling JAFER
         If generate.stubs.enabled is not commented out in properties file this task will execute
      -->
     <taskdef resource="axis-tasks.properties" classpathref="support.libs" />
     <target name="generate-axis-stubs" depends="create-support-dirs" if="generate.stubs.enabled">
         <echo message="Starting axis stub generation" />
-        
+
         <axis-wsdl2java
             output="${src.dir}"
             testcase="false"
@@ -48,10 +48,10 @@
             verbose="true"
             url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
         </axis-wsdl2java>
-        
-        <echo message="Completed axis stub generation" />        
+
+        <echo message="Completed axis stub generation" />
     </target>
-    
+
     <!-- compile ALL the source code  -->
     <target name="compile" depends="create-support-dirs,generate-axis-stubs">
         <echo message="Starting compilation of all source files" />
@@ -60,22 +60,22 @@
         <echo message="   Source JDK = ${compile.source.jdk.version}" />
         <echo message="   Target JDK = ${compile.target.jdk.version}" />
         <echo message="" />
-        
-        <javac srcdir="${src.dir}" 
-            destdir="${classes.dir}" 
-            source="${compile.source.jdk.version}" 
-            target="${compile.target.jdk.version}" 
+
+        <javac srcdir="${src.dir}"
+            destdir="${classes.dir}"
+            source="${compile.source.jdk.version}"
+            target="${compile.target.jdk.version}"
             deprecation="true">
                 <classpath refid="support.libs" />
         </javac>
-        
+
         <echo message="Compilation completed" />
     </target>
-    
+
     <!-- copy resource files required to create jars -->
     <target name="copy-resources" depends="create-support-dirs">
         <echo message="Copying resource files" />
-        
+
         <copy todir="${classes.dir}">
             <fileset dir="${src.dir}">
                 <include name="**/*.xml" />
@@ -85,9 +85,9 @@
                 <include name="**/*.xsl" />
             </fileset>
         </copy>
-        <echo message="UDDI Resources copied" />
+        <echo message="Jafer Resources copied" />
     </target>
-    
+
     <!-- create documentation set -->
     <target name="create-documentation" depends="compile">
         <echo message="Creating Java doc" />
@@ -102,14 +102,14 @@
             use="true"
             source="1.4"
             windowtitle="Jafer API">
-            
+
             <tag name="uml.dependency" enabled="false" description="omondo tag to remove till aquire doclet" />
             <tag name="uml.property" enabled="false" description="omondo tag to remove till aquire doclet" />
             <tag name="uml.associationEnd" enabled="false" description="omondo tag to remove till aquire doclet" />
             <tag name="todo" scope="all" enabled="false" description="todo tag for eclipse will be ignored" />
-            
+
         </javadoc>
     </target>
-    
+
 </project>
-    
+
