@@ -388,7 +388,19 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public void setDatabases(String database)
     {
-        this.setDatabases(new String[] { database });
+        // make sure a database is specified. If the DatabeanManagerFactory is
+        // not set up correctly that could mean null being passed here
+        if (database != null)
+        {
+            this.setDatabases(new String[] { database });
+        }
+        else
+        {
+            // reset active beans back to an empty array so search will return
+            // nothing if it is executed rather than the last set of databases
+            // results
+            activeBeans = new ActiveBean[0];
+        }
     }
 
     /*
@@ -398,16 +410,26 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public void setDatabases(String[] databases)
     {
+        // reset active beans back to an empty array so search will return
+        // nothing if it is executed rather than the last set of databases
+        // results
+        activeBeans = new ActiveBean[0];
+
+        // Make sure we have databases to set
+        if (databases == null || databases.length == 0)
+        {
+            return;
+        }
 
         // if the first database name equals the name of this database then use
-        // it's configured set of databases
-        if (databases[0].equalsIgnoreCase(this.getName()))
+        // it's configured set of databases if they are set and not null
+        if (databases[0].equalsIgnoreCase(this.getName()) && this.allDatabases != null)
         {
             databases = this.allDatabases;
         }
 
         // create a new array of active beans for the new set of databases to
-        // search
+        // search now we know we definitly have some to set
         activeBeans = new ActiveBean[databases.length];
         // for each database create the active bean into the array
         for (int index = 0; index < databases.length; index++)
@@ -417,17 +439,20 @@ public class DatabeanManager extends Databean implements Present, Search
             String database = databases[index].toLowerCase();
             if (databeanFactories.containsKey(database))
             {
-                // get the datbean factory for the database and create a new databean
+                // get the datbean factory for the database and create a new
+                // databean
                 DatabeanFactory factory = (DatabeanFactory) databeanFactories.get(database);
                 Databean databean = factory.getDatabean();
-                
-                // set the cache on the databean if we have a cache factory defined inside this databeanmanager
-                if(getCacheFactory() != null)
+
+                // set the cache on the databean if we have a cache factory
+                // defined inside this databeanmanager
+                if (getCacheFactory() != null)
                 {
-                    // convert the databean to a cache interface to set the cache from the factory
-                    ((Cache)databean).setCache(getCacheFactory().getCache());
-                }                
-                
+                    // convert the databean to a cache interface to set the
+                    // cache from the factory
+                    ((Cache) databean).setCache(getCacheFactory().getCache());
+                }
+
                 // create an active bean and set its databean with the one
                 // obtained from the factory
                 activeBeans[index] = new ActiveBean();
@@ -474,6 +499,12 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public int submitQuery(Object query) throws JaferException
     {
+        // make sure we have active beans to search
+        if (activeBeans.length == 0)
+        {
+            // throw error as trying to search no databases
+            throw new JaferException("Unable to search - No databases were found", 235, "");
+        }
         // set the total records found back to 0
         totalRecords = 0;
         // loop round each activebean
@@ -482,7 +513,7 @@ public class DatabeanManager extends Databean implements Present, Search
             // make sure the active bean is valid and has its data bean set
             if (activeBeans[index] == null || activeBeans[index].getDatabean() == null)
             {
-                throw new JaferException("specified database not found", 235, "");
+                throw new JaferException("Unable to search - Specified database was not found", 235, "");
             }
             // set the query on the active bean
             activeBeans[index].setQuery(query);

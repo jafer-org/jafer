@@ -118,7 +118,7 @@ public class DatabeanManagerFactory extends DatabeanFactory
         // clear the current set
         this.databeanFactories.clear();
 
-        // cretae a new array to hold all the supported databases
+        // create a new array to hold all the supported databases
         allDatabases = new String[databeanFactories.length];
         java.util.Random rnd = new java.util.Random();
 
