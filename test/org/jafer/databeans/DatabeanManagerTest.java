@@ -13,7 +13,6 @@
  */
 package org.jafer.databeans;
 
-import java.io.StringWriter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
@@ -25,7 +24,6 @@ import org.jafer.query.QueryException;
 import org.jafer.record.CacheFactory;
 import org.jafer.record.HashtableCacheFactory;
 import org.jafer.registry.web.struts.bean.ModsRecord;
-import org.jafer.util.xml.XMLSerializer;
 import org.w3c.dom.Node;
 
 /**
@@ -142,6 +140,10 @@ public class DatabeanManagerTest extends TestCase
         targets.clear();
     }
 
+    /**
+     * Perform a simple test to extract one record and make sure all fields
+     * match using parallel mode. Internal Databean cache factory will be used
+     */
     public void testOneDatabaseSimpleSearchNoCacheFactory()
     {
         try
@@ -183,6 +185,10 @@ public class DatabeanManagerTest extends TestCase
         }
     }
 
+    /**
+     * Perform a simple test to extract one record and make sure all fields
+     * match using parallel mode. Databean cache factory will be supplied
+     */
     public void testOneDatabaseSimpleSearchCacheFactory()
     {
         try
@@ -226,6 +232,10 @@ public class DatabeanManagerTest extends TestCase
         }
     }
 
+    /**
+     * Perform a simple test to extract one record and make sure all fields
+     * match using serial mode. Internal Databean cache factory will be used
+     */
     public void testOneDatabaseSimpleSearchSerialNoCacheFactory()
     {
         try
@@ -267,6 +277,10 @@ public class DatabeanManagerTest extends TestCase
         }
     }
 
+    /**
+     * Perform a simple test to extract one record and make sure all fields
+     * match using serial mode. Databean cache factory will be supplied
+     */
     public void testOneDatabaseSimpleSearchSerialCacheFactory()
     {
         try
@@ -310,6 +324,11 @@ public class DatabeanManagerTest extends TestCase
         }
     }
 
+    /**
+     * Perform a simple test to extract two record using two databases and make
+     * sure all fields match using parallel mode. Internal Databean cache
+     * factory will be used
+     */
     public void testTwoDatabaseSimpleSearchNoCacheFactory()
     {
         try
@@ -358,6 +377,12 @@ public class DatabeanManagerTest extends TestCase
         }
     }
 
+    /**
+     * Perform a search over two databases and make sure we get the correct
+     * number of results. Not possible to varify any deeper as not all the
+     * search clause info will be in the mods records fields extracted to verify
+     * matches Internal Databean cache factory will be used
+     */
     public void testTwoDatabaseHitSearchNoCacheFactory()
     {
         try
@@ -381,7 +406,6 @@ public class DatabeanManagerTest extends TestCase
             int recsFound = beanManager.submitQuery(query);
             assertEquals("Did not find the expected number of records", 2128, recsFound);
 
-            
         }
         catch (QueryException exc)
         {
@@ -394,7 +418,12 @@ public class DatabeanManagerTest extends TestCase
             fail("JaferException:" + exc);
         }
     }
-    
+
+    /**
+     * Expect to get less than testTwoDatabaseHitSearchNoCacheFactory test as
+     * now in serial mode so second search results will be ignored. Internal
+     * Databean cache factory will be used
+     */
     public void testTwoDatabaseHitSearchSerialNoCacheFactory()
     {
         try
@@ -418,6 +447,130 @@ public class DatabeanManagerTest extends TestCase
             int recsFound = beanManager.submitQuery(query);
             assertEquals("Did not find the expected number of records", 366, recsFound);
 
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * No targets supplied should throw an exception
+     */
+    public void testNoDatabasesFactories()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            fail("Should have had an exception due to no databases defined");
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Unable to search") != -1);
+        }
+    }
+
+    /**
+     * Tests that the correct database name is returned for the current record
+     */
+    public void testGetDataBaseName()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+            assertEquals("Did not find the expected number of records", 2128, recsFound);
+            beanManager.setRecordCursor(3);
+            assertEquals("Wrong database name", "db2", beanManager.getCurrentDatabase());
+            beanManager.setRecordCursor(2000);
+            assertEquals("Wrong database name", "db1", beanManager.getCurrentDatabase());
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * Tests that the correct database name return correct counts
+     */
+    public void testGetNumberOfResultsPerDataBaseName()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+            assertEquals("Did not find the expected number of records", 2128, recsFound);
+            assertEquals("Wrong count for database name db1", 1762, beanManager.getNumberOfResults("db1"));
+            assertEquals("Wrong count for database name db2", 366, beanManager.getNumberOfResults("db2"));
+            assertEquals("Did not find the expected number of records after asking each and adding", 2128, beanManager
+                    .getNumberOfResults("db1")
+                    + beanManager.getNumberOfResults("db2"));
+            assertEquals("Did not find the expected number of records when asked bean manager", 2128, beanManager
+                    .getNumberOfResults());
             
         }
         catch (QueryException exc)
@@ -431,4 +584,320 @@ public class DatabeanManagerTest extends TestCase
             fail("JaferException:" + exc);
         }
     }
+    
+    /**
+     * Tests that -1 returned for bad database name
+     */
+    public void testGetNumberOfResultsForBadDataBaseName()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            assertEquals("Wrong count for bad database name ", -1, beanManager.getNumberOfResults("rrrr"));
+            
+            
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * databases specified not in factories should throw exception
+     */
+    public void testDatabasesFactoriesButDatabasesNotFound()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            beanManager.setDatabases(new String[] { "id1", "id2" });
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            fail("Should have had an exception due to no databases defined of type id1,id2");
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Specified database was not found") != -1);
+        }
+    }
+    
+    /**
+     * no databases specified to setdatabases() call should throw exception
+     */
+    public void testDatabasesFactoriesButDatabasesNotFoundDueToNullSettingDatabases()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            beanManager.setDatabases(new String[0]);
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            fail("Should have had an exception due to no databases defined");
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("No databases were found") != -1);
+        }
+    }
+
+    /**
+     * not all databases specified in factories should throw exception
+     */
+    public void testDatabasesFactoriesButNotAllDatabasesFound()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            beanManager.setDatabases(new String[] { "id1", "db1" });
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            fail("Should have had an exception due to no databases defined of type id1");
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Specified database was not found") != -1);
+        }
+    }
+
+    /**
+     * test a bad cursor position returns an error on getting record
+     */
+    public void testBadCursorOnGettingRecord()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            beanManager.setRecordCursor(100000);
+            beanManager.getCurrentRecord();
+            fail("Should have had an exception due to cursor out of range");
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Record Cursor Out of Range") != -1);
+        }
+    }
+
+    /**
+     * test a bad cursor position returns an error on getting database name
+     */
+    public void testBadCursorOnGettingDatabaseName()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            beanManager.setRecordCursor(100000);
+            beanManager.getCurrentDatabase();
+            fail("Should have had an exception due to cursor out of range");
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Record Cursor Out of Range") != -1);
+        }
+    }
+
+    /**
+     * bad target url should fail to connect
+     */
+    public void testBadTargetURL()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+            assertEquals("Did not find the expected number of records", 0, recsFound);
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * test that if you do set databases you get them returned
+     */
+    public void testGetDatabasesWhenSet()
+    {
+
+        // set up globals
+        mode = DatabeanManagerFactory.MODE_PARALLEL;
+        targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+        targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+        // initialise globals
+        initialiseTestGlobals();
+
+        String[] databases = beanManager.getDatabases();
+        if (!(databases[0].equals("db1") && databases[1].equals("db2") || databases[1].equals("db1")
+                && databases[0].equals("db2")))
+        {
+            fail("Dbnames returned incorrect");
+        }
+
+    }
+
+    /**
+     * test that if you do not set any databases you don't get any returned
+     */
+    public void testGetDatabasesWhenNoneSet()
+    {
+
+        // set up globals
+        mode = DatabeanManagerFactory.MODE_PARALLEL;
+
+        // initialise globals
+        initialiseTestGlobals();
+
+        String[] databases = beanManager.getDatabases();
+        assertTrue("should have no databases", databases.length == 0);
+    }
+
 }
