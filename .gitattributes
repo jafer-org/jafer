@@ -141,6 +141,7 @@ src/org/jafer/record/OPACRecord.java -text
 src/org/jafer/record/RecordException.java -text
 src/org/jafer/record/RecordFactory.java -text
 src/org/jafer/record/SUTRSRecord.java -text
+src/org/jafer/record/SynchronizedCache.java -text
 src/org/jafer/record/TermRecord.java -text
 src/org/jafer/record/XMLRecord.java -text
 src/org/jafer/registry/InvalidAuthorisationDetailsException.java -text
