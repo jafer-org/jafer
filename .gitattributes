@@ -128,6 +128,7 @@ src/org/jafer/query/converter/RPNQueryConverter.java -text
 src/org/jafer/readinglist/Basket.java -text
 src/org/jafer/record/AbstractCache.java -text
 src/org/jafer/record/Cache.java -text
+src/org/jafer/record/CacheFactory.java -text
 src/org/jafer/record/DataObject.java -text
 src/org/jafer/record/Diagnostic.java -text
 src/org/jafer/record/Field.java -text
