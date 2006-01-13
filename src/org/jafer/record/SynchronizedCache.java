@@ -4,10 +4,10 @@ import org.jafer.exception.JaferException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-public class SynchronisedCache implements Cache {
+public class SynchronizedCache implements Cache {
     Cache cache;
 
-    public SynchronisedCache(Cache cache) {
+    public SynchronizedCache(Cache cache) {
         this.cache = cache;
     }
 
