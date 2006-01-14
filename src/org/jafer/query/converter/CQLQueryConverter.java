@@ -161,8 +161,7 @@ public class CQLQueryConverter extends Converter
         }
         catch (IOException exc)
         {
-            // TODO Auto-generated catch block
-            exc.printStackTrace();
+            throw new QueryException("Unable to parse the supplied cql:" + exc.toString(), exc);
         }
         // the returned XCQL
         return outNode;
