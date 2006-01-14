@@ -54,6 +54,12 @@ public class DatabeanManagerFactory extends DatabeanFactory
     public static final String MODE_PARALLEL = "parallel";
 
     /**
+     * Stores a reference to the default record schema to set on the databean
+     * manager
+     */
+    public String recordSchema;
+
+    /**
      * Stores a reference to factories that can create databeans for specified
      * databases. A map entry consists of key = database name and value =
      * factory that creates a databean supporting Search and Present for the
@@ -98,8 +104,11 @@ public class DatabeanManagerFactory extends DatabeanFactory
         bean.setCacheFactory(cacheFactory);
         // set the mode to serial or parrallel
         bean.setMode(mode);
-        // set the name of the databean manager to the one defined in the factory
+        // set the name of the databean manager to the one defined in the
+        // factory
         bean.setName(this.getName());
+        // set the record schema
+        bean.setRecordSchema(recordSchema);
         // set all the DatabeanManager
         bean.setAllDatabases(allDatabases);
         // Now set the databases. By supplying the name of the DatabeanManager
@@ -189,5 +198,25 @@ public class DatabeanManagerFactory extends DatabeanFactory
     public CacheFactory getCacheFactory()
     {
         return cacheFactory;
+    }
+
+    /**
+     * Sets the default record schema to be set on any databeanmanagers created
+     * 
+     * @param recordSchema the record schema to set
+     */
+    public void setRecordSchema(String recordSchema)
+    {
+        this.recordSchema = recordSchema;
+    }
+
+    /**
+     * gets the default record schema to be set on any databeanmanagers created
+     * 
+     * @return The schema that would be set
+     */
+    public String getRecordSchema()
+    {
+        return recordSchema;
     }
 }

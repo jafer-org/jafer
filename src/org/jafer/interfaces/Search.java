@@ -32,90 +32,121 @@
 package org.jafer.interfaces;
 
 import org.jafer.exception.JaferException;
-/** @todo should this interface import org.w3c.dom.Node and z3950.v3.RPNQuery,
- or better to more generalised?  What about JaferException?*/
-//import org.w3c.dom.Node;
-//import z3950.v3.RPNQuery;
 
 /**
- * Methods for searching
- * @author Antony Corfield; Matthew Dovey; Colin Tatham
- *
+ * @todo should this interface import org.w3c.dom.Node and z3950.v3.RPNQuery, or
+ *       better to more generalised? What about JaferException?
  */
-public interface Search {
-  /**
-   * @todo document this
-   */
-//  public void setSearchProfile(String searchProfile);
+// import org.w3c.dom.Node;
+// import z3950.v3.RPNQuery;
+/**
+ * Methods for searching
+ * 
+ * @author Antony Corfield; Matthew Dovey; Colin Tatham
+ */
+public interface Search
+{
 
-  /**
-   * @todo document this
-   */
-//  public String getSearchProfile();
+    /**
+     * @todo document this
+     */
+    // public void setSearchProfile(String searchProfile);
+    /**
+     * @todo document this
+     */
+    // public String getSearchProfile();
+    /**
+     * @todo document this
+     */
+    public void setResultSetName(String resultSetName);
 
-  /**
-   * @todo document this
-   */
-  public void setResultSetName(String resultSetName);
+    /**
+     * @todo document this
+     */
+    public String getResultSetName();
 
-  /**
-   * @todo document this
-   */
-  public String getResultSetName();
-  /**
-   * Set database to search
-   * @param database database
-   */
-  public void setDatabases(String database);
+    /**
+     * Set database to search
+     * 
+     * @param database database
+     */
+    public void setDatabases(String database);
 
-  /**
-   * Set databases to search
-   * @param databases databases
-   */
-  public void setDatabases(String[] databases);
+    /**
+     * Set databases to search
+     * 
+     * @param databases databases
+     */
+    public void setDatabases(String[] databases);
 
-  /**
-   * Get databases currently searched
-   * @return databases
-   */
-  public String[] getDatabases();
+    /**
+     * Get databases currently searched
+     * 
+     * @return databases
+     */
+    public String[] getDatabases();
 
-  /**
-   * @todo document this
-   */
-  public void setParseQuery(boolean parseQuery);
-  /**
-   * @todo document this
-   */
-  public boolean isParseQuery();
+    /**
+     * @todo document this
+     */
+    public void setParseQuery(boolean parseQuery);
 
-  /**
-   * Send query (can be in XML form)
-   * @return number of records found
-   * @todo document XML structure
-   */
-  public int submitQuery(Object query) throws JaferException;
+    /**
+     * @todo document this
+     */
+    public boolean isParseQuery();
 
-  /**
-   * @todo Do we need this?
-   */
-  public void saveQuery(String file) throws JaferException;
+    /**
+     * Send query (can be in XML form)
+     * 
+     * @return number of records found
+     * @todo document XML structure
+     */
+    public int submitQuery(Object query) throws JaferException;
 
-  /**
-   * Get number of results for last query
-   * @return number of results
-   */
-  public int getNumberOfResults();
+    /**
+     * @todo Do we need this?
+     */
+    public void saveQuery(String file) throws JaferException;
 
-  /**
-   * Get number of results from the named database for last query
-   * @return number of results
-   */
-  public int getNumberOfResults(String databaseName);
+    /**
+     * Get number of results for last query
+     * 
+     * @return number of results
+     */
+    public int getNumberOfResults();
 
-  /**
-   * Get the last submitted query
-   * @return query
-   */
-  public Object getQuery();
+    /**
+     * Get number of results from the named database for last query
+     * 
+     * @return number of results
+     */
+    public int getNumberOfResults(String databaseName);
+
+    /**
+     * Get the last submitted query
+     * 
+     * @return query
+     */
+    public Object getQuery();
+
+    /**
+     * If a search fails this method will return the JaferException for the
+     * specified database
+     * 
+     * @param database The name of the database to check
+     * @return null if no errors were found
+     * @throws JaferException
+     */
+    JaferException getSearchException(String database) throws JaferException;
+
+    /**
+     * If a search fails this method will return the JaferException for the
+     * specified databases
+     * 
+     * @param databases The databases to search
+     * @return An empty array if no errors were found
+     * @throws JaferException
+     */
+    JaferException[] getSearchException(String[] databases) throws JaferException;
 }

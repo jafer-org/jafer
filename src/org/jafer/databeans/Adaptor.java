@@ -19,155 +19,217 @@
 
 package org.jafer.databeans;
 
-//import java.util.logging.Logger;
-//import java.util.logging.Level;
-import javax.xml.transform.*;
+// import java.util.logging.Logger;
+// import java.util.logging.Level;
+import javax.xml.transform.Templates;
 
-import org.jafer.exception.*;
-import org.jafer.interfaces.*;
-import org.jafer.record.*;
-import org.jafer.util.xml.XMLTransformer;
-import org.w3c.dom.*;
+import org.jafer.exception.JaferException;
+import org.jafer.interfaces.Databean;
+import org.jafer.interfaces.Present;
+import org.jafer.interfaces.Search;
+import org.jafer.record.Field;
 
 /**
- * <p>Super class for adaptors, includes methods to set transforms via templates object and specify source and target schemas - configured via server.xml</p>
+ * <p>
+ * Super class for adaptors, includes methods to set transforms via templates
+ * object and specify source and target schemas - configured via server.xml
+ * </p>
+ * 
  * @author Antony Corfield; Matthew Dovey; Colin Tatham
  * @version 1.0
  */
-public class Adaptor extends Databean implements Search, Present {
+public class Adaptor extends Databean implements Search, Present
+{
 
-  private Databean databean;
-  private Templates template;
-  private String sourceSchema, targetSchema;
+    private Databean databean;
 
-  public Adaptor() {}
+    private Templates template;
 
-  public void setTransform(Templates template) {
-    this.template = template;
-  }
+    private String sourceSchema, targetSchema;
 
-  public Templates getTransform() {
-    return template;
-  }
+    public Adaptor()
+    {
+    }
 
-  public void setSourceSchema(String sourceSchema) {
-    this.sourceSchema = sourceSchema;
-  }
+    public void setTransform(Templates template)
+    {
+        this.template = template;
+    }
 
-  public String getSourceSchema() {
-    return sourceSchema;
-  }
+    public Templates getTransform()
+    {
+        return template;
+    }
 
-  public void setTargetSchema(String targetSchema) {
-    this.targetSchema = targetSchema;
-  }
+    public void setSourceSchema(String sourceSchema)
+    {
+        this.sourceSchema = sourceSchema;
+    }
 
-  public String getTargetSchema() {
-    return targetSchema;
-  }
+    public String getSourceSchema()
+    {
+        return sourceSchema;
+    }
 
-  public void setDatabean(Databean databean) {
-    this.databean = databean;
-  }
+    public void setTargetSchema(String targetSchema)
+    {
+        this.targetSchema = targetSchema;
+    }
 
-  public Databean getDatabean() {
-    return databean;
-  }
+    public String getTargetSchema()
+    {
+        return targetSchema;
+    }
 
-  public int submitQuery(Object query) throws JaferException {
-    return ((Search)getDatabean()).submitQuery(query);
-  }
+    public void setDatabean(Databean databean)
+    {
+        this.databean = databean;
+    }
 
-  public Field getCurrentRecord() throws JaferException {
-    return ((Present)getDatabean()).getCurrentRecord();
-  }
+    public Databean getDatabean()
+    {
+        return databean;
+    }
 
-  public void setRecordCursor(int nRecord) throws JaferException {
-    ((Present)this.getDatabean()).setRecordCursor(nRecord);
-  }
+    public int submitQuery(Object query) throws JaferException
+    {
+        return ((Search) getDatabean()).submitQuery(query);
+    }
 
-  public int getRecordCursor() {
-    return ((Present)this.getDatabean()).getRecordCursor();
-  }
+    public Field getCurrentRecord() throws JaferException
+    {
+        return ((Present) getDatabean()).getCurrentRecord();
+    }
 
-  public void setCheckRecordFormat(boolean checkRecordFormat) {
-    ((Present)this.getDatabean()).setCheckRecordFormat(checkRecordFormat);
-  }
+    public void setRecordCursor(int nRecord) throws JaferException
+    {
+        ((Present) this.getDatabean()).setRecordCursor(nRecord);
+    }
 
-  public boolean isCheckRecordFormat() {
-    return ((Present)this.getDatabean()).isCheckRecordFormat();
-  }
+    public int getRecordCursor()
+    {
+        return ((Present) this.getDatabean()).getRecordCursor();
+    }
 
-  public void setElementSpec(String elementSpec) {
-    ((Present)this.getDatabean()).setElementSpec(elementSpec);
-  }
+    public void setCheckRecordFormat(boolean checkRecordFormat)
+    {
+        ((Present) this.getDatabean()).setCheckRecordFormat(checkRecordFormat);
+    }
 
-  public String getElementSpec() {
-    return ((Present)this.getDatabean()).getElementSpec();
-  }
+    public boolean isCheckRecordFormat()
+    {
+        return ((Present) this.getDatabean()).isCheckRecordFormat();
+    }
 
-  public void setRecordSchema(String schema) {
-    ((Present)this.getDatabean()).setRecordSchema(schema);
-  }
+    public void setElementSpec(String elementSpec)
+    {
+        ((Present) this.getDatabean()).setElementSpec(elementSpec);
+    }
 
-  public String getRecordSchema() {
-    return ((Present)this.getDatabean()).getRecordSchema();
-  }
+    public String getElementSpec()
+    {
+        return ((Present) this.getDatabean()).getElementSpec();
+    }
 
-  public String getCurrentDatabase() throws JaferException {
-    return ((Present)this.getDatabean()).getCurrentDatabase();
-  }
+    public void setRecordSchema(String schema)
+    {
+        ((Present) this.getDatabean()).setRecordSchema(schema);
+    }
 
-//  public void setSearchProfile(String searchProfile) {
-//    ((Search)this.getDatabean()).setSearchProfile(searchProfile);
-//  }
+    public String getRecordSchema()
+    {
+        return ((Present) this.getDatabean()).getRecordSchema();
+    }
 
-//  public String getSearchProfile() {
-//    return ((Search)this.getDatabean()).getSearchProfile();
-//  }
+    public String getCurrentDatabase() throws JaferException
+    {
+        return ((Present) this.getDatabean()).getCurrentDatabase();
+    }
 
-  public void setResultSetName(String resultSetName) {
-/** @todo not implemented */
-  }
+    // public void setSearchProfile(String searchProfile) {
+    // ((Search)this.getDatabean()).setSearchProfile(searchProfile);
+    // }
 
-  public String getResultSetName() {
-    return ((Search)this.getDatabean()).getResultSetName();
-  }
+    // public String getSearchProfile() {
+    // return ((Search)this.getDatabean()).getSearchProfile();
+    // }
 
-  public void setDatabases(String database) {
-    ((Search)this.getDatabean()).setDatabases(database);
-  }
+    public void setResultSetName(String resultSetName)
+    {
+        /** @todo not implemented */
+    }
 
-  public void setDatabases(String[] databases) {
-/** @todo not implemented - we don't want to setDatabases on lower bean here  */
-//    ((Search)this.getDatabean()).setDatabases(databases);
-  }
+    public String getResultSetName()
+    {
+        return ((Search) this.getDatabean()).getResultSetName();
+    }
 
-  public String[] getDatabases() {
-    return ((Search)this.getDatabean()).getDatabases();
-  }
+    public void setDatabases(String database)
+    {
+        ((Search) this.getDatabean()).setDatabases(database);
+    }
 
-  public void setParseQuery(boolean parseQuery) {
-    ((Search)this.getDatabean()).setParseQuery(parseQuery);
-  }
+    public void setDatabases(String[] databases)
+    {
+        /**
+         * @todo not implemented - we don't want to setDatabases on lower bean
+         *       here
+         */
+        // ((Search)this.getDatabean()).setDatabases(databases);
+    }
 
-  public boolean isParseQuery() {
-    return ((Search)this.getDatabean()).isParseQuery();
-  }
+    public String[] getDatabases()
+    {
+        return ((Search) this.getDatabean()).getDatabases();
+    }
 
-  public void saveQuery(String file) throws JaferException {
-    ((Search)this.getDatabean()).saveQuery(file);
-  }
+    public void setParseQuery(boolean parseQuery)
+    {
+        ((Search) this.getDatabean()).setParseQuery(parseQuery);
+    }
 
-  public int getNumberOfResults() {
-    return ((Search)this.getDatabean()).getNumberOfResults();
-  }
+    public boolean isParseQuery()
+    {
+        return ((Search) this.getDatabean()).isParseQuery();
+    }
 
-  public int getNumberOfResults(String databaseName) {
-    return ((Search)this.getDatabean()).getNumberOfResults(databaseName);
-  }
+    public void saveQuery(String file) throws JaferException
+    {
+        ((Search) this.getDatabean()).saveQuery(file);
+    }
 
-  public Object getQuery() {
-    return ((Search)this.getDatabean()).getQuery();
-  }
+    public int getNumberOfResults()
+    {
+        return ((Search) this.getDatabean()).getNumberOfResults();
+    }
+
+    public int getNumberOfResults(String databaseName)
+    {
+        return ((Search) this.getDatabean()).getNumberOfResults(databaseName);
+    }
+
+    public Object getQuery()
+    {
+        return ((Search) this.getDatabean()).getQuery();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchException(java.lang.String)
+     */
+    public JaferException getSearchException(String database) throws JaferException
+    {
+        return ((Search) this.getDatabean()).getSearchException(database);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchException(java.lang.String[])
+     */
+    public JaferException[] getSearchException(String[] databases) throws JaferException
+    {
+        return ((Search) this.getDatabean()).getSearchException(databases);
+    }
 }

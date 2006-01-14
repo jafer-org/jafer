@@ -30,6 +30,7 @@
 
 package org.jafer.databeans;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
@@ -87,6 +88,12 @@ class ActiveBean extends java.lang.Thread
     private Logger logger = Logger.getLogger("org.jafer.databeans");
 
     /**
+     * Stores a reference to exception that occured in the last search or null
+     * if no errors occured
+     */
+    private JaferException searchException = null;
+
+    /**
      * Sets the offsets for this ActiveBean result set in respect to the super
      * result set of all the ActiveBeans
      * 
@@ -130,6 +137,26 @@ class ActiveBean extends java.lang.Thread
     public void setDatabean(Databean bean)
     {
         this.databean = bean;
+    }
+
+    /**
+     * This method returns the JaferException from the last search.
+     * 
+     * @return JaferException instance or null if no errors were found
+     */
+    public JaferException getSearchException()
+    {
+        return this.searchException;
+    }
+
+    /**
+     * This method sets the last exception that occurred during a search
+     * 
+     * @param exc The exception that occurred
+     */
+    protected void setSearchException(JaferException exc)
+    {
+        this.searchException = exc;
     }
 
     /**
@@ -209,6 +236,8 @@ class ActiveBean extends java.lang.Thread
     {
         try
         {
+            // ensure last search exception is nulled out
+            setSearchException(null);
             // set the offsets back to 0
             setOffsets(0, 0);
             // make sure the bean is configured to execute search
@@ -221,16 +250,18 @@ class ActiveBean extends java.lang.Thread
                         + " results, bean also reports " + ((Search) this.databean).getNumberOfResults());
             }
         }
-        catch (Exception ex)
+        catch (JaferException exc)
         {
+            // set the exception so it can be retrieved later
+            setSearchException(exc);
             // something went wrong searching this bean so output problem as a
             // warning as it may just be that the client is not on-line at
-            // resent
+            // present
             String message = "Exception in databeanManager ActiveBean( " + this.getName() + ") performing search: "
-                    + ex.toString();
+                    + exc.toString();
             logger.log(Level.WARNING, message);
             System.out.println(message);
-            ex.printStackTrace();
+            exc.printStackTrace();
         }
     }
 }
@@ -284,11 +315,6 @@ public class DatabeanManager extends Databean implements Present, Search
      * </ul>
      */
     private String mode;
-
-    /**
-     * Stores a reference to logger
-     */
-    private Logger logger = Logger.getLogger("org.jafer.databeans");
 
     /**
      * Stores a reference to the total number of records retrieved
@@ -613,6 +639,12 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public Field getCurrentRecord() throws org.jafer.exception.JaferException
     {
+        // make sure record schema not null to retrieve a record oterwise null
+        // pointer exeception would be thrown
+        if (recordSchema == null)
+        {
+            throw new JaferException("Record Schema must be set to retrieve a record");
+        }
         // loop round active beans
         for (int index = 0; index < activeBeans.length; index++)
         {
@@ -844,5 +876,72 @@ public class DatabeanManager extends Databean implements Present, Search
     public CacheFactory getCacheFactory()
     {
         return cacheFactory;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchDiagnostic(java.lang.String)
+     */
+    public JaferException getSearchException(String database)
+    {
+        // make sure database name specified
+        if (database != null)
+        {
+            // get the JaferException for the database, empty arry if no errors
+            // found
+            JaferException[] errors = getSearchException(new String[] { database });
+            if (errors.length != 0)
+            {
+                // return the first JaferException
+                return errors[0];
+            }
+        }
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchDiagnostics(java.lang.String[])
+     */
+    public JaferException[] getSearchException(String[] databases)
+    {
+        // create empty array for success condition
+        ArrayList errors = new ArrayList();
+
+        // Make sure we have databases to set
+        if (databases == null || databases.length == 0)
+        {
+            // return an empty array
+            return new JaferException[0];
+        }
+
+        // if the first database name equals the name of this database then use
+        // it's configured set of databases if they are set and not null
+        if (databases[0].equalsIgnoreCase(this.getName()) && this.allDatabases != null)
+        {
+            databases = this.allDatabases;
+        }
+
+        // loop round active beans
+        for (int index = 0; index < databases.length; index++)
+        {
+            // loop round active beans
+            for (int activeBeanIndex = 0; activeBeanIndex < activeBeans.length; activeBeanIndex++)
+            {
+                // make sure active bean is configured
+                if (activeBeans[activeBeanIndex] != null)
+                {
+                    // does this active bean match the database name
+                    if (databases[index] != null && activeBeans[activeBeanIndex].getName().equalsIgnoreCase(databases[index]))
+                    {
+                        errors.add(activeBeans[activeBeanIndex].getSearchException());
+                    }
+                }
+            }
+        }
+        // convert the array list back to an Array
+        return (JaferException[]) errors.toArray(new JaferException[databases.length]);
     }
 }

@@ -113,6 +113,12 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     public final static int[] DEFAULT_RECORD_SYNTAX = { 1, 2, 840, 10003, 5, 10 }; // MARC21
 
+    /**
+     * Stores a reference to exception that occured in the last search or null
+     * if no errors occured
+     */
+    private JaferException searchException = null;
+
     private int fetchSize;
 
     private int dataCacheSize;
@@ -183,10 +189,10 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
     private Session session;
 
     /**
-     * Cache cache
+     * Cache - cache made protected due to fact that ZClientDB still needs the
+     * cache
      */
-    protected Cache cache; // TODO: made protected due to fact that ZClientDB
-                            // still needs the cache
+    protected Cache cache;
 
     /**
      * Document document
@@ -235,10 +241,10 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
         if (getDocument() == null)
             setDocument(DOMFactory.newDocument());
-        
+
         if (getDatabases() == null)
             setDatabases(DEFAULT_DATABASE_NAME); // moved check for null to
-                                                    // setDatabases();
+        // setDatabases();
 
         if (getDataCacheSize() < 1 || getDataCacheSize() > MAX_DATACACHE_SIZE)
             setDataCacheSize(DEFAULT_DATACACHE_SIZE);
@@ -259,7 +265,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
             setAutoReconnect(AUTO_RECONNECT);
 
         if (getTimeout() < 0) // if getTimeout() > Integer.MAX_VALUE then
-                                // returned int is negative value
+            // returned int is negative value
             setTimeout(TIMEOUT);
 
         // if (getSearchProfile() == null)
@@ -298,37 +304,53 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      * @param query Description of Parameter
      * @return Description of the Returned Value
      */
-public int submitQuery(Object query) throws JaferException {
+    public int submitQuery(Object query) throws JaferException
+    {
 
-    logger.entering("ZClient", "public int submitQuery(Object query)");
-    try {
-      setDefaults();
-      // check if query needs parsing
-      if (isParseQuery())
-        query = QueryParser.parseQuery(query);
-      setQuery(query);
+        logger.entering("ZClient", "public int submitQuery(Object query)");
 
-      // if a cache is not already configured then create a HashtableCache as
-      // default otherwise clear the current cache
-      if (getCache() == null)
-      {
-          logger.log(Level.FINER, "No supplied cache, creating default HashtableCache");
-          setCache(new HashtableCacheFactory(getDataCacheSize()).getCache());
-      }
-      else
-      {
-          getCache().clear();
-      }
-      
-      connect();
-      logger.exiting("ZClient", "public int submitQuery(Object query)");
-      return search();
-    } catch (QueryException e) {
-      String message = userIP + "ZClient submitQuery(Object query); " + e.getMessage();
-      logger.log(Level.SEVERE, message);
-      throw new JaferException(e);
+        try
+        {
+            // reset the last search exception
+            setSearchException(null);
+            setDefaults();
+            // check if query needs parsing
+            if (isParseQuery())
+                query = QueryParser.parseQuery(query);
+            setQuery(query);
+
+            // if a cache is not already configured then create a HashtableCache
+            // as
+            // default otherwise clear the current cache
+            if (getCache() == null)
+            {
+                logger.log(Level.FINER, "No supplied cache, creating default HashtableCache");
+                setCache(new HashtableCacheFactory(getDataCacheSize()).getCache());
+            }
+            else
+            {
+                getCache().clear();
+            }
+
+            connect();
+            logger.exiting("ZClient", "public int submitQuery(Object query)");
+            return search();
+        }
+        catch (QueryException e)
+        {
+            String message = userIP + "ZClient submitQuery(Object query); " + e.getMessage();
+            logger.log(Level.SEVERE, message);
+            setSearchException(new JaferException(e));
+            throw getSearchException();
+        }
+        catch (JaferException exc)
+        {
+            // store the exception and throw it on
+            setSearchException(exc);
+            throw exc;
+        }
     }
-  }
+
     protected abstract Session createSession();
 
     /**
@@ -721,7 +743,7 @@ public int submitQuery(Object query) throws JaferException {
 
         return recordSyntax;
     }
-   
+
     private void setSession(Session session)
     {
 
@@ -1432,5 +1454,93 @@ public int submitQuery(Object query) throws JaferException {
     {
 
         this.query = query;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchDiagnostic(java.lang.String)
+     */
+    public JaferException getSearchException(String database) throws JaferException
+    {
+        // make sure database name specified and this client has a
+        // JaferException
+        // lined up to report if the database name matches
+        if (database != null && getSearchException() != null)
+        {
+            // get the JaferException for the database, empty arry if no errors
+            // found
+            JaferException[] errors = getSearchException(new String[] { database });
+            if (errors.length != 0)
+            {
+                // return the first JaferException
+                return errors[0];
+            }
+        }
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchDiagnostics(java.lang.String[])
+     */
+    public JaferException[] getSearchException(String[] databases) throws JaferException
+    {
+        // create empty array for success condition
+        JaferException[] errors = new JaferException[0];
+
+        // make sure database names are specified and this client has a
+        // JaferException lined up to report if the database name matches
+        if (databases != null && getSearchException() != null)
+        {
+            // make sure this abstract client has defined databases if it
+            // doesn't there is never a way to return JaferException and hence
+            // it is
+            // not fully configured
+            if (this.dataBases == null)
+            {
+                throw new JaferException("Configuration Error: Client does not have any defined databases to match against");
+            }
+
+            // loop round all the supplied database names looking for one
+            // that matches a name in this abstract clients database name list
+            for (int index = 0; index < databases.length; index++)
+            {
+                for (int internalDatabaseIndex = 0; internalDatabaseIndex < this.dataBases.length; internalDatabaseIndex++)
+                {
+                    // do we get a name match
+                    if (databases[index] != null && databases[index].equalsIgnoreCase(this.dataBases[internalDatabaseIndex]))
+                    {
+                        errors = new JaferException[] { getSearchException() };
+                        // break the loop and ensure outer loop terminates as
+                        // well as can only have one exception
+                        index = databases.length;
+                        break;
+                    }
+                }
+            }
+        }
+        return errors;
+    }
+
+    /**
+     * This method returns the JaferException from the last search.
+     * 
+     * @return JaferException instance or null if no errors were found
+     */
+    protected JaferException getSearchException()
+    {
+        return this.searchException;
+    }
+
+    /**
+     * This method sets the last exception that occurred during a search
+     * 
+     * @param exc The exception that occurred
+     */
+    protected void setSearchException(JaferException exc)
+    {
+        this.searchException = exc;
     }
 }

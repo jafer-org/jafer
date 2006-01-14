@@ -28,89 +28,114 @@
 
 package org.jafer.databeans;
 
-import org.jafer.exception.JaferException;
-
-import org.w3c.dom.Node;
-import org.w3c.dom.Document;
-import java.util.logging.Level;
 import java.sql.Connection;
-import java.sql.Statement;
 import java.sql.SQLException;
-import z3950.v3.RPNQuery;
+import java.sql.Statement;
+import java.util.logging.Level;
+
+import org.jafer.exception.JaferException;
+import org.w3c.dom.Node;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+public class MySQLDatabean extends JDBC
+{
 
-public class MySQLDatabean extends JDBC {
+    /** uses settings from superclass: */
+    // public final static String CONFIG_FILE =
+    // "org/jafer/conf/jdbcConfig/config.xml";
+    // public final static String QUERY_XSLT =
+    // "org/jafer/conf/jdbcConfig/query.xsl";
+    public int submitQuery(Node query) throws JaferException
+    {
+        // reset the last search exception
+        setSearchException(null);
+        try
+        {
+            /**
+             * Overrides superclass submitQuery() in order to have the option of
+             * piggyback/re-using the same result set for Search and Present.
+             * (has scrollable resultSet)
+             */
 
- /** uses settings from superclass: */
-//  public final static String CONFIG_FILE = "org/jafer/conf/jdbcConfig/config.xml";
-//  public final static String QUERY_XSLT = "org/jafer/conf/jdbcConfig/query.xsl";
+            if (dataSource == null)
+                configureDataSource();
 
-  public int submitQuery(Object query) throws JaferException {
+            this.query = query;
+            String selectPhrase = "";
+            if (Boolean.valueOf(getXMLConfigValue("piggyback")).booleanValue())
+                selectPhrase = "select * ";
+            /** @todo */
+            setQueryString(selectPhrase);
+            resultSet = getStatement().executeQuery(getQueryString());
+            logger.log(Level.FINE, "MySQLDatabean.submitQuery(): " + getQueryString());
+            resultSet.last();
+            nResults = resultSet.getRow();
+            return nResults;
+        }
+        catch (SQLException ex)
+        {
+            // store search exception for caller to check against
+            setSearchException(new JaferException("Error in database connection, or in generation/execution of SQL statement", ex));
+            throw getSearchException();
+        }
+        catch (JaferException exc)
+        {
+            // store search exception for caller to check against
+            setSearchException(exc);
+            throw getSearchException();
+        }
+    }
 
-    if (query instanceof Node)
-      return submitQuery((Node)query);
-    else if (query instanceof RPNQuery)
-      return submitQuery((RPNQuery)query);
-    else
-      throw new JaferException("Only queries of type Node or RPNQuery accepted. (See www.jafer.org)");
-  }
+    protected Statement getStatement() throws SQLException
+    {
 
-  public int submitQuery(RPNQuery query) throws JaferException {
+        Statement statement = getConnection().createStatement();
+        // statement.setFetchSize(getFetchSize());
+        return statement;
+    }
 
-      org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
-      return submitQuery(rpnQuery.toJaferQuery().getQuery());
-  }
+    protected void configureDataSource()
+    {
 
-  public int submitQuery(Node query) throws JaferException {
-/** Overrides superclass submitQuery() in order to have the option of piggyback/re-using the same result set for
- Search and Present. (has scrollable resultSet)*/
+        dataSource = new MysqlDataSource();
+        ((MysqlDataSource) dataSource).setServerName(getHost());
+        ((MysqlDataSource) dataSource).setPortNumber(getPort());
+        ((MysqlDataSource) dataSource).setDatabaseName(getCurrentDatabase());
+        ((MysqlDataSource) dataSource).setUser(username);
+        ((MysqlDataSource) dataSource).setPassword(password);
+    }
 
-    if (dataSource == null)
-      configureDataSource();
+    protected Connection getConnection() throws SQLException
+    {
+        /** @todo test to see if timed out? */
+        if (connection != null)
+            return connection;
 
+        connection = dataSource.getConnection();
+        return connection;
+    }
 
-      try {
-	this.query = query;
-	String selectPhrase = "";
-	if (Boolean.valueOf(getXMLConfigValue("piggyback")).booleanValue())
-	  selectPhrase = "select * ";/** @todo  */
-	setQueryString(selectPhrase);
-        resultSet = getStatement().executeQuery(getQueryString());
-	logger.log(Level.FINE, "MySQLDatabean.submitQuery(): "+getQueryString());
-        resultSet.last();
-        nResults = resultSet.getRow();
-        return nResults;
-      }
-      catch (SQLException ex) {
-	throw new JaferException("Error in database connection, or in generation/execution of SQL statement", ex);
-      }
-  }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchException(java.lang.String)
+     */
+    public JaferException getSearchException(String database) throws JaferException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-  protected Statement getStatement() throws SQLException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.interfaces.Search#getSearchException(java.lang.String[])
+     */
+    public JaferException[] getSearchException(String[] databases) throws JaferException
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-    Statement statement = getConnection().createStatement();
-//    statement.setFetchSize(getFetchSize());
-    return statement;
-  }
-
-  protected void configureDataSource() {
-
-    dataSource = new MysqlDataSource();
-    ((MysqlDataSource)dataSource).setServerName(getHost());
-    ((MysqlDataSource)dataSource).setPortNumber(getPort());
-    ((MysqlDataSource)dataSource).setDatabaseName(getCurrentDatabase());
-    ((MysqlDataSource)dataSource).setUser(username);
-    ((MysqlDataSource)dataSource).setPassword(password);
-  }
-
-  protected Connection getConnection() throws SQLException {
-  /** @todo test to see if timed out? */
-  if (connection != null)
-    return connection;
-
-  connection = dataSource.getConnection();
-  return connection;
-  }
 }

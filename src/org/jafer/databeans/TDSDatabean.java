@@ -28,82 +28,91 @@
 
 package org.jafer.databeans;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import org.jafer.exception.*;
+import net.sourceforge.jtds.jdbcx.TdsDataSource;
+
+import org.jafer.exception.JaferException;
 import org.w3c.dom.Node;
-import z3950.v3.RPNQuery;
-import java.sql.*;
-import net.sourceforge.jtds.jdbcx.*;
 
-public class TDSDatabean extends JDBC {
+public class TDSDatabean extends JDBC
+{
 
-/** uses settings from superclass: */
-//  public final static String CONFIG_FILE = "org/jafer/conf/jdbcConfig/config.xml";
-//  public final static String QUERY_XSLT = "org/jafer/conf/jdbcConfig/query.xsl";
+    /** uses settings from superclass: */
+    // public final static String CONFIG_FILE =
+    // "org/jafer/conf/jdbcConfig/config.xml";
+    // public final static String QUERY_XSLT =
+    // "org/jafer/conf/jdbcConfig/query.xsl";
+    
 
-  public int submitQuery(Object query) throws JaferException {
+    public int submitQuery(Node query) throws JaferException
+    {
+//      reset the last search exception
+        setSearchException(null);
+        try
+        {/**
+         * Presumes ResultSet in use is NOT scrollable, and cannot be re-used
+         * for Present operation.
+         */
+        /** @todo more specific error message: when connection isn't made... */
+        if (dataSource == null)
+            configureDataSource();
 
-    if (query instanceof Node)
-      return submitQuery((Node)query);
-    else if (query instanceof RPNQuery)
-      return submitQuery((RPNQuery)query);
-    else
-      throw new JaferException("Only queries of type Node or RPNQuery accepted. (See www.jafer.org)");
-  }
+        this.query = query;
+        setQueryString("select count(*) ");
 
-  public int submitQuery(RPNQuery query) throws JaferException {
+        
+            ResultSet results = getStatement().executeQuery(getQueryString());
+            // logger.log(Level.FINE, "submitQuery(): "+getQueryString());
+            System.out.println(getQueryString());
+            results.next();
+            nResults = results.getInt(1);
 
-      org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(query);
-      return submitQuery(rpnQuery.toJaferQuery().getQuery());
-  }
-
-  public int submitQuery(Node query) throws JaferException {
-/** Presumes ResultSet in use is NOT scrollable,
-  and cannot be re-used for Present operation. */
-/** @todo more specific error message: when connection isn't made... */
-    if (dataSource == null)
-      configureDataSource();
-
-    this.query = query;
-    setQueryString("select count(*) ");
-
-    try {
-      ResultSet results = getStatement().executeQuery(getQueryString());
-//      logger.log(Level.FINE, "submitQuery(): "+getQueryString());
-      System.out.println(getQueryString());
-      results.next();
-      nResults = results.getInt(1);
-
-      return nResults;
+            return nResults;
+        }
+        catch (SQLException ex)
+        {
+            // store search exception for caller to check against
+            setSearchException(new JaferException("Error in database connection, or in generation/execution of SQL statement", ex));
+            throw getSearchException();
+        }
+        catch (JaferException exc)
+        {
+            // store search exception for caller to check against
+            setSearchException(exc);
+            throw getSearchException();
+        }
     }
-    catch (SQLException ex) {
-      throw new JaferException("Error in database connection, or in generation/execution of SQL statement", ex);
+
+    protected boolean alignCursor() throws SQLException, JaferException
+    {
+
+        while (resultSet.getRow() != getRecordCursor())
+        {
+            if (resultSet.getRow() < getRecordCursor())
+                resultSet.next(); // put in cache here?
+            else
+                search(); // TdsDataSource ResultSet is FORWARD ONLY
+        }
+        return true;
     }
-  }
 
-  protected boolean alignCursor() throws SQLException, JaferException {
+    protected void configureDataSource() throws JaferException
+    {
 
-    while (resultSet.getRow() != getRecordCursor()) {
-      if (resultSet.getRow() < getRecordCursor())
-	resultSet.next(); // put in cache here?
-      else
-	search(); //TdsDataSource ResultSet is FORWARD ONLY
+        dataSource = new TdsDataSource();
+        ((TdsDataSource) dataSource).setServerName(getHost());
+        ((TdsDataSource) dataSource).setPortNumber(getPort());
+        ((TdsDataSource) dataSource).setDatabaseName(getCurrentDatabase());
+        ((TdsDataSource) dataSource).setUser(username);
+        ((TdsDataSource) dataSource).setPassword(password);
     }
-    return true;
-  }
 
-  protected void configureDataSource() throws JaferException {
+    protected Statement getStatement() throws SQLException
+    {
 
-    dataSource = new TdsDataSource();
-    ((TdsDataSource)dataSource).setServerName(getHost());
-    ((TdsDataSource)dataSource).setPortNumber(getPort());
-    ((TdsDataSource)dataSource).setDatabaseName(getCurrentDatabase());
-    ((TdsDataSource)dataSource).setUser(username);
-    ((TdsDataSource)dataSource).setPassword(password);
-  }
-
-  protected Statement getStatement() throws SQLException {
-
-  return getConnection().createStatement();
-  }
+        return getConnection().createStatement();
+    }
 }
