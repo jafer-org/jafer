@@ -13,17 +13,12 @@
  */
 package org.jafer.databeans;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-
 import junit.framework.TestCase;
 
 import org.jafer.exception.JaferException;
 import org.jafer.interfaces.DatabeanFactory;
 import org.jafer.query.QueryBuilder;
 import org.jafer.query.QueryException;
-import org.jafer.record.CacheFactory;
-import org.jafer.record.HashtableCacheFactory;
 import org.jafer.registry.web.struts.bean.ModsRecord;
 import org.w3c.dom.Node;
 
@@ -94,11 +89,9 @@ public class DatabeanManagerFactoryTest extends TestCase
             factory.setMode(DatabeanManagerFactory.MODE_PARALLEL);
             factory.setName("DBFactTest");
             factory.setDatabeanFactories(new DatabeanFactory[] { zurl1 });
+            factory.setRecordSchema(MODS_SCHEMA);
 
             beanManager = (DatabeanManager) factory.getDatabean();
-
-            // ???????????????? SHOULD THIS ALREADY BE SET??????????????
-            beanManager.setRecordSchema(MODS_SCHEMA);
 
             // form a simple search query
             QueryBuilder builder = new QueryBuilder();
@@ -151,11 +144,9 @@ public class DatabeanManagerFactoryTest extends TestCase
             factory.setMode(DatabeanManagerFactory.MODE_PARALLEL);
             factory.setName("DBFactTest");
             factory.setDatabeanFactories(new DatabeanFactory[] { zurl1, zurl2 });
+            factory.setRecordSchema(MODS_SCHEMA);
 
             beanManager = (DatabeanManager) factory.getDatabean();
-
-            // ???????????????? SHOULD THIS ALREADY BE SET??????????????
-            beanManager.setRecordSchema(MODS_SCHEMA);
 
             // form a simple search query
             QueryBuilder builder = new QueryBuilder();
@@ -191,7 +182,7 @@ public class DatabeanManagerFactoryTest extends TestCase
             fail("JaferException:" + exc);
         }
     }
-    
+
     /**
      * No targets supplied should throw an exception
      */
@@ -202,9 +193,6 @@ public class DatabeanManagerFactoryTest extends TestCase
             DatabeanManagerFactory factory = new DatabeanManagerFactory();
             factory.setMode(DatabeanManagerFactory.MODE_PARALLEL);
             beanManager = (DatabeanManager) factory.getDatabean();
-
-            // ???????????????? SHOULD THIS ALREADY BE SET??????????????
-            beanManager.setRecordSchema(MODS_SCHEMA);
 
             // form a simple search query
             QueryBuilder builder = new QueryBuilder();
