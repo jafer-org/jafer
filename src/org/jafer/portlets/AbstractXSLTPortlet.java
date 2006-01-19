@@ -10,7 +10,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
-import javax.portlet.PortletPreferences;
 import java.util.Map;
 import java.util.HashMap;
 import org.jafer.portlets.xslt.XSLTPortletRequestDispatcher;
@@ -158,9 +157,12 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
         }
     }
 
+    private String[][]vTableAction = this.getVTableAction();
+    private String[][]vTableEdit = this.getVTableEdit();
+    private String[][]vTableHelp = this.getVTableHelp();
+    private String[][]vTableView = this.getVTableView();
     public void processAction(ActionRequest request, ActionResponse response) throws
             PortletException, IOException {
-        String[][] vTableAction = getVTableAction();
 
         String action = request.getParameter("action");
         if (action == null) {
@@ -173,18 +175,18 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
     protected void doHelp(RenderRequest request, RenderResponse response) throws
             PortletException,
             IOException {
-        render(request, response, getVTableHelp());
+        render(request, response, vTableHelp);
     }
 
     protected void doEdit(RenderRequest request, RenderResponse response) throws
             PortletException, IOException {
-        render(request, response, getVTableEdit());
+        render(request, response, vTableEdit);
     }
 
 
     protected void doView(RenderRequest request, RenderResponse response) throws
             PortletException,
             IOException {
-        render(request, response, getVTableView());
+        render(request, response, vTableView);
     }
 }
