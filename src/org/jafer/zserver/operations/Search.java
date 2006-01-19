@@ -33,6 +33,12 @@ import org.w3c.dom.Node;
 import z3950.v3.*;
 import asn1.*;
 
+class Results {
+    public String databaseName = null;
+    public int noOfResults = 0;
+    JaferException diagnostic = null;
+}
+
 /**
  * <p>Runs a Z39.50 search on database(s) - resultSets stored in associated Session.
  * Uses locking on resultSets (databeans) if client has requested concurrent operations.</p>
@@ -78,23 +84,26 @@ public class Search extends Operation {
     for (int n = 0; n < pduRequest.c_searchRequest.s_databaseNames.length; n++)
       databases[n] = pduRequest.c_searchRequest.s_databaseNames[n].value.value.get();
 
-    int[] results = search(pduRequest.c_searchRequest.s_query.c_type_1, databases, resultSetName);
+    Results[] results = search(pduRequest.c_searchRequest.s_query.c_type_1, databases, resultSetName);
 
     int total = 0;
 
     ASN1Any[] targets = new ASN1Any[results.length];
-
     for (int i=0; i<results.length; i++) {
-
       DatabaseName dbName = new DatabaseName();
       dbName.value = new InternationalString();
-      dbName.value.value = new ASN1GeneralString(databases[i]);
+      dbName.value.value = new ASN1GeneralString(results[i].databaseName);
       ASN1Any[] details = new ASN1Any[2];
       details[0] = dbName;
-      details[1] = new ASN1Integer(results[i]);
+      details[1] = new ASN1Integer(results[i].noOfResults);
+      if (results[i].diagnostic != null && results[i].diagnostic.hasDiagnostic()) {
+          details[2] = new ASN1Integer(results[i].diagnostic.getDiagCondition());
+      } else {
+          details[2] = new ASN1Null();
+      }
       // details[3] = resultsetname could go here
       targets[i] = new ASN1Sequence(details);
-      total += results[i];
+      total += results[i].noOfResults;
     }
     /** @todo check client Version supported before adding additionalSearchInfo ??
         do anything with resultSetName? */
@@ -114,7 +123,7 @@ public class Search extends Operation {
     return pduResponse;
   }
 
-  private int[] search(RPNQuery rpnQuery, String[] databases, String resultSetName) throws OperationException {
+  private Results[] search(RPNQuery rpnQuery, String[] databases, String resultSetName) throws OperationException {
 
     // handles a type-1 query only
     if (pduRequest.c_searchRequest.s_query.c_type_1 == null) {
@@ -131,13 +140,16 @@ public class Search extends Operation {
           getName() + " " + Config.getBib1Diagnostic(28) + "; " + ex.toString(), getDiagnostic(28, null), ex);
     }
 
-    int[] results = new int[databases.length];
+    Results[] results = new Results[databases.length];
 
     try {
       databean.setDatabases(databases);
       databean.submitQuery(rpnQuery);
-      for (int i=0; i<databases.length; i++)
-	results[i] = databean.getNumberOfResults(databases[i]);
+      for (int i=0; i<databases.length; i++) {
+          results[i].databaseName = databases[i];
+          results[i].noOfResults = databean.getNumberOfResults(databases[i]);
+          results[i].diagnostic = databean.getSearchException(databases[i]);
+      }
     }  catch (JaferException ex) {
       // changed from 100 = (unspecified) error to getting info (if there is any) from JaferException
       throw new OperationException(
