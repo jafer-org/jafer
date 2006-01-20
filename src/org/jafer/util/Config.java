@@ -47,7 +47,7 @@ import org.w3c.dom.NodeList;
   public final static String BIB1_DIAGNOSTICS_FILE  = "org/jafer/conf/bib1Diagnostics.xml";
   public final static String SEARCH_PROFILES_FILE   = "org/jafer/conf/searchProfiles.xml";
   public static final String CHARACTER_SETS_FILE    = "org/jafer/conf/characterSets/characterSets.xml";
-  public static final String SERVER_CONFIG_FILE     = "org/jafer/conf/server/server.xml";
+  public static final String SERVER_CONFIG_FILE     = "org/jafer/conf/ZServer/server.xml";
   public static final String SERVER_DECODE_FILE     = "org/jafer/xsl/server/server-decode.xsl";
   public static final String SERVER_ENCODE_FILE     = "org/jafer/xsl/server/server-encode.xsl";
 
