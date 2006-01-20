@@ -289,6 +289,7 @@ src/org/jafer/zclient/AbstractClient.java -text
 src/org/jafer/zclient/SRUSession.java -text
 src/org/jafer/zclient/SRWClient.java -text
 src/org/jafer/zclient/SRWSession.java -text
+src/org/jafer/zclient/SearchResult.java -text
 src/org/jafer/zclient/SerializationException.java -text
 src/org/jafer/zclient/Session.java -text
 src/org/jafer/zclient/ZClient.java -text

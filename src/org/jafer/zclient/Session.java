@@ -7,6 +7,7 @@ import org.jafer.zclient.operations.PresentException;
 import org.w3c.dom.Node;
 import org.jafer.transport.ConnectionException;
 
+
 public interface Session {
   public void close();
 
@@ -34,7 +35,7 @@ public interface Session {
                      Object termObject) throws JaferException,
       ConnectionException;
 
-  public int[] search(Object queryObject, String[] databases,
+  public SearchResult[] search(Object queryObject, String[] databases,
                       String resultSetName) throws JaferException,
       ConnectionException;
 

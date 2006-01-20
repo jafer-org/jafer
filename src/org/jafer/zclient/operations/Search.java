@@ -45,6 +45,7 @@ import asn1.*;
 
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import org.jafer.zclient.*;
 
 public class Search {
 
@@ -60,7 +61,7 @@ public class Search {
     this.logger = Logger.getLogger("org.jafer.zclient");
   }
 
-  public int[] search(Object queryObject, String[] databases, String resultSetName)
+  public SearchResult[] search(Object queryObject, String[] databases, String resultSetName)
     throws JaferException, ConnectionException {
 
     if (queryObject instanceof RPNQuery)
@@ -71,7 +72,7 @@ public class Search {
       throw new QueryException("Query type: "+ queryObject.getClass().getName() +" not supported", 107, "");
   }
 
-  public int[] search(Node domQuery, String[] databases, String resultSetName)
+  public SearchResult[] search(Node domQuery, String[] databases, String resultSetName)
       throws JaferException, ConnectionException {
 
     JaferQuery jaferQuery = new JaferQuery(domQuery);
@@ -79,7 +80,7 @@ public class Search {
   }
 
 
-  public int[] search(RPNQuery rpnQuery, String[] databases, String resultSetName)
+  public SearchResult[] search(RPNQuery rpnQuery, String[] databases, String resultSetName)
       throws JaferException, ConnectionException {
 
     SearchRequest search = new SearchRequest();
@@ -136,7 +137,7 @@ public class Search {
       ASN1Sequence targetSeq = (ASN1Sequence)info.s_information.c_externallyDefinedInfo.c_singleASN1type;
       ASN1Any[] targets = targetSeq.get();
       DatabaseName dbName;
-      int [] results = new int[targets.length];
+      SearchResult [] results = new SearchResult[targets.length];
 
       for (int i=0; i<targets.length; i++) {
 	try {
@@ -149,12 +150,17 @@ public class Search {
             logger.log(Level.WARNING, message);
 //	    throw new JaferException(message);
 	  }
-          if (details[1] instanceof ASN1Integer)
-            results[i] = ((ASN1Integer)details[1]).get();
-
+          results[i].setDatabaseName(databases[i]);
+          if (details[1] instanceof ASN1Integer) {
+              results[i].setNoOfResults(((ASN1Integer) details[1]).get());
+          }
+          if (details[2] instanceof ASN1Integer) {
+              results[i].setDiagnostic(new JaferException("Additional Search Information", ((ASN1Integer) details[1]).get(), ""));
+          }
 	} catch (ASN1Exception ex) {
 	  String message = "Error in accessing additional search info.";
-	  results[i] = -1;
+	  results[i].setNoOfResults(0);
+          results[i].setDiagnostic(new JaferException(message));
           logger.log(Level.WARNING, message);
 	}
       }
@@ -162,6 +168,12 @@ public class Search {
       return results;
     }
 
-    return new int[]{response.s_resultCount.get()};
+
+    SearchResult results = new SearchResult();
+    results.setDatabaseName(null);
+    results.setNoOfResults(response.s_resultCount.get());
+    results.setDiagnostic(null);
+
+    return new SearchResult[]{results};
   }
 }

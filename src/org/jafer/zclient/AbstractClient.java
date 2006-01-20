@@ -54,6 +54,7 @@ import org.w3c.dom.Node;
 import java.util.Hashtable;
 import java.util.Iterator;
 import org.apache.commons.collections.ArrayIterator;
+import java.util.NoSuchElementException;
 
 public abstract class AbstractClient extends org.jafer.interfaces.Databean implements org.jafer.interfaces.Cache,
         org.jafer.interfaces.Logging, org.jafer.interfaces.Connection, org.jafer.interfaces.Z3950Connection,
@@ -180,7 +181,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
     /**
      * int[] dataBases
      */
-    private int[] resultsByDB;
+    private Hashtable resultsByDB = new Hashtable();
 
     /**
      * Session session
@@ -311,7 +312,8 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         try
         {
             // reset the last search exception
-            setSearchException(null, null);
+            setSearchException((String[])null, null);
+            resultsByDB.clear();
             setDefaults();
             // check if query needs parsing
             if (isParseQuery())
@@ -339,13 +341,13 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         {
             String message = userIP + "ZClient submitQuery(Object query); " + e.getMessage();
             logger.log(Level.SEVERE, message);
-            setSearchException(null, new JaferException(e));
+            setSearchException((String[])null, new JaferException(e));
             throw e;
         }
         catch (JaferException exc)
         {
             // store the exception and throw it on
-            setSearchException(null, exc);
+            setSearchException((String[])null, exc);
             throw exc;
         }
     }
@@ -435,7 +437,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
         try
         {
-            setNumberOfResults(getSession().search(getQuery(), getDatabases(), getResultSetName()));
+            setSearchResults(getSession().search(getQuery(), getDatabases(), getResultSetName()));
             setNumberOfRequestRecords(getFetchSize());
             logger.log(Level.FINE, userIP + "Number of search results: " + getNumberOfResults());
             logger.exiting("ZClient", "int search()");
@@ -1090,7 +1092,8 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                     v.add(databases[i]);
             }
             this.dataBases = (String[]) v.toArray(new String[] {});
-            this.resultsByDB = new int[this.dataBases.length];
+            this.searchExceptions = new Hashtable(this.dataBases.length);
+            this.resultsByDB = new Hashtable(this.dataBases.length);
         }
     }
 
@@ -1218,16 +1221,16 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      * @param nResults The new nResults value
      * @return nResults The new nResults value
      */
-    private int setNumberOfResults(int[] resultsByDB)
+    private int setSearchResults(SearchResult[] resultsByDB)
     {
 
         int total = 0;
 
-        for (int i = 0; i < resultsByDB.length; i++)
-            total += resultsByDB[i];
-
-        this.resultsByDB = resultsByDB;
-
+        for (int i = 0; i < resultsByDB.length; i++) {
+            total += resultsByDB[i].getNoOfResults();
+            this.setSearchException(resultsByDB[i].getDatabaseName(), resultsByDB[i].getDiagnostic());
+            this.setNumberOfResults(resultsByDB[i].getDatabaseName(), resultsByDB[i].getNoOfResults());
+        }
         return nResults = total;
     }
 
@@ -1272,20 +1275,6 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
     {
 
         return dataBases;
-    }
-
-    /**
-     * Gets the resultsByDB attribute of the ZClient object
-     *
-     * @return The resultsByDB value
-     */
-    private int[] getResultsByDatabases()
-    {
-
-        if (resultsByDB != null)
-            return resultsByDB;
-
-        return new int[0];
     }
 
     /**
@@ -1395,20 +1384,31 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      */
     public int getNumberOfResults(String databaseName)
     {
+        Integer results = (Integer)this.resultsByDB.get(databaseName);
 
-        if (getDatabases().length == getResultsByDatabases().length)
-        {
-            for (int i = 0; i < getDatabases().length; i++)
-            {
-                if (getDatabases()[i].equalsIgnoreCase(databaseName))
-                    return resultsByDB[i];
-            }
+        if (results != null) {
+            return results.intValue();
         }
-        else
-            logger.log(Level.SEVERE, "Results per database does not match number of database names set.");
 
-        return -1;
+        return 0;
     }
+
+    protected void setNumberOfResults(String databaseName, int numberOfResults) {
+        if (databaseName != null) {
+            this.resultsByDB.put(databaseName, new Integer(numberOfResults));
+        } else {
+            Iterator iterate = new ArrayIterator(this.getDatabases());
+            while (iterate.hasNext()) {
+                Object next = iterate.next();
+                if (next != null) {
+                    this.resultsByDB.put(next, new Integer(numberOfResults));
+                }
+            }
+
+        }
+    }
+
+
 
     /**
      * Gets the RecordCursor attribute of the ZClient object
@@ -1493,6 +1493,14 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         this.query = query;
     }
 
+    protected void setSearchException(String database,
+                                    JaferException exception) {
+        if (database != null) {
+            setSearchException(new String[] {database}, exception);
+        } else {
+            setSearchException((String[])null, exception);
+        }
+    }
     protected void setSearchException(String[] databases, JaferException exception) {
         Iterator iterate;
         if (databases != null) {
@@ -1504,10 +1512,19 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         }
 
         while (iterate.hasNext()) {
-            if (exception == null) {
-                searchExceptions.remove(iterate.next());
+            Object next = iterate.next();
+            if (next != null) {
+                if (exception == null) {
+                    try {
+                        searchExceptions.remove(iterate.next());
+                    } catch (NoSuchElementException ex) {
+                    }
+                } else {
+                    searchExceptions.put(iterate.next(), exception);
+                }
             } else {
-                searchExceptions.put(iterate.next(), exception);
+                setSearchException((String[])null, exception);
+                return;
             }
         }
     }

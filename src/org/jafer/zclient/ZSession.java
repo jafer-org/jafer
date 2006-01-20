@@ -157,7 +157,7 @@ public class ZSession
 //    return search.search(domQuery, databases, resultSetName);
 //  }
 
-  public int[] search(Object queryObject, String[] databases, String resultSetName)
+  public SearchResult[] search(Object queryObject, String[] databases, String resultSetName)
                                   throws JaferException, ConnectionException {
 
     Search search = new Search(this);
