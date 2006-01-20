@@ -29,6 +29,7 @@ lib/axis/log4j-1.2.8.jar -text
 lib/axis/log4j.properties -text
 lib/axis/saaj.jar -text
 lib/axis/wsdl4j.jar -text
+lib/build-only/servlet-api.jar -text
 lib/cql-java.jar -text
 lib/java-zoom-api.jar -text
 lib/jdbc/jtds-0.4.jar -text
@@ -45,7 +46,6 @@ lib/struts/commons-validator.jar -text
 lib/struts/jakarta-oro.jar -text
 lib/struts/struts.jar -text
 lib/util/commons-lang-2.1.jar -text
-lib/util/servlet-api.jar -text
 lib/xml/xalan.jar -text
 lib/xml/xercesImpl.jar -text
 lib/xml/xml-apis.jar -text
