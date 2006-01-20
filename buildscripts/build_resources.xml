@@ -1,14 +1,14 @@
 <!--
     JAFER library Build Script Resources Created on 03-January-2006
-    
+
     This resource script defines all the resource files and class paths required to build JAFER
-    
-    
+
+
 -->
 <project name="resources" basedir=".." >
-    
+
     <property file="build_userresources.properties"/>
-    
+
     <!-- set up standard build properties -->
     <property name="build.dir" value="build" />
     <property name="src.dir" value="src" />
@@ -16,7 +16,7 @@
     <property name="dist.dir" value="${build.dir}/dist" />
     <property name="doc.dir" value="${build.dir}/doc" />
      <property name="webapp.dir" value="webapps" />
-    
+
     <!-- defines all the library include directories -->
     <property name="lib.dir" value="lib" />
     <property name="axis.lib.dir" value="${lib.dir}/axis" />
@@ -25,12 +25,12 @@
     <property name="registries.lib.dir" value="${lib.dir}/registries" />
     <property name="struts.lib.dir" value="${lib.dir}/struts" />
     <property name="util.lib.dir" value="${lib.dir}/util" />
-    <property name="xml.lib.dir" value="${lib.dir}/xml" />    
-    <property name="servlet-api.jar.file" value="${lib.dir}/util/servlet-api.jar" />
-    
+    <property name="xml.lib.dir" value="${lib.dir}/xml" />
+    <property name="build-only.lib.dir" value="${lib.dir}/util" />
+
     <property name="webinf.classes.dir" value="WEB-INF/classes/" />
     <property name="webinf.lib.dir" value="WEB-INF/lib/" />
-    
+
     <!-- set up the project path to all jars in lib for compiling the complete source -->
     <path id="support.libs">
         <fileset dir="${lib.dir}">           <include name="**/*.jar" /></fileset>
@@ -41,8 +41,8 @@
         <fileset dir="${struts.lib.dir}">    <include name="**/*.jar" /></fileset>
         <fileset dir="${util.lib.dir}">      <include name="**/*.jar" /></fileset>
         <fileset dir="${xml.lib.dir}">       <include name="**/*.jar" /></fileset>
-        <fileset file="${servlet-api.jar.file}"/>
+        <fileset dir="${build-only.lib.dir}">      <include name="**/*.jar" /></fileset>
     </path>
-    
+
 </project>
-	
+

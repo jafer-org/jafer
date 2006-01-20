@@ -54,9 +54,7 @@
             <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${registries.lib.dir}" prefix="${webinf.lib.dir}"/>
-            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}">
-                <include name="commons-lang-2.1.jar" />
-            </zipfileset>
+            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}"/>
         </zip>
 
         <echo message="${dist.jaferportlet.filename} WAR created" />

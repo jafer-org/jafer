@@ -15,6 +15,7 @@
     <!-- define the jafer server output filenames -->
     <property name="dist.jaferserver.filename" value="jaferserver.war" />
     <property name="dist.installjaferserver.filename" value="jaferserverInstall.zip" />
+    <property name="jaferserver.webapp.dir" value="${webapp.dir}/serverAdmin" />
 
     <!-- create the jafer server distribution  -->
     <target name="distribute-jafer-server" depends="compile,copy-resources">
@@ -23,9 +24,10 @@
         <delete file="${dist.dir}/${dist.jaferserver.filename}" quiet="true" />
 
         <zip destfile="${dist.dir}/${dist.jaferserver.filename}">
-            <zipfileset dir="${classes.dir}" >
+            <zipfileset  dir="${jaferserver.webapp.dir}"   />
+            <zipfileset dir="${classes.dir}" prefix="${webinf.classes.dir}" >
                 <include name="org/jafer/conf/*" />
-                <include name="org/jafer/conf/zserver/*" />
+                <include name="org/jafer/conf/ZServer/*" />
                 <include name="org/jafer/conf/characterSets/*" />
                 <include name="org/jafer/conf/jdbcConfig/*" />
                 <include name="org/jafer/databeans/*" />
@@ -44,15 +46,15 @@
                 <include name="org/jafer/zserver/**/*" />
                 <include name="gov/**/*" />
             </zipfileset>
-            <zipfileset  dir="${lib.dir}" prefix="${lib.dir}">
+            <zipfileset  dir="${lib.dir}" prefix="${webinf.lib.dir}">
                 <include name="zebulun.jar" />
                 <include name="cql-java.jar" />
             </zipfileset>
-            <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
-            <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}"/>
         </zip>
-
-        <echo message="${dist.jaferserver.filename} JAR created" />
+        <echo message="${dist.jaferserver.filename} WAR created" />
     </target>
 
     <!-- Build installer zip files -->

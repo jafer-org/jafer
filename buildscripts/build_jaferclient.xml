@@ -63,6 +63,7 @@
             </zipfileset>
             <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}"/>
         </zip>
 
         <echo message="Completed building jafer client installer" />
