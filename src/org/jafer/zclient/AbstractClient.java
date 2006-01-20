@@ -1516,11 +1516,11 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
             if (next != null) {
                 if (exception == null) {
                     try {
-                        searchExceptions.remove(iterate.next());
+                        searchExceptions.remove(next);
                     } catch (NoSuchElementException ex) {
                     }
                 } else {
-                    searchExceptions.put(iterate.next(), exception);
+                    searchExceptions.put(next, exception);
                 }
             } else {
                 setSearchException((String[])null, exception);
