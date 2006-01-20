@@ -19,7 +19,7 @@ public interface Cache {
 
   public void put(Integer recNo, DataObject dataObject);
   
-  public int availableSlots();
+  public int getAvailableSlots();
   
   public int getDataCacheSize();
 }

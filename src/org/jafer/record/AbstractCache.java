@@ -150,7 +150,7 @@ public class AbstractCache
      * 
      * @return The number of currently availiable slots
      */
-    public int availableSlots()
+    public int getAvailableSlots()
     {
         // return total size minus the number currently set
         return dataCacheSize - dataCache.size();

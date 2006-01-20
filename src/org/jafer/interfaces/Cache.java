@@ -101,5 +101,5 @@ public interface Cache
      * 
      * @return The number of currently availiable slots
      */
-    public int availableSlots();
+    public int getAvailableSlots();
 }
