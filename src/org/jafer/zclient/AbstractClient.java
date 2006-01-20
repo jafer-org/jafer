@@ -53,7 +53,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import java.util.Hashtable;
 import java.util.Iterator;
-import org.apache.commons.collections.ArrayIterator;
+import org.apache.commons.collections.iterators.ArrayIterator;
 import java.util.NoSuchElementException;
 
 public abstract class AbstractClient extends org.jafer.interfaces.Databean implements org.jafer.interfaces.Cache,
