@@ -41,6 +41,17 @@ public class SRWClient extends AbstractClient{
      *
      */
 
+    /**
+     * Andy's next mission:
+     *
+     * Doing a get on this.getHost() should return an ZeeRex XML document.
+     * That XML document should indicate whether the server supports SRW and/or SRU
+     * Return SRWSession(this.getHost()) if SRW or SRU/SRW supported
+     * Reutnr SRUSession(this.getHost()) if only SRU support
+     *
+     */
+
+
 
     return new SRWSession(this.getHost());
   }

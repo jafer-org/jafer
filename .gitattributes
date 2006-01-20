@@ -286,6 +286,7 @@ src/org/jafer/xsl/record/OAIMARC2UKMARC.xsl -text
 src/org/jafer/xsl/server/info.xsl -text
 src/org/jafer/xsl/server/server-decode.xsl -text
 src/org/jafer/zclient/AbstractClient.java -text
+src/org/jafer/zclient/SRUSession.java -text
 src/org/jafer/zclient/SRWClient.java -text
 src/org/jafer/zclient/SRWSession.java -text
 src/org/jafer/zclient/SerializationException.java -text
