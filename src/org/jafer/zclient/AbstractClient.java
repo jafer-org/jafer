@@ -51,6 +51,9 @@ import org.jafer.zclient.operations.PresentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import java.util.Hashtable;
+import java.util.Iterator;
+import org.apache.commons.collections.ArrayIterator;
 
 public abstract class AbstractClient extends org.jafer.interfaces.Databean implements org.jafer.interfaces.Cache,
         org.jafer.interfaces.Logging, org.jafer.interfaces.Connection, org.jafer.interfaces.Z3950Connection,
@@ -117,7 +120,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      * Stores a reference to exception that occured in the last search or null
      * if no errors occured
      */
-    private JaferException searchException = null;
+    private Hashtable searchExceptions = new Hashtable();
 
     private int fetchSize;
 
@@ -146,8 +149,6 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     private boolean parseQuery = true;
 
-    private boolean dummyNode;
-
     protected Integer recordCursor;
 
     private String elementSpec;
@@ -162,8 +163,6 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     // private String recordSyntax;
     private int[] recordSyntax;
-
-    private String searchProfile;
 
     private String host;
 
@@ -228,7 +227,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * sets/checks default properties of the ZClient object
-     * 
+     *
      * @throws JaferException Description of Exception
      */
     private void setDefaults()
@@ -300,7 +299,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Description of the Method
-     * 
+     *
      * @param query Description of Parameter
      * @return Description of the Returned Value
      */
@@ -312,7 +311,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         try
         {
             // reset the last search exception
-            setSearchException(null);
+            setSearchException(null, null);
             setDefaults();
             // check if query needs parsing
             if (isParseQuery())
@@ -340,13 +339,13 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         {
             String message = userIP + "ZClient submitQuery(Object query); " + e.getMessage();
             logger.log(Level.SEVERE, message);
-            setSearchException(new JaferException(e));
-            throw getSearchException();
+            setSearchException(null, new JaferException(e));
+            throw e;
         }
         catch (JaferException exc)
         {
             // store the exception and throw it on
-            setSearchException(exc);
+            setSearchException(null, exc);
             throw exc;
         }
     }
@@ -355,7 +354,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Description of the Method
-     * 
+     *
      * @throws JaferException Description of Exception
      */
     private void connect() throws JaferException
@@ -409,7 +408,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Description of the Method
-     * 
+     *
      * @throws JaferException Description of Exception
      */
     protected void reConnect() throws JaferException
@@ -424,7 +423,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * search
-     * 
+     *
      * @return the returned int
      * @throws JaferException -
      */
@@ -472,7 +471,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the RecordCursor attribute of the ZClient object
-     * 
+     *
      * @param nRecord The new RecordCursor value
      * @throws JaferException Description of Exception
      */
@@ -614,7 +613,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the RecordCursor attribute of the ZClient object
-     * 
+     *
      * @return The RecordCursor value as int
      */
     public int getRecordCursor()
@@ -637,7 +636,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * getDatabaseNames
-     * 
+     *
      * @return the returned String
      */
     private String getDatabaseNames()
@@ -663,7 +662,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * close
-     * 
+     *
      * @throws JaferException
      */
     public void close() throws JaferException
@@ -678,7 +677,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the remoteAddress attribute of the ZClient object (for Servlets)
-     * 
+     *
      * @param remoteAddress The new remoteAddress value
      */
     public void setRemoteAddress(String remoteAddress)
@@ -689,7 +688,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the remoteAddress attribute of the ZClient object (for Servlets)
-     * 
+     *
      * @return remoteAddress The remoteAddress value
      */
     public String getRemoteAddress()
@@ -700,7 +699,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the parseQuery attribute of the ZClient object
-     * 
+     *
      * @param parseQuery The new parseQuery value
      */
     public void setParseQuery(boolean parseQuery)
@@ -711,7 +710,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the parseQuery attribute of the ZClient object
-     * 
+     *
      * @return parseQuery The parseQuery value
      */
     public boolean isParseQuery()
@@ -779,7 +778,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Returns the number of available slots currently in the cache
-     * 
+     *
      * @return The number of currently availiable slots
      */
     public int availableSlots()
@@ -803,7 +802,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the timeout attribute of the ZClient object
-     * 
+     *
      * @param timeout The new timeout value
      */
     public void setTimeout(int timeout)
@@ -814,7 +813,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the timeout attribute of the ZClient object
-     * 
+     *
      * @return The timeout value
      */
     public int getTimeout()
@@ -834,7 +833,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the autoReconnect attribute of the ZClient object
-     * 
+     *
      * @return The autoReconnect value
      */
     public int getAutoReconnect()
@@ -854,7 +853,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the attempts attribute of the ZClient object
-     * 
+     *
      * @return The attempts value
      */
     private int getAttempts()
@@ -865,7 +864,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * returns true if ZClient should attempt reconnect
-     * 
+     *
      * @return true if getAttempts() <= getAutoReconnect()
      */
     protected boolean allowReconnect()
@@ -876,7 +875,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the numberOfRequestRecords attribute of the ZClient object
-     * 
+     *
      * @param numberOfRequestRecords The new numberOfRequestRecords value
      */
     protected void setNumberOfRequestRecords(int numberOfRequestRecords)
@@ -890,7 +889,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the numberOfRequestRecords attribute of the ZClient object
-     * 
+     *
      * @return The numberOfRequestRecords value
      */
     protected int getNumberOfRequestRecords()
@@ -901,7 +900,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * sets startRecordNumber for Present
-     * 
+     *
      * @param nRecord The value of setRecordCursor
      */
     protected void setStartRecordNumber(int nRecord)
@@ -929,7 +928,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets setStartRecordNumber record number for Present
-     * 
+     *
      * @return startRecordNumber the startRecordNumber value
      */
     protected int getStartRecordNumber()
@@ -940,7 +939,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the CurrentRecord attribute of the ZClient object
-     * 
+     *
      * @return The CurrentRecord value
      * @throws JaferException Description of Exception
      */
@@ -969,7 +968,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the CurrentDataObject attribute of the ZClient object
-     * 
+     *
      * @return The CurrentDataObject value
      * @throws JaferException Description of Exception
      */
@@ -981,7 +980,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the CurrentDataBase attribute of the ZClient object
-     * 
+     *
      * @return The CurrentDataBase value
      * @throws JaferException Description of Exception
      */
@@ -993,7 +992,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the CurrentRecordSyntax attribute of the ZClient object
-     * 
+     *
      * @return The CurrentRecordSyntax value
      * @throws JaferException Description of Exception
      */
@@ -1005,7 +1004,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the CurrentRecordSyntaxName value of the ZClient object
-     * 
+     *
      * @return The CurrentRecordSyntaxName value
      * @throws JaferException Description of Exception
      */
@@ -1017,7 +1016,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the Host attribute of the ZClient object
-     * 
+     *
      * @param host The new Host value
      */
     public void setHost(String host)
@@ -1040,7 +1039,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the Port attribute of the ZClient object
-     * 
+     *
      * @param port The new Port value
      */
     public void setPort(int port)
@@ -1063,7 +1062,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the resultSetName attribute of the ZClient object
-     * 
+     *
      * @param resultSetName The new resultSetName value
      */
     public void setResultSetName(String resultSetName)
@@ -1074,7 +1073,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the Databases attribute of the ZClient object
-     * 
+     *
      * @param databases The new Databases value
      */
 
@@ -1097,7 +1096,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the Databases attribute of the ZClient object
-     * 
+     *
      * @param database The new Databases value
      */
     public void setDatabases(String database)
@@ -1108,7 +1107,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the username attribute of the ZClient object
-     * 
+     *
      * @param username The new username value
      */
     public void setUsername(String username)
@@ -1119,7 +1118,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the password attribute of the ZClient object
-     * 
+     *
      * @param password The new password value
      */
     public void setPassword(String password)
@@ -1130,7 +1129,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the checkRecordFormat attribute of the ZClient object
-     * 
+     *
      * @param checkRecordFormat The new checkRecordFormat value
      */
     public void setCheckRecordFormat(boolean checkRecordFormat)
@@ -1141,7 +1140,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the checkRecordFormat attribute of the ZClient object
-     * 
+     *
      * @return checkRecordFormat The checkRecordFormat value
      */
     public boolean isCheckRecordFormat()
@@ -1152,7 +1151,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the ElementSpec attribute of the ZClient object
-     * 
+     *
      * @param elementSpec The new ElementSpec value
      */
     public void setElementSpec(String elementSpec)
@@ -1163,7 +1162,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the DataCacheSize attribute of the ZClient object
-     * 
+     *
      * @param dataCacheSize The new DataCacheSize value
      */
     public void setDataCacheSize(int dataCacheSize)
@@ -1174,7 +1173,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the fetchSize attribute of the ZClient object
-     * 
+     *
      * @param fetchSize The new fetchSize value
      */
     public void setFetchSize(int fetchSize)
@@ -1204,7 +1203,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the FetchView attribute of the ZClient object
-     * 
+     *
      * @param fetchView The new FetchView value
      */
     public void setFetchView(double fetchView)
@@ -1215,7 +1214,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the nResults attribute of the ZClient object
-     * 
+     *
      * @param nResults The new nResults value
      * @return nResults The new nResults value
      */
@@ -1234,7 +1233,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the Host attribute of the ZClient object
-     * 
+     *
      * @return The Host value
      */
     public String getHost()
@@ -1244,7 +1243,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the Port attribute of the ZClient object
-     * 
+     *
      * @return The Port value
      */
     public int getPort()
@@ -1255,7 +1254,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the resultSetName attribute of the ZClient object
-     * 
+     *
      * @return The resultSetName value
      */
     public String getResultSetName()
@@ -1266,7 +1265,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the DataBases attribute of the ZClient object
-     * 
+     *
      * @return The DataBases value
      */
     public String[] getDatabases()
@@ -1277,7 +1276,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the resultsByDB attribute of the ZClient object
-     * 
+     *
      * @return The resultsByDB value
      */
     private int[] getResultsByDatabases()
@@ -1291,7 +1290,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the Username attribute of the ZClient object
-     * 
+     *
      * @return The Username value
      */
     public String getUsername()
@@ -1302,7 +1301,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the Password attribute of the ZClient object
-     * 
+     *
      * @return The Password value
      */
     public String getPassword()
@@ -1325,7 +1324,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the ElementSpec attribute of the ZClient object
-     * 
+     *
      * @return The ElementSpec value
      */
     public String getElementSpec()
@@ -1336,7 +1335,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the query attribute of the ZClient object
-     * 
+     *
      * @return The query value
      */
     public Object getQuery()
@@ -1347,7 +1346,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the DataCacheSize attribute of the ZClient object
-     * 
+     *
      * @return The DataCacheSize value
      */
     public int getDataCacheSize()
@@ -1358,7 +1357,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the fetchSize attribute of the ZClient object
-     * 
+     *
      * @return The fetchSize value
      */
     public int getFetchSize()
@@ -1369,7 +1368,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the FetchView attribute of the ZClient object
-     * 
+     *
      * @return The FetchView value
      */
     public double getFetchView()
@@ -1380,7 +1379,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the NumberOfResults attribute of the ZClient object
-     * 
+     *
      * @return The NumberOfResults value
      */
     public int getNumberOfResults()
@@ -1391,7 +1390,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the NumberOfResults attribute of the ZClient object
-     * 
+     *
      * @return The NumberOfResults value
      */
     public int getNumberOfResults(String databaseName)
@@ -1413,7 +1412,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Gets the RecordCursor attribute of the ZClient object
-     * 
+     *
      * @return The RecordCursor value as Integer
      */
     protected Integer getRecordCursorAsInteger()
@@ -1424,7 +1423,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Description of the Method
-     * 
+     *
      * @param file Description of Parameter
      */
     public void saveQuery(String file) throws JaferException
@@ -1485,7 +1484,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     /**
      * Sets the query attribute of the ZClient object
-     * 
+     *
      * @param query The new query value
      */
     private void setQuery(Object query)
@@ -1494,91 +1493,60 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
         this.query = query;
     }
 
+    protected void setSearchException(String[] databases, JaferException exception) {
+        Iterator iterate;
+        if (databases != null) {
+            iterate = new ArrayIterator(databases);
+        } else if (this.getDatabases() != null) {
+            iterate = new ArrayIterator(this.getDatabases());
+        } else {
+            return;
+        }
+
+        while (iterate.hasNext()) {
+            if (exception == null) {
+                searchExceptions.remove(iterate.next());
+            } else {
+                searchExceptions.put(iterate.next(), exception);
+            }
+        }
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getSearchDiagnostic(java.lang.String)
      */
     public JaferException getSearchException(String database) throws JaferException
     {
-        // make sure database name specified and this client has a
-        // JaferException
-        // lined up to report if the database name matches
-        if (database != null && getSearchException() != null)
-        {
-            // get the JaferException for the database, empty arry if no errors
-            // found
-            JaferException[] errors = getSearchException(new String[] { database });
-            if (errors.length != 0)
-            {
-                // return the first JaferException
-                return errors[0];
-            }
+        if (database != null) {
+            return (JaferException)searchExceptions.get(database);
+
         }
         return null;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getSearchDiagnostics(java.lang.String[])
      */
     public JaferException[] getSearchException(String[] databases) throws JaferException
     {
         // create empty array for success condition
-        JaferException[] errors = new JaferException[0];
+        Vector errors = new Vector();
 
         // make sure database names are specified and this client has a
         // JaferException lined up to report if the database name matches
-        if (databases != null && getSearchException() != null)
-        {
-            // make sure this abstract client has defined databases if it
-            // doesn't there is never a way to return JaferException and hence
-            // it is
-            // not fully configured
-            if (this.dataBases == null)
-            {
-                throw new JaferException("Configuration Error: Client does not have any defined databases to match against");
-            }
-
-            // loop round all the supplied database names looking for one
-            // that matches a name in this abstract clients database name list
-            for (int index = 0; index < databases.length; index++)
-            {
-                for (int internalDatabaseIndex = 0; internalDatabaseIndex < this.dataBases.length; internalDatabaseIndex++)
-                {
-                    // do we get a name match
-                    if (databases[index] != null && databases[index].equalsIgnoreCase(this.dataBases[internalDatabaseIndex]))
-                    {
-                        errors = new JaferException[] { getSearchException() };
-                        // break the loop and ensure outer loop terminates as
-                        // well as can only have one exception
-                        index = databases.length;
-                        break;
-                    }
+        if (databases != null) {
+            for (int i=0; i<databases.length; i++) {
+                if (databases[i] == null) {
+                    errors.add(null);
+                } else {
+                    errors.add(this.getSearchException(databases[i]));
                 }
             }
         }
-        return errors;
-    }
-
-    /**
-     * This method returns the JaferException from the last search.
-     * 
-     * @return JaferException instance or null if no errors were found
-     */
-    protected JaferException getSearchException()
-    {
-        return this.searchException;
-    }
-
-    /**
-     * This method sets the last exception that occurred during a search
-     * 
-     * @param exc The exception that occurred
-     */
-    protected void setSearchException(JaferException exc)
-    {
-        this.searchException = exc;
+        return (JaferException[])errors.toArray(new JaferException[]{});
     }
 }
