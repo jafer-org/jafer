@@ -781,9 +781,9 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      *
      * @return The number of currently availiable slots
      */
-    public int availableSlots()
+    public int getAvailableSlots()
     {
-        return cache.availableSlots();
+        return cache.getAvailableSlots();
     }
 
     //
