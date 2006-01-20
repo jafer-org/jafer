@@ -89,9 +89,9 @@ public class SynchronizedCache implements Cache {
      * 
      * @return The number of currently availiable slots
      */
-    public synchronized int availableSlots()
+    public synchronized int getAvailableSlots()
     {
-        return cache.availableSlots();
+        return cache.getAvailableSlots();
     }
     
     /**
