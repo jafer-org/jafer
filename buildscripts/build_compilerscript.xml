@@ -65,6 +65,8 @@
             destdir="${classes.dir}"
             source="${compile.source.jdk.version}"
             target="${compile.target.jdk.version}"
+            debug="${compile.debug}"
+            debuglevel="${compile.debuglevel}"
             deprecation="true">
                 <classpath refid="support.libs" />
         </javac>
