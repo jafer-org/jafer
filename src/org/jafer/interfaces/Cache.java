@@ -95,4 +95,11 @@ public interface Cache
      * @return prefetch behaviour
      */
     public double getFetchView();
+    
+    /**
+     * Returns the number of available slots currently in the cache
+     * 
+     * @return The number of currently availiable slots
+     */
+    public int availableSlots();
 }

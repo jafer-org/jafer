@@ -18,4 +18,8 @@ public interface Cache {
       JaferException;
 
   public void put(Integer recNo, DataObject dataObject);
+  
+  public int availableSlots();
+  
+  public int getDataCacheSize();
 }

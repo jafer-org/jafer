@@ -758,14 +758,33 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
 
     public void setCache(Cache cache)
     {
-
         this.cache = cache;
+
+        // double check that the fetch size in the abstract client is not bigger
+        // than the size of the cache we are about to set as this would result
+        // in the retrieve failing to find the record because the fetch wipes
+        // out the record to retrieve when the cache becomes full
+        if (getFetchSize() > cache.getDataCacheSize())
+        {
+            setFetchSize(cache.getDataCacheSize());
+        }
+
     }
 
     public Cache getCache()
     {
 
         return cache;
+    }
+
+    /**
+     * Returns the number of available slots currently in the cache
+     * 
+     * @return The number of currently availiable slots
+     */
+    public int availableSlots()
+    {
+        return cache.availableSlots();
     }
 
     //
@@ -1160,6 +1179,25 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
      */
     public void setFetchSize(int fetchSize)
     {
+        // if the data cache size is less than the fetch size then fetch size
+        // can only be set to the datacache size to avoid the fetch removing the
+        // first item it added causing an exception on retrieve.
+
+        // The datacache size to compare against the fetch size should be the
+        // one on the current cache and if that is not created yet then the
+        // cache size on the abstract client as this will be used to create the
+        // internal cache when one does not exist
+        if (cache != null)
+        {
+            if (cache.getDataCacheSize() < fetchSize)
+            {
+                fetchSize = cache.getDataCacheSize();
+            }
+        }
+        else if (getDataCacheSize() < fetchSize)
+        {
+            fetchSize = getDataCacheSize();
+        }
 
         this.fetchSize = fetchSize;
     }

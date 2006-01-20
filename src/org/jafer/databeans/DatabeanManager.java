@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jafer.exception.JaferException;
@@ -54,8 +53,32 @@ import org.w3c.dom.Node;
  * (AbstractClient). It is configured and utilised by the DataBeanManager in
  * order to facilitate parallel searches.
  */
+
 class ActiveBean extends java.lang.Thread
 {
+
+    /**
+     * Stores a reference to a flag that indicates that the thread should
+     * terminate and prefilling of the cache should stop if it has not yet
+     * completed
+     */
+    private boolean stopActiveBeanSearch = false;
+
+    /**
+     * Stores a reference to whether the search is still executing.
+     */
+    private boolean stillSearching = false;
+
+    /**
+     * Stores a reference to whether pre filling of the caching is enabled or
+     * not. Enabled as default.
+     */
+    private boolean autoPopulateCache = true;
+
+    /**
+     * Stores a reference to record schema to use when preopoulating the cache
+     */
+    private String cacheRecordSchema = null;
 
     /**
      * Stores a reference to the offset this ActiveBean starts at in the super
@@ -85,7 +108,7 @@ class ActiveBean extends java.lang.Thread
     /**
      * Stores a reference to logger instance
      */
-    private Logger logger = Logger.getLogger("org.jafer.databeans");
+    private static Logger logger = Logger.getLogger("org.jafer.databeans");
 
     /**
      * Stores a reference to exception that occured in the last search or null
@@ -163,14 +186,26 @@ class ActiveBean extends java.lang.Thread
      * Set the query that will be executed when this ActiveBeans thread is run
      * 
      * @param query The query to execute
+     * @param schema The schema used to auto populate cache
      */
-    public void setQuery(Object query)
+    public void submitQuery(Object query, String schema)
     {
         // if the query is of type Node we need to import it into a new document
         if (query instanceof Node)
             this.query = DOMFactory.newDocument().importNode((Node) query, true);
         else
             this.query = query;
+
+        // set the schema to use when prepopulating the cache
+        setPrepoulateCacheRecordSchema(schema);
+
+        // set flag to indicate we have started a search. Need to do this here
+        // to avoid this call returning and processing results before the thread
+        // itself has set this flag
+        stillSearching(true);
+        // start the thread running
+        start();
+
     }
 
     /**
@@ -181,6 +216,26 @@ class ActiveBean extends java.lang.Thread
     public Object getQuery()
     {
         return query;
+    }
+
+    /**
+     * Set the record schema to use when prepoulating cache
+     * 
+     * @param recordSchemamThe schema to prepopulate the cache with
+     */
+    protected void setPrepoulateCacheRecordSchema(String recordSchema)
+    {
+        this.cacheRecordSchema = recordSchema;
+    }
+
+    /**
+     * Get the record schema to use when prepoulating cache
+     * 
+     * @return The schema for prepoulating the cache
+     */
+    protected String getPrepoulateCacheRecordSchema()
+    {
+        return cacheRecordSchema;
     }
 
     /**
@@ -209,24 +264,113 @@ class ActiveBean extends java.lang.Thread
      */
     public Field getRecord(int recordIndex, String schema) throws JaferException
     {
+        // get the record applying the offsets
+        return getRecord(recordIndex, schema, true);
+    }
+
+    /**
+     * Retrieve the record at the specified recordIndex
+     * 
+     * @param recordIndex The recordIndex to retrieve
+     * @param schema The schema to apply
+     * @param applyOffsets Should the offsets be applied to the record index,
+     *        This is normally true apart from when the autopopulation of cache
+     *        needs to refer to local indexs
+     * @return The retrieved record
+     * @throws JaferException
+     */
+    protected synchronized Field getRecord(int recordIndex, String schema, boolean applyOffsets) throws JaferException
+    {
         // make sure the bean is configured
         if (this.databean != null)
         {
-            // make sure this ActiveBean contains the record
-            if (containsRecord(recordIndex))
+            // make sure this ActiveBean contains the record when we are
+            // applying offsets
+            if (applyOffsets && containsRecord(recordIndex) == false)
             {
-                // set the record schema and cursor position for retreival
-                // applying
-                // the offsets to obtain the position in just this activeBeans
-                // result set
-                ((Present) this.databean).setRecordSchema(schema);
-                ((Present) this.databean).setRecordCursor(recordIndex - this.startOffset + 1);
-                // return the current record
-                return ((Present) this.databean).getCurrentRecord();
+                throw new RecordException("The record is not contained by this ActiveBean");
             }
-            throw new RecordException("The record is not contained by this ActiveBean");
+
+            // set the record schema and cursor position for retreival
+            // applying the offsets to obtain the position in just this
+            // activeBeans result set
+            ((Present) this.databean).setRecordSchema(schema);
+
+            // set the record cursor applying off sets if required
+            if (applyOffsets)
+            {
+                // apply offsets
+                ((Present) this.databean).setRecordCursor(recordIndex - this.startOffset + 1);
+            }
+            else
+            {
+                // use straight record index
+                ((Present) this.databean).setRecordCursor(recordIndex);
+            }
+
+            // return the current record
+            return ((Present) this.databean).getCurrentRecord();
+
         }
         throw new RecordException("The databean for this ActiveBean is not configured");
+    }
+
+    /**
+     * This method checks if the search is still executing
+     * 
+     * @return Returns the false if the search has completed.
+     */
+    public boolean stillSearching()
+    {
+        return stillSearching;
+    }
+
+    /**
+     * This method sets the flag to indicate if the search is executing or not
+     * 
+     * @param searchStatus The search status - true if executing search
+     */
+    protected void stillSearching(boolean searchStatus)
+    {
+        stillSearching = searchStatus;
+    }
+
+    /**
+     * Returns whether this active bean should prepopulate cache after search
+     * 
+     * @return Returns true is auto population of cache should take place
+     */
+    public boolean autoPopulateCache()
+    {
+        return autoPopulateCache;
+    }
+
+    /**
+     * Sets whether this active bean should prepopulate cache after search
+     * 
+     * @param autoPopulate true if the cache should be auto populated
+     */
+    public void setAutoPopulateCache(boolean autoPopulate)
+    {
+        this.autoPopulateCache = autoPopulate;
+    }
+
+    /**
+     * This method allows the caller to set the stop active bean search flag
+     */
+    public void stopActiveBeanSearch(boolean stopStatus)
+    {
+        this.stopActiveBeanSearch = stopStatus;
+    }
+
+    /**
+     * Checks to see if the search should be stopped premeturely
+     * 
+     * @return true if search process should terminate early
+     */
+    protected boolean stopActiveBeanSearch()
+    {
+        return this.stopActiveBeanSearch;
     }
 
     /**
@@ -236,6 +380,13 @@ class ActiveBean extends java.lang.Thread
     {
         try
         {
+            // stores the number of results found
+            int results = 0;
+            logger.fine("Starting search on thread - " + getName());
+            // reset the stop flag
+            this.stopActiveBeanSearch = false;
+            // set flag to indicate we have started a search
+            stillSearching(true);
             // ensure last search exception is nulled out
             setSearchException(null);
             // set the offsets back to 0
@@ -244,10 +395,42 @@ class ActiveBean extends java.lang.Thread
             if (this.databean != null)
             {
                 // perform the search
-                int results = ((Search) this.databean).submitQuery(this.query);
+                results = ((Search) this.databean).submitQuery(this.query);
 
-                logger.log(Level.FINE, "Search on " + this.getName() + " found " + Integer.toString(results)
+                logger.fine("Search on " + this.getName() + " found " + Integer.toString(results)
                         + " results, bean also reports " + ((Search) this.databean).getNumberOfResults());
+            }
+            // set flag to indicate we have completed search part of thread
+            stillSearching(false);
+            logger.fine("search completed on thread - " + getName());
+            // if prefilling of the cache is enabled start this process
+            if (autoPopulateCache())
+            {
+                // make sure we have a schema set on the active bean
+                if (getPrepoulateCacheRecordSchema() == null)
+                {
+                    throw new JaferException("Record Schema must be set to search when prepopulating of the cache is enabled");
+                }
+
+                logger.fine("Cache free slots: " + ((Cache) databean).availableSlots() + " on thread - " + getName());
+
+                Cache cacheBean = (Cache) databean;
+                // fill the cache with records until all the result records have
+                // been processed or the user prematurely stops the process or
+                // the cache runs out of available slots and is therefore full
+                // or the available slots are less than the fetch size as
+                // performing another retrieve would wipe out the first x
+                // records. The index is moved on by the fetch size as
+                // retreiving one record will auto retrieve the next X records
+                for (int index = 1; index <= results && stopActiveBeanSearch == false && cacheBean.availableSlots() > 0
+                        && cacheBean.availableSlots() >= cacheBean.getFetchSize(); index += cacheBean.getFetchSize())
+                {
+                    logger.fine("Caching Record " + index + " on thread - " + getName());
+                    // get the record which will automatically add it into the
+                    // cache if it does not already exist, set apply offsets to
+                    // false as this is already a local index
+                    getRecord(index, getPrepoulateCacheRecordSchema(), false);
+                }
             }
         }
         catch (JaferException exc)
@@ -257,11 +440,28 @@ class ActiveBean extends java.lang.Thread
             // something went wrong searching this bean so output problem as a
             // warning as it may just be that the client is not on-line at
             // present
-            String message = "Exception in databeanManager ActiveBean( " + this.getName() + ") performing search: "
+            String message = "Jafer Exception in databeanManager ActiveBean( " + this.getName() + ") performing search: "
                     + exc.toString();
-            logger.log(Level.WARNING, message);
-            System.out.println(message);
+            logger.warning(message);
             exc.printStackTrace();
+        }
+        catch (Exception exc)
+        {
+            // something went wrong searching this bean so output problem as a
+            // warning as it may just be that the client is not on-line at
+            // present
+            String message = "Unexpected Exception in databeanManager ActiveBean( " + this.getName() + ") performing search: "
+                    + exc.toString();
+            // set the exception so it can be retrieved later
+            setSearchException(new JaferException(message, exc));
+            logger.warning(message);
+            exc.printStackTrace();
+        }
+        finally
+        {
+            logger.fine("stopping search on thread - " + getName());
+            // set flag to indicate we have completed search part of thread
+            stillSearching(false);
         }
     }
 }
@@ -286,6 +486,12 @@ public class DatabeanManager extends Databean implements Present, Search
      * not be set on the databean and the databeans internal one will be used
      */
     private CacheFactory cacheFactory = null;
+
+    /**
+     * Stores a reference to whether pre filling of the caching is enabled or
+     * not. Enabled (true) as default.
+     */
+    private boolean autoPopulateCache = true;
 
     /**
      * Stores a reference to an array of active beans forthe current set of
@@ -405,6 +611,26 @@ public class DatabeanManager extends Databean implements Present, Search
     public String getRecordSchema()
     {
         return recordSchema;
+    }
+
+    /**
+     * Returns whether the active beans should prepopulate cache after search
+     * 
+     * @return Returns true is auto population of cache should take place
+     */
+    public boolean autoPopulateCache()
+    {
+        return autoPopulateCache;
+    }
+
+    /**
+     * Sets whether the active beans should prepopulate cache after search
+     * 
+     * @param autoPopulate true if the cache should be auto populated
+     */
+    public void setAutoPopulateCache(boolean autoPopulate)
+    {
+        this.autoPopulateCache = autoPopulate;
     }
 
     /*
@@ -531,6 +757,13 @@ public class DatabeanManager extends Databean implements Present, Search
             // throw error as trying to search no databases
             throw new JaferException("Unable to search - No databases were found", 235, "");
         }
+        // make sure record schema not null to search with auto populate caching
+        // on
+        if (getRecordSchema() == null && autoPopulateCache())
+        {
+            throw new JaferException("Record Schema must be set to search when prepopulating of the cache is enabled");
+        }
+
         // set the total records found back to 0
         totalRecords = 0;
         // loop round each activebean
@@ -541,10 +774,10 @@ public class DatabeanManager extends Databean implements Present, Search
             {
                 throw new JaferException("Unable to search - Specified database was not found", 235, "");
             }
-            // set the query on the active bean
-            activeBeans[index].setQuery(query);
-            // start the activebeans thread so it will perform a search
-            activeBeans[index].start();
+            // tell the bean if it should auto populate
+            activeBeans[index].setAutoPopulateCache(autoPopulateCache());
+            // set the query on the active bean and start the search thread
+            activeBeans[index].submitQuery(query, getRecordSchema());
         }
 
         // set current record to find to 1;
@@ -554,18 +787,12 @@ public class DatabeanManager extends Databean implements Present, Search
         for (int index = 0; index < activeBeans.length; index++)
         {
             // wait until the active bean has completed it's search by checking
-            // if it is still alive
-            while (activeBeans[index].isAlive())
+            // if it is still searching. Can not check thread alive status as
+            // ActiveBean may have started to cache data
+            while (activeBeans[index].stillSearching())
             {
-                try
-                {
-                    // sleep to give active bean thread time to complete
-                    Thread.sleep(1000);
-                }
-                catch (Exception ex)
-                {
-                    ex.printStackTrace();
-                }
+                // yield this thread to give active bean chance to execute
+                Thread.yield();
             }
 
             // bean has now completed search so see how many records were found
@@ -943,5 +1170,33 @@ public class DatabeanManager extends Databean implements Present, Search
         }
         // convert the array list back to an Array
         return (JaferException[]) errors.toArray(new JaferException[databases.length]);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#finalize()
+     */
+    protected void finalize() throws Throwable
+    {
+        // before the DatabeanManager can be cleaned up it needs to stop any
+        // active bean
+        // threads that may still be running
+        for (int activeBeanIndex = 0; activeBeanIndex < activeBeans.length; activeBeanIndex++)
+        {
+            // make sure active bean is configured
+            if (activeBeans[activeBeanIndex] != null)
+            {
+                // tell the bean to stop hence cleaning up correctly
+                activeBeans[activeBeanIndex].stopActiveBeanSearch(true);
+                // loop while the active bean still alive
+                while (activeBeans[activeBeanIndex].isAlive())
+                {
+                    // yield this thread to give active bean chance to execute
+                    Thread.yield();
+                }
+            }
+        }
+        super.finalize();
     }
 }

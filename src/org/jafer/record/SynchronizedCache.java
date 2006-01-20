@@ -83,4 +83,25 @@ public class SynchronizedCache implements Cache {
     public synchronized void put(Integer recNo, DataObject dataObject) {
         cache.put(recNo, dataObject);
     }
+
+    /**
+     * Returns the number of available slots currently in the cache
+     * 
+     * @return The number of currently availiable slots
+     */
+    public synchronized int availableSlots()
+    {
+        return cache.availableSlots();
+    }
+    
+    /**
+     * get the data cache size
+     * 
+     * @return The size of the data cache
+     */
+    public int getDataCacheSize()
+    {
+        return cache.getDataCacheSize();
+    }
+
 }
