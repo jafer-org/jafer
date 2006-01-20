@@ -264,6 +264,11 @@ class ActiveBean extends java.lang.Thread
      */
     public Field getRecord(int recordIndex, String schema) throws JaferException
     {
+        // make sure a schema is entered
+        if (schema == null || schema.length() == 0)
+        {
+            throw new JaferException("Record Schema must be set to retrieve a record");
+        }
         // get the record applying the offsets
         return getRecord(recordIndex, schema, true);
     }
@@ -407,23 +412,29 @@ class ActiveBean extends java.lang.Thread
             if (autoPopulateCache())
             {
                 // make sure we have a schema set on the active bean
-                if (getPrepoulateCacheRecordSchema() == null)
+                if (getPrepoulateCacheRecordSchema() == null || getPrepoulateCacheRecordSchema().length() == 0)
                 {
                     throw new JaferException("Record Schema must be set to search when prepopulating of the cache is enabled");
                 }
 
-                logger.fine("Cache free slots: " + ((Cache) databean).availableSlots() + " on thread - " + getName());
+                logger.fine("Cache free slots: " + ((Cache) databean).getAvailableSlots() + " on thread - " + getName());
 
                 Cache cacheBean = (Cache) databean;
-                // fill the cache with records until all the result records have
-                // been processed or the user prematurely stops the process or
-                // the cache runs out of available slots and is therefore full
-                // or the available slots are less than the fetch size as
-                // performing another retrieve would wipe out the first x
-                // records. The index is moved on by the fetch size as
-                // retreiving one record will auto retrieve the next X records
-                for (int index = 1; index <= results && stopActiveBeanSearch == false && cacheBean.availableSlots() > 0
-                        && cacheBean.availableSlots() >= cacheBean.getFetchSize(); index += cacheBean.getFetchSize())
+                // fill the cache with records until:
+                // * all the result records have been processed,
+                // * the user prematurely stops the process,
+                // * the cache runs out of available slots and is therefore full
+                // * either the available slots are less than the fetch size
+                // (as performing another retrieve would wipe out the first x
+                // records) or there are less records than the fetch size to be
+                // added and they are greater than the available slotsrecords.
+                // <br>The index is moved on by the fetch size as retreiving one
+                // record will auto retrieve the next X records
+                for (int index = 1; index <= results
+                        && stopActiveBeanSearch == false
+                        && cacheBean.getAvailableSlots() > 0
+                        && (cacheBean.getAvailableSlots() >= cacheBean.getFetchSize() || cacheBean.getAvailableSlots() >= results
+                                + 1 - index); index += cacheBean.getFetchSize())
                 {
                     logger.fine("Caching Record " + index + " on thread - " + getName());
                     // get the record which will automatically add it into the
@@ -435,13 +446,13 @@ class ActiveBean extends java.lang.Thread
         }
         catch (JaferException exc)
         {
-            // set the exception so it can be retrieved later
-            setSearchException(exc);
             // something went wrong searching this bean so output problem as a
             // warning as it may just be that the client is not on-line at
             // present
             String message = "Jafer Exception in databeanManager ActiveBean( " + this.getName() + ") performing search: "
                     + exc.toString();
+            // set the exception so it can be retrieved later
+            setSearchException(exc);
             logger.warning(message);
             exc.printStackTrace();
         }
@@ -866,12 +877,6 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public Field getCurrentRecord() throws org.jafer.exception.JaferException
     {
-        // make sure record schema not null to retrieve a record oterwise null
-        // pointer exeception would be thrown
-        if (recordSchema == null)
-        {
-            throw new JaferException("Record Schema must be set to retrieve a record");
-        }
         // loop round active beans
         for (int index = 0; index < activeBeans.length; index++)
         {
