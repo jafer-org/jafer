@@ -27,11 +27,14 @@ import org.jafer.registry.web.struts.bean.ModsRecord;
 import org.w3c.dom.Node;
 
 /**
- * This class runs a simple Unit test in the DatabeanManager
+ * This class runs a simple Unit tests on the DatabeanManager
  */
 public class DatabeanManagerTest extends TestCase
 {
 
+    /**
+     * Stores a reference to MODS SCHEMA url
+     */
     private static final String MODS_SCHEMA = "http://www.loc.gov/mods/v3";
 
     /**
@@ -569,9 +572,9 @@ public class DatabeanManagerTest extends TestCase
             assertTrue("Did not find the expected number of records after asking each and adding", 2128 <= beanManager
                     .getNumberOfResults("db1")
                     + beanManager.getNumberOfResults("db2"));
-            assertTrue("Did not find the expected number of records when asked bean manager", 2128 <=beanManager
+            assertTrue("Did not find the expected number of records when asked bean manager", 2128 <= beanManager
                     .getNumberOfResults());
-            
+
         }
         catch (QueryException exc)
         {
@@ -584,7 +587,7 @@ public class DatabeanManagerTest extends TestCase
             fail("JaferException:" + exc);
         }
     }
-    
+
     /**
      * Tests that -1 returned for bad database name
      */
@@ -610,8 +613,7 @@ public class DatabeanManagerTest extends TestCase
             // found
             beanManager.submitQuery(query);
             assertEquals("Wrong count for bad database name ", -1, beanManager.getNumberOfResults("rrrr"));
-            
-            
+
         }
         catch (QueryException exc)
         {
@@ -664,7 +666,7 @@ public class DatabeanManagerTest extends TestCase
             assertTrue("Wrong Exception", exc.getMessage().indexOf("Specified database was not found") != -1);
         }
     }
-    
+
     /**
      * no databases specified to setdatabases() call should throw exception
      */
@@ -785,9 +787,9 @@ public class DatabeanManagerTest extends TestCase
     }
 
     /**
-     * test no schema name supplied
+     * test no schema name supplied to search
      */
-    public void testBadSchemaName()
+    public void testBadSchemaNameOnSearch()
     {
         try
         {
@@ -801,7 +803,50 @@ public class DatabeanManagerTest extends TestCase
 
             // blank out record schema
             beanManager.setRecordSchema(null);
-            
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+            beanManager.setRecordCursor(1);
+            beanManager.getCurrentRecord();
+            fail("Should have had an exception due to no schema set");
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            assertTrue("Wrong Exception", exc.getMessage().indexOf("Record Schema must be set to search when prepopulating of the cache is enabled") != -1);
+        }
+    }
+    
+    /**
+     * test no schema name supplied to search
+     */
+    public void testBadSchemaNameOnRetrieve()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // blank out record schema
+            beanManager.setRecordSchema(null);
+            beanManager.setAutoPopulateCache(false);
+
             // form a simple search query
             QueryBuilder builder = new QueryBuilder();
             Node q1 = builder.getNode("title", "golf");
@@ -825,7 +870,7 @@ public class DatabeanManagerTest extends TestCase
             assertTrue("Wrong Exception", exc.getMessage().indexOf("Record Schema must be set to retrieve a record") != -1);
         }
     }
-    
+
     /**
      * test a bad cursor position returns an error on getting database name
      */
@@ -888,10 +933,209 @@ public class DatabeanManagerTest extends TestCase
             // execute it across all the beans to see how many results were
             // found
             int recsFound = beanManager.submitQuery(query);
-            
-            // TODO UPDATE THIS TO CHECK DIAGNOSTIC RETURNED 
-            
+
             assertEquals("Did not find the expected number of records", 0, recsFound);
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * Test that get search exception works for bad target url
+     */
+    public void testGetSearchExecptionBadTargetURL()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+
+            assertEquals("Did not find the expected number of records", 0, recsFound);
+
+            String expectedMsgdb1 = "Error attempting search (library.ox.ac.uk:210, dataBase(s) ADVANC , username null): Diagnostic 109 - Database unavailable (database name: ADVANC)";
+            JaferException exc = beanManager.getSearchException("db1");
+            assertEquals("wrong exception returned", expectedMsgdb1, exc.getMessage());
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * Test that get search exception works for bad target url on both databases
+     */
+    public void testGetSearchExecptionTwoBadTargetURLs()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANC");
+            targets.put("db2", "z3950s://130.111.64.9:210/INN");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+
+            assertEquals("Did not find the expected number of records", 0, recsFound);
+
+            String expectedMsgdb1 = "Error attempting search (library.ox.ac.uk:210, dataBase(s) ADVANC , username null): Diagnostic 109 - Database unavailable (database name: ADVANC)";
+            String expectedMsgdb2 = "Error attempting search (130.111.64.9:210, dataBase(s) INN , username null): Diagnostic 236 - Access to specified database denied (database name: Access to specified database denied)";
+            // check single calls first
+            JaferException exc = beanManager.getSearchException("db1");
+            assertEquals("wrong exception returned", expectedMsgdb1, exc.getMessage());
+            exc = beanManager.getSearchException("db2");
+            assertEquals("wrong exception returned", expectedMsgdb2, exc.getMessage());
+
+            // check array call
+            JaferException[] excArray = beanManager.getSearchException(new String[] { "db1", "db2" });
+            assertEquals("Should have two exceptions", 2, excArray.length);
+
+            assertEquals("wrong exception returned for db1", expectedMsgdb1, excArray[0].getMessage());
+            assertEquals("wrong exception returned for db2", expectedMsgdb2, excArray[1].getMessage());
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * Test that get search exception works when no exceptions thrown
+     */
+    public void testGetSearchExecptionWithNoExceptionsExpected()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+
+            // check single calls first
+            JaferException exc = beanManager.getSearchException("db1");
+            assertNull("no exception should be returned", exc);
+            exc = beanManager.getSearchException("db2");
+            assertNull("no exception should be returned", exc);
+
+            // check array call
+            JaferException[] excArray = beanManager.getSearchException(new String[] { "db1", "db2" });
+            assertEquals("Should have two exceptions", 2, excArray.length);
+            assertNull("no exception should be returned for db1", excArray[0]);
+            assertNull("no exception should be returned for db2", excArray[1]);
+
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
+
+    /**
+     * Test that get search exception works with unkown databases
+     */
+    public void testGetSearchExecptionWithUnkownDatabases()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_PARALLEL;
+            targets.put("db1", "z3950s://library.ox.ac.uk:210/ADVANCE");
+            targets.put("db2", "z3950s://130.111.64.9:210/INN");
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            beanManager.submitQuery(query);
+
+            // check single calls first
+            JaferException exc = beanManager.getSearchException("db9");
+            assertNull("no exception should be returned", exc);
+
+            // check array call
+            JaferException[] excArray = beanManager.getSearchException(new String[] { "db1", "db2", "db9" });
+            assertEquals("Should have three exceptions", 3, excArray.length);
+
+            String expectedMsgdb2 = "Error attempting search (130.111.64.9:210, dataBase(s) INN , username null): Diagnostic 236 - Access to specified database denied (database name: Access to specified database denied)";
+            assertEquals("Should have thwo exceptions", 3, excArray.length);
+            assertNull("no exception should be returned for db1", excArray[0]);
+
+            assertEquals("wrong exception returned for db2", expectedMsgdb2, excArray[1].getMessage());
+            assertNull("no exception should be returned for db9", excArray[2]);
 
         }
         catch (QueryException exc)
@@ -945,4 +1189,44 @@ public class DatabeanManagerTest extends TestCase
         assertTrue("should have no databases", databases.length == 0);
     }
 
+    /**
+     * Perform a simple test to extract mulitple records with a restricted cache size
+     */
+    public void testOneDatabaseBigSearchLimitedCacheFactory()
+    {
+        try
+        {
+            // set up globals
+            mode = DatabeanManagerFactory.MODE_SERIAL;
+            targets.put("db2", "z3950s://130.111.64.9:210/INNOPAC");
+
+            // restrict the cache to ten records
+            cacheFactory = new HashtableCacheFactory(15);
+
+            // initialise globals
+            initialiseTestGlobals();
+
+            // form a simple search query
+            QueryBuilder builder = new QueryBuilder();
+            Node q1 = builder.getNode("title", "golf");
+            Node q2 = builder.getNode("title", "titlest");
+            Node query = builder.or(q1, q2);
+
+            // execute it across all the beans to see how many results were
+            // found
+            int recsFound = beanManager.submitQuery(query);
+            assertEquals("Did not find the expected number of records", 367, recsFound);         
+             
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("QueryException:" + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("JaferException:" + exc);
+        }
+    }
 }
