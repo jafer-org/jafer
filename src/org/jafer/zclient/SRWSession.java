@@ -23,20 +23,15 @@ import org.w3c.dom.Element;
 import java.util.Vector;
 import java.net.MalformedURLException;
 import java.rmi.RemoteException;
+import gov.loc.www.zing.srw.interfaces.SRWPort;
 
 public class SRWSession
     implements Session {
 
-  SRWSoapBindingStub srwBinding;
+  private SRWPort binding;
 
-  public SRWSession(String url) {
-    try {
-      srwBinding = new SRWSoapBindingStub(new java.net.URL(url), null);
-    }
-    catch (MalformedURLException ex) {
-    }
-    catch (AxisFault ex) {
-    }
+  public SRWSession(SRWPort binding) {
+      this.binding = binding;
   }
 
   /**
@@ -146,7 +141,7 @@ public class SRWSession
        *
        */
 
-      SearchRetrieveResponseType response = srwBinding.searchRetrieveOperation(request);
+      SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
 
       RecordType[] records = response.getRecords().getRecord();
 
@@ -250,7 +245,7 @@ public class SRWSession
    * @return int[]
    * @todo Implement this org.jafer.zclient.Session method
    */
-  public int[] search(Object queryObject, String[] databases,
+  public SearchResult[] search(Object queryObject, String[] databases,
                       String resultSetName) throws JaferException,
       ConnectionException {
 
@@ -271,9 +266,13 @@ public class SRWSession
       request.setStartRecord(new PositiveInteger("1"));
       request.setMaximumRecords(new NonNegativeInteger("0"));
 
-      SearchRetrieveResponseType response = srwBinding.searchRetrieveOperation(
+      SearchRetrieveResponseType response = binding.searchRetrieveOperation(
           request);
-      return new int[]{ response.getNumberOfRecords().intValue()};
+      SearchResult result = new SearchResult();
+      result.setDatabaseName(null);
+      result.setDiagnostic(null);
+      result.setNoOfResults(response.getNumberOfRecords().intValue());
+      return new SearchResult[]{ result };
     }
     catch (RemoteException ex) {
       throw new ConnectionException(ex);
