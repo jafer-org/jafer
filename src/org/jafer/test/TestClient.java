@@ -46,6 +46,7 @@ public class TestClient {
 
     int results = bean.submitQuery(query);
     System.out.println("results: "+results);
+    System.out.println("results from advance: " + bean.getNumberOfResults("advance"));
 
 
     results = (results > 5) ? 5 : results;
