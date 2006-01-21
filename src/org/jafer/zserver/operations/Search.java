@@ -96,8 +96,12 @@ public class Search extends Operation {
       ASN1Any[] details = new ASN1Any[3];
       details[0] = dbName;
       details[1] = new ASN1Integer(results[i].noOfResults);
-      if (results[i].diagnostic != null && results[i].diagnostic.hasDiagnostic()) {
-          details[2] = new ASN1Integer(results[i].diagnostic.getDiagCondition());
+      if (results[i].diagnostic != null) {
+          if (results[i].diagnostic.hasDiagnostic()) {
+              details[2] = new ASN1Integer(results[i].diagnostic.getDiagCondition());
+          } else {
+              details[2] = new ASN1Integer(2);
+          }
       } else {
           details[2] = new ASN1Null();
       }
