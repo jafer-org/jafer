@@ -84,6 +84,9 @@ public class Present {
     PDU pduRequest = pduDriver.getPDU();
 
     PresentResponse response = pduRequest.c_presentResponse;
+    if (response == null) {
+        throw new ConnectionException("Scan failed");
+    }
     String dbName = org.jafer.zclient.ZClient.DEFAULT_DATABASE_NAME;
     int nReturned = 0, status = 0;
     if (response.s_numberOfRecordsReturned != null)

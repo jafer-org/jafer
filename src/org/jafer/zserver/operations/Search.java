@@ -93,7 +93,7 @@ public class Search extends Operation {
       DatabaseName dbName = new DatabaseName();
       dbName.value = new InternationalString();
       dbName.value.value = new ASN1GeneralString(results[i].databaseName);
-      ASN1Any[] details = new ASN1Any[2];
+      ASN1Any[] details = new ASN1Any[3];
       details[0] = dbName;
       details[1] = new ASN1Integer(results[i].noOfResults);
       if (results[i].diagnostic != null && results[i].diagnostic.hasDiagnostic()) {
@@ -146,6 +146,7 @@ public class Search extends Operation {
       databean.setDatabases(databases);
       databean.submitQuery(rpnQuery);
       for (int i=0; i<databases.length; i++) {
+          results[i] = new Results();
           results[i].databaseName = databases[i];
           results[i].noOfResults = databean.getNumberOfResults(databases[i]);
           results[i].diagnostic = databean.getSearchException(databases[i]);

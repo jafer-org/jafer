@@ -116,6 +116,9 @@ public class Init {
     PDU pduIn = pduDriver.getPDU();
 
     InitializeResponse initResp = pduIn.c_initResponse;
+    if (initResp == null) {
+        throw new ConnectionException("Init failed");
+    }
 
       if (initResp.s_implementationName != null) {
 	targetInfo = initResp.s_implementationName.toString();

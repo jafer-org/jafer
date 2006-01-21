@@ -103,7 +103,9 @@ public class Scan {
     pduDriver.sendPDU(pduResponse);
     PDU pduRequest = pduDriver.getPDU();
     ScanResponse response = pduRequest.c_scanResponse;
-
+    if (response == null) {
+        throw new ConnectionException("Scan failed");
+    }
     if (response.s_scanStatus.get() == 0) {
       for (int n=0; n < response.s_entries.s_entries.length; n++)
         try {

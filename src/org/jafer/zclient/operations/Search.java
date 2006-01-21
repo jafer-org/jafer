@@ -117,6 +117,9 @@ public class Search {
 
     PDU pduRequest = pduDriver.getPDU();
     SearchResponse response = pduRequest.c_searchResponse;
+    if (response == null) {
+        throw new ConnectionException("Search failed");
+    }
     if (response.s_searchStatus != null && response.s_searchStatus.get() == false) {
       String message = "";
       Diagnostic diagnostic = null;
@@ -150,6 +153,7 @@ public class Search {
             logger.log(Level.WARNING, message);
 //	    throw new JaferException(message);
 	  }
+          results[i] = new SearchResult();
           results[i].setDatabaseName(databases[i]);
           if (details[1] instanceof ASN1Integer) {
               results[i].setNoOfResults(((ASN1Integer) details[1]).get());
