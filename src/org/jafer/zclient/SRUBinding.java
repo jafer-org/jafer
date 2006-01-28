@@ -1,5 +1,12 @@
 package org.jafer.zclient;
 
+import gov.loc.www.zing.srw.ExtraDataType;
+import gov.loc.www.zing.srw.ScanRequestType;
+import gov.loc.www.zing.srw.ScanResponseType;
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+import gov.loc.www.zing.srw.interfaces.SRWPort;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,22 +14,14 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.rmi.RemoteException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import gov.loc.www.zing.srw.*;
-import gov.loc.www.zing.srw.interfaces.SRWPort;
-
-import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.encoding.DeserializationContext;
-import org.apache.axis.encoding.Deserializer;
-import org.apache.axis.encoding.ser.SimpleDeserializer;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.RPCElement;
 import org.apache.axis.message.SOAPEnvelope;
@@ -31,21 +30,12 @@ import org.jafer.exception.JaferException;
 import org.jafer.util.xml.DOMFactory;
 import org.jafer.util.xml.XMLSerializer;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
-import javax.xml.namespace.QName;
 
 /**
  * This class binds an SRWSession to a host that only supports SRU
  */
 public class SRUBinding implements SRWPort
 {
-
-    /**
-     * Stores a reference to the XML HEADER
-     */
-    private static String XML_HEADER = "<?xml version=\"1.0\"?>";
-
     /**
      * Stores a reference to the required start xml of a SOAP envelope
      */

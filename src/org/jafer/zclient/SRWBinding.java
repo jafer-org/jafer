@@ -1,16 +1,17 @@
 package org.jafer.zclient;
 
-import gov.loc.www.zing.srw.interfaces.SRWPort;
-import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+import gov.loc.www.zing.srw.ScanRequestType;
+import gov.loc.www.zing.srw.ScanResponseType;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+import gov.loc.www.zing.srw.interfaces.SRWPort;
+import gov.loc.www.zing.srw.srw_bindings.SRWSoapBindingStub;
+
+import java.net.MalformedURLException;
 import java.rmi.RemoteException;
 import java.util.logging.Logger;
 
-import gov.loc.www.zing.srw.ScanResponseType;
-import gov.loc.www.zing.srw.ScanRequestType;
-import gov.loc.www.zing.srw.srw_bindings.SRWSoapBindingStub;
 import org.apache.axis.AxisFault;
-import java.net.MalformedURLException;
 
 /**
  * This class binds an SRWSession to a host that supports SRW/SRU
