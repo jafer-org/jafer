@@ -355,6 +355,10 @@ test/org/jafer/sru/SRUtoSRWBridgeTest.java -text
 test/org/jafer/sru/bridge/ExplainBridgeTest.java -text
 test/org/jafer/sru/bridge/ScanBridgeTest.java -text
 test/org/jafer/sru/bridge/SearchRetrieveBridgeTest.java -text
+test/org/jafer/zclient/SRUBindingTest.java -text
+test/org/jafer/zclient/SRWBindingTest.java -text
+test/org/jafer/zclient/SRWClientTest.java -text
+test/org/jafer/zclient/ZClientTestSuite.java -text
 /udditest.properties -text
 webapps/JaferRegistry/Install[!!-~]Notes.txt -text
 webapps/JaferRegistry/META-INF/MANIFEST.MF -text
