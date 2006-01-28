@@ -14,13 +14,13 @@
 
 package org.jafer.query.converter;
 
+import junit.framework.TestCase;
+
 import org.jafer.exception.JaferException;
 import org.jafer.interfaces.QueryBuilder;
 import org.jafer.query.JaferQuery;
 import org.jafer.query.QueryException;
 import org.w3c.dom.Node;
-
-import junit.framework.TestCase;
 
 /**
  * This test class tests the JAFERQueryConverter to make sure that it applies
