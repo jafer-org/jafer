@@ -1,29 +1,27 @@
 package org.jafer.zclient;
 
-import org.jafer.util.Config;
-import org.jafer.query.*;
-import org.jafer.record.DataObject;
-import org.jafer.record.XMLRecord;
-import org.jafer.util.xml.DOMFactory;
-import org.jafer.transport.PDUDriver;
+import gov.loc.www.zing.srw.RecordType;
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+import gov.loc.www.zing.srw.interfaces.SRWPort;
+
+import java.rmi.RemoteException;
+import java.util.Vector;
+
+import org.apache.axis.types.NonNegativeInteger;
+import org.apache.axis.types.PositiveInteger;
 import org.jafer.exception.JaferException;
+import org.jafer.query.CQLQuery;
+import org.jafer.query.JaferQuery;
+import org.jafer.query.QueryException;
+import org.jafer.record.XMLRecord;
 import org.jafer.transport.ConnectionException;
+import org.jafer.util.xml.DOMFactory;
 import org.jafer.zclient.operations.PresentException;
-
-import gov.loc.www.zing.srw.srw_bindings.SRWSoapBindingStub;
-import gov.loc.www.zing.srw.*;
-import z3950.v3.RPNQuery;
-
-import org.apache.axis.*;
-import org.apache.axis.types.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
-import org.w3c.dom.Element;
 
-import java.util.Vector;
-import java.net.MalformedURLException;
-import java.rmi.RemoteException;
-import gov.loc.www.zing.srw.interfaces.SRWPort;
+import z3950.v3.RPNQuery;
 
 public class SRWSession
     implements Session {
@@ -134,7 +132,7 @@ public class SRWSession
       request.setVersion("1.1");
       request.setQuery(query);
       request.setStartRecord(new PositiveInteger(Integer.toString(nRecord)));
-      request.setMaximumRecords(new PositiveInteger(Integer.toString(nRecords)));
+      request.setMaximumRecords(new NonNegativeInteger(Integer.toString(nRecords)));
       request.setRecordPacking("string");
 
       /**@todo: need to set schema by OID
