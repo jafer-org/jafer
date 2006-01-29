@@ -119,7 +119,7 @@ class ActiveBean extends java.lang.Thread
     /**
      * Sets the offsets for this ActiveBean result set in respect to the super
      * result set of all the ActiveBeans
-     * 
+     *
      * @param start The starting offset index
      * @param end The ending offset index
      */
@@ -133,7 +133,7 @@ class ActiveBean extends java.lang.Thread
      * Returns a boolean to indicate if the record index supplied is contained
      * with in the result set of this ActiveBean. IE that the record index is
      * between the offsets.
-     * 
+     *
      * @param recordIndex The index to search for
      * @return true if the record is contained in this ActiveBean
      */
@@ -144,7 +144,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Gets a reference to the JaferClientBean for this ActiveBean
-     * 
+     *
      * @return The instance of the DataBean
      */
     public Databean getDatabean()
@@ -154,7 +154,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * sets a reference to the JaferClientBean for this ActiveBean
-     * 
+     *
      * @param bean The JaferClientBean to store in this ActiveBean
      */
     public void setDatabean(Databean bean)
@@ -164,7 +164,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * This method returns the JaferException from the last search.
-     * 
+     *
      * @return JaferException instance or null if no errors were found
      */
     public JaferException getSearchException()
@@ -174,7 +174,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * This method sets the last exception that occurred during a search
-     * 
+     *
      * @param exc The exception that occurred
      */
     protected void setSearchException(JaferException exc)
@@ -184,7 +184,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Set the query that will be executed when this ActiveBeans thread is run
-     * 
+     *
      * @param query The query to execute
      * @param schema The schema used to auto populate cache
      */
@@ -210,7 +210,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * get the query that will be executed when this ActiveBeans thread is run
-     * 
+     *
      * @return The query to be executed
      */
     public Object getQuery()
@@ -220,7 +220,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Set the record schema to use when prepoulating cache
-     * 
+     *
      * @param recordSchemamThe schema to prepopulate the cache with
      */
     protected void setPrepoulateCacheRecordSchema(String recordSchema)
@@ -230,7 +230,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Get the record schema to use when prepoulating cache
-     * 
+     *
      * @return The schema for prepoulating the cache
      */
     protected String getPrepoulateCacheRecordSchema()
@@ -241,7 +241,7 @@ class ActiveBean extends java.lang.Thread
     /**
      * Get the number of results that were found the last time the ActiveBeans
      * thread was executed
-     * 
+     *
      * @return The number of results found
      */
     public int getNumberOfResults()
@@ -256,7 +256,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Retrieve the record at the specified recordIndex
-     * 
+     *
      * @param recordIndex The recordIndex to retrieve
      * @param schema The schema to apply
      * @return The retrieved record
@@ -275,7 +275,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Retrieve the record at the specified recordIndex
-     * 
+     *
      * @param recordIndex The recordIndex to retrieve
      * @param schema The schema to apply
      * @param applyOffsets Should the offsets be applied to the record index,
@@ -322,7 +322,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * This method checks if the search is still executing
-     * 
+     *
      * @return Returns the false if the search has completed.
      */
     public boolean stillSearching()
@@ -332,7 +332,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * This method sets the flag to indicate if the search is executing or not
-     * 
+     *
      * @param searchStatus The search status - true if executing search
      */
     protected void stillSearching(boolean searchStatus)
@@ -342,7 +342,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Returns whether this active bean should prepopulate cache after search
-     * 
+     *
      * @return Returns true is auto population of cache should take place
      */
     public boolean autoPopulateCache()
@@ -352,7 +352,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Sets whether this active bean should prepopulate cache after search
-     * 
+     *
      * @param autoPopulate true if the cache should be auto populated
      */
     public void setAutoPopulateCache(boolean autoPopulate)
@@ -370,7 +370,7 @@ class ActiveBean extends java.lang.Thread
 
     /**
      * Checks to see if the search should be stopped premeturely
-     * 
+     *
      * @return true if search process should terminate early
      */
     protected boolean stopActiveBeanSearch()
@@ -502,7 +502,7 @@ public class DatabeanManager extends Databean implements Present, Search
      * Stores a reference to whether pre filling of the caching is enabled or
      * not. Enabled (true) as default.
      */
-    private boolean autoPopulateCache = true;
+    private boolean autoPopulateCache = false;
 
     /**
      * Stores a reference to an array of active beans forthe current set of
@@ -551,7 +551,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Set the databean factories that this databeanmanager supports
-     * 
+     *
      * @param databeanFactories A map where key = database name and value =
      *        factory that creates a databean supporting Search and Present for
      *        the specified database
@@ -576,7 +576,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Returns a map of the supported databean factories
-     * 
+     *
      * @return the supported databean factories map
      */
     public Map getDatabeanFactories()
@@ -586,7 +586,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#setRecordCursor(int)
      */
     public void setRecordCursor(int recordCursor) throws JaferException
@@ -596,7 +596,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#getRecordCursor()
      */
     public int getRecordCursor()
@@ -606,7 +606,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#setRecordSchema(java.lang.String)
      */
     public void setRecordSchema(String recordSchema)
@@ -616,7 +616,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#getRecordSchema()
      */
     public String getRecordSchema()
@@ -626,7 +626,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Returns whether the active beans should prepopulate cache after search
-     * 
+     *
      * @return Returns true is auto population of cache should take place
      */
     public boolean autoPopulateCache()
@@ -636,7 +636,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Sets whether the active beans should prepopulate cache after search
-     * 
+     *
      * @param autoPopulate true if the cache should be auto populated
      */
     public void setAutoPopulateCache(boolean autoPopulate)
@@ -646,7 +646,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#setDatabases(java.lang.String)
      */
     public void setDatabases(String database)
@@ -668,7 +668,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#setDatabases(java.lang.String[])
      */
     public void setDatabases(String[] databases)
@@ -728,7 +728,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getDatabases()
      */
     public String[] getDatabases()
@@ -757,7 +757,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#submitQuery(java.lang.Object)
      */
     public int submitQuery(Object query) throws JaferException
@@ -838,7 +838,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getNumberOfResults()
      */
     public int getNumberOfResults()
@@ -848,7 +848,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getNumberOfResults(java.lang.String)
      */
     public int getNumberOfResults(String databaseName)
@@ -872,7 +872,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#getCurrentRecord()
      */
     public Field getCurrentRecord() throws org.jafer.exception.JaferException
@@ -896,7 +896,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Present#getCurrentDatabase()
      */
     public String getCurrentDatabase() throws JaferException
@@ -920,7 +920,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Present#setCheckRecordFormat(boolean)
      */
     public void setCheckRecordFormat(boolean checkRecordFormat)
@@ -931,7 +931,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Present#isCheckRecordFormat()
      */
     public boolean isCheckRecordFormat()
@@ -942,7 +942,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Present#setElementSpec(java.lang.String)
      */
     public void setElementSpec(String elementSpec)
@@ -953,7 +953,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Present#getElementSpec()
      */
     public String getElementSpec()
@@ -964,7 +964,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#setResultSetName(java.lang.String)
      */
     public void setResultSetName(String resultSetName)
@@ -975,7 +975,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#getResultSetName()
      */
     public String getResultSetName()
@@ -986,7 +986,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#setParseQuery(boolean)
      */
     public void setParseQuery(boolean parseQuery)
@@ -997,7 +997,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#isParseQuery()
      */
     public boolean isParseQuery()
@@ -1008,7 +1008,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#saveQuery(java.lang.String)
      */
     public void saveQuery(String file) throws JaferException
@@ -1019,7 +1019,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Currently Not Supported
-     * 
+     *
      * @see org.jafer.interfaces.Search#getQuery()
      */
     public Object getQuery()
@@ -1030,7 +1030,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Set the mode that this databeanManager runs in
-     * 
+     *
      * @param mode The mode to set use statics in DatabeanManagerFactory
      */
     public void setMode(String mode)
@@ -1040,7 +1040,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * get the mode that the DatabeanManager is running in
-     * 
+     *
      * @return The current mode Serial or Parallel
      */
     public String getMode()
@@ -1050,7 +1050,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Set the name of this DataBeanManager
-     * 
+     *
      * @param name The name of the databean manager
      */
     public void setName(String name)
@@ -1060,7 +1060,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * get the name of the DataBeanManager
-     * 
+     *
      * @return the name of the databean manager
      */
     public String getName()
@@ -1072,7 +1072,7 @@ public class DatabeanManager extends Databean implements Present, Search
      * Set the databeanManagers set of all databases it processes. All the
      * databases must be configured in the databeanfactories for the
      * databeanManager
-     * 
+     *
      * @param allDatabases the array of database names
      */
     public void setAllDatabases(String[] allDatabases)
@@ -1082,7 +1082,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Get the databeanManagers set of all databases it processes
-     * 
+     *
      * @return An array of all the database names
      */
     public String[] getAllDatabases()
@@ -1092,7 +1092,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Sets the cache factory to be used by the DatabeanManager
-     * 
+     *
      * @param cacheFactory the cache factory to use
      */
     public void setCacheFactory(CacheFactory cacheFactory)
@@ -1102,7 +1102,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /**
      * Returns the cache factory used by this databeanManager
-     * 
+     *
      * @return The cache factory used
      */
     public CacheFactory getCacheFactory()
@@ -1112,7 +1112,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getSearchDiagnostic(java.lang.String)
      */
     public JaferException getSearchException(String database)
@@ -1134,7 +1134,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.jafer.interfaces.Search#getSearchDiagnostics(java.lang.String[])
      */
     public JaferException[] getSearchException(String[] databases)
@@ -1179,7 +1179,7 @@ public class DatabeanManager extends Databean implements Present, Search
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#finalize()
      */
     protected void finalize() throws Throwable
