@@ -1,3 +1,15 @@
+/** JAFER Toolkit Project. Copyright (C) 2002, JAFER Toolkit Project, Oxford
+ * University. This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the License,
+ * or (at your option) any later version. This library is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See
+ * the GNU Lesser General Public License for more details. You should have
+ * received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * Place, Suite 330, Boston, MA 02111-1307 USA
+ */
 package org.jafer.zclient;
 
 import gov.loc.www.zing.srw.RecordType;
@@ -5,8 +17,11 @@ import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 import gov.loc.www.zing.srw.SearchRetrieveResponseType;
 import gov.loc.www.zing.srw.interfaces.SRWPort;
 
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.axis.types.NonNegativeInteger;
 import org.apache.axis.types.PositiveInteger;
@@ -17,264 +32,392 @@ import org.jafer.query.QueryException;
 import org.jafer.record.XMLRecord;
 import org.jafer.transport.ConnectionException;
 import org.jafer.util.xml.DOMFactory;
+import org.jafer.util.xml.XMLSerializer;
 import org.jafer.zclient.operations.PresentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import z3950.v3.RPNQuery;
 
-public class SRWSession
-    implements Session {
+/**
+ * This class represents a session that manages a connection against an srw
+ * server
+ */
+public class SRWSession implements Session
+{
 
-  private SRWPort binding;
+    /**
+     * Stores a reference to record packing ID for string records
+     */
+    private static final String RECORD_PACKING_STRING = "string";
 
-  public SRWSession(SRWPort binding) {
-      this.binding = binding;
-  }
+    /**
+     * Stores a reference to record packing ID for xml records
+     */
+    private static final String RECORD_PACKING_XML = "xml";
 
-  /**
-   * close
-   *
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public void close() {
-  }
+    /**
+     * Stores a reference to the logger
+     */
+    protected static Logger logger = Logger.getLogger("org.jafer.zclient");
 
-  /**
-   * getGroup
-   *
-   * @return String
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public String getGroup() {
-    return "";
-  }
+    /**
+     * Stores a reference to the SRWPort that binds this session against a
+     * connection to the server - Currently these are SRU Binding or SRWBinding
+     * depending on the connection type supported by the server. This is
+     * detected during creation of the session in the SRWClient
+     */
+    private SRWPort binding;
 
-  /**
-   * getId
-   *
-   * @return int
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public int getId() {
-    return 0;
-  }
+    /**
+     * Stores a reference to the last query that was executed so that present
+     * gets the records for that query
+     */
+    private String query;
 
-  /**
-   * getName
-   *
-   * @return String
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public String getName() {
-    return "";
-  }
+    /**
+     * Create the SRW session supplying the SRW or SRU binding to use
+     * 
+     * @param binding The binding that connectes this session to the server
+     */
+    public SRWSession(SRWPort binding)
+    {
+        this.binding = binding;
+    }
 
-  /**
-   * getPassword
-   *
-   * @return String
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public String getPassword() {
-    return "";
-  }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#close()
+     */
+    public void close()
+    {
+        // no connection to close here
+    }
 
-  /**
-   * getUsername
-   *
-   * @return String
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public String getUsername() {
-    return "";
-  }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getGroup()
+     */
+    public String getGroup()
+    {
+        // return empty string as group is not used in SRW
+        return "";
+    }
 
-  /**
-   * init
-   *
-   * @param group String
-   * @param username String
-   * @param password String
-   * @throws ConnectionException
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public void init(String group, String username, String password) throws
-      ConnectionException {
-  }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getId()
+     */
+    public int getId()
+    {
+        // return 0 as ID is not used in SRW
+        return 0;
+    }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getName()
+     */
+    public String getName()
+    {
+        // return empty string as username is not used in SRW
+        return "";
+    }
 
-  private String query;
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getPassword()
+     */
+    public String getPassword()
+    {
+        // return empty string as password is not used in SRW
+        return "";
+    }
 
-  /**
-   * present
-   *
-   * @param nRecord int
-   * @param nRecords int
-   * @param recordOID int[]
-   * @param eSpec String
-   * @param resultSetName String
-   * @throws PresentException
-   * @throws ConnectionException
-   * @return Vector
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public Vector present(int nRecord, int nRecords, int[] recordOID,
-                        String eSpec, String resultSetName) throws
-      PresentException, ConnectionException {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getUsername()
+     */
+    public String getUsername()
+    {
+        // return empty string as username is not used in SRW
+        return "";
+    }
 
-    /** @todo Add new method with more relevant signature to interface? */
-    try {
-      Vector dataObjects = new Vector();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#init(java.lang.String, java.lang.String,
+     *      java.lang.String)
+     */
+    public void init(String group, String username, String password) throws ConnectionException
+    {
+        // all these values are ignored for an SRW connection and default values
+        // are returned from the getters
+    }
 
-      SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#search(java.lang.Object,
+     *      java.lang.String[], java.lang.String)
+     */
+    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName) throws JaferException,
+            ConnectionException
+    {
+        try
+        {
+            logger.fine("SRWSession: Performing search");
 
-      request.setVersion("1.1");
-      request.setQuery(query);
-      request.setStartRecord(new PositiveInteger(Integer.toString(nRecord)));
-      request.setMaximumRecords(new NonNegativeInteger(Integer.toString(nRecords)));
-      request.setRecordPacking("string");
-
-      /**@todo: need to set schema by OID
-       *
-       */
-
-      SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
-
-      RecordType[] records = response.getRecords().getRecord();
-
-      for (int i = 0; i < records.length; i++) {
-        String recordPacking = records[i].getRecordPacking();
-        if (recordPacking == null) {
-          recordPacking = "string"; //strictly recordPacking should never be null
-        }
-        if (recordPacking.equalsIgnoreCase("string")) {
-          String data = records[i].getRecordData().get_any()[0].getNodeValue();
-          try {
-            Document doc = DOMFactory.parse(data);
-            Node root = doc.getDocumentElement();
-            ////////////////////////////
-//            org.jafer.util.xml.XMLSerializer.out(root, "xml", "C:/root.xml");
-            ////////////////////////////
-            String schema = records[i].getRecordSchema();
-            if (schema != null)
-              if (!schema.equalsIgnoreCase("default")) {
-                schema = org.jafer.util.Config.translateSRWSchemaName(schema);
-              } else {
-                schema = org.jafer.util.Config.translateSRWSchemaName(root.getNamespaceURI());
-              }
+            if (queryObject instanceof RPNQuery)
+            {
+                logger.fine("Convert RPN query object to CQL query string");
+                org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery((RPNQuery) queryObject);
+                query = new CQLQuery(rpnQuery.toJaferQuery()).getCQLQuery();
+            }
+            else if (queryObject instanceof Node)
+            {
+                logger.fine("Convert JaferQuery Node to CQL query string");
+                query = new CQLQuery(new JaferQuery((Node) queryObject)).getCQLQuery();
+            }
             else
-              schema = root.getNamespaceURI();
+            {
+                // bad query
+                throw new QueryException("Query type: " + queryObject.getClass().getName() + " not supported", 107, "");
+            }
 
+            logger.fine("Creating Search Request = version 1.1, start record = 1, max records = 0");
+            SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+            request.setVersion("1.1");
+            request.setQuery(query);
+            request.setStartRecord(new PositiveInteger("1"));
+            request.setMaximumRecords(new NonNegativeInteger("0"));
 
+            logger.fine("Excuting search via binding");
+            SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
+            logger.fine("Processing search results");
 
-            XMLRecord record = new XMLRecord(root, schema);
-//            record.setrecordsyntax...?
-            dataObjects.add(record);
-          }
-          catch (JaferException ex1) {
-            /** @todo  */
-            ex1.printStackTrace();
-          }
-        } else if (recordPacking.equalsIgnoreCase("xml")) {
-          Node root = records[i].getRecordData().get_any()[0].getFirstChild();
-          String schema = records[i].getRecordSchema();
-          if (schema != null)
-            schema = org.jafer.util.Config.translateSRWSchemaName(schema);
-          else
-            schema = root.getNamespaceURI();
+            SearchResult result = new SearchResult();
+            // database names are ignored in SRW
+            result.setDatabaseName("");
+            // did we get any diagnostic information returned
+            if (response.getDiagnostics() != null && response.getDiagnostics().getDiagnostic().length > 0)
+            {
+                // store the first diagnotic object
+                JaferException exc = new JaferException("Failure executing query: " + query + " due to "
+                        + response.getDiagnostics().getDiagnostic(0).getMessage());
+                result.setDiagnostic(exc);
+            }
+            // did we get a number of results set on response
+            if (response.getNumberOfRecords() != null)
+            {
+                result.setNoOfResults(response.getNumberOfRecords().intValue());
+            }
 
-          XMLRecord record = new XMLRecord(root, schema);
+            return new SearchResult[] { result };
         }
-      }
-
-          return dataObjects;
+        catch (JaferException exc)
+        {
+            logger.severe(exc.getMessage());
+            throw exc;
+        }
+        catch (RemoteException exc)
+        {
+            logger.severe(exc.getMessage());
+            throw new ConnectionException(exc);
+        }
+        finally
+        {
+            logger.fine("SRWSession: Completed search");
+        }
     }
-    catch (RemoteException ex) {
-      throw new ConnectionException(ex);
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#present(int, int, int[], java.lang.String,
+     *      java.lang.String)
+     */
+    public Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec, String resultSetName)
+            throws PresentException, ConnectionException
+    {
+        // ************************************************************************
+        // MATTHEW: FEEL WE HAVE A FEW CONDITIONS BELOW WHERE WE REALLY WANT TO
+        // THROW JAFER EXCEPTION AND ABORT RETRIEVE AS SOMETHING IS OBVIOUSLY
+        // WRONG WITH THE RECORD. SHOULD WE CONSIDER ADDING JAFEREXCEPTION TO
+        // THIS INTERFACE METHOD - SEE logger.warning and logger.sever FOR
+        // CONSIDERATION POINTS IN THIS METHOD
+        // ************************************************************************
+
+        logger.fine("SRWSession: Performing retrieve (present)");
+
+        try
+        {
+            Vector dataObjects = new Vector();
+
+            // make sure query is set
+            if (query != null && query.length() > 0)
+            {
+                logger.severe("SRWSession: No Query set so returning empty result set vector");
+                return dataObjects;
+            }
+
+            logger.fine("Creating Search Request = version 1.1, Record Packing = string, start record = " + nRecord
+                    + ", max records = " + nRecords);
+
+            SearchRetrieveRequestType request = new SearchRetrieveRequestType();
+            request.setVersion("1.1");
+            request.setQuery(query);
+            request.setStartRecord(new PositiveInteger(Integer.toString(nRecord)));
+            request.setMaximumRecords(new NonNegativeInteger(Integer.toString(nRecords)));
+            request.setRecordPacking("string");
+
+            logger.fine("Excuting retrieve via binding");
+            SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
+            logger.fine("Processing search results");
+
+            // make sure we have record objects that can be processed
+            if (response.getRecords() != null && response.getRecords().getRecord() != null)
+            {
+                // stores the parsed root of the record data
+                Node root = null;
+                RecordType[] records = response.getRecords().getRecord();
+                // loop round processing returned records
+                for (int index = 0; index < records.length; index++)
+                {
+                    // make sure all the data objects exist that we require
+                    // inorder to process the record
+                    if (records[index].getRecordData() != null && records[index].getRecordData().get_any() != null
+                            && records[index].getRecordData().get_any() != null
+                            && records[index].getRecordData().get_any().length > 0
+                            && records[index].getRecordData().get_any()[0].getNodeValue() != null)
+                    {
+
+                        String recordPacking = records[index].getRecordPacking();
+                        if (recordPacking == null)
+                        {
+                            // strictly recordPacking should never be null but
+                            // if it is we will assume its a string and try and
+                            // continue to process the records
+                            recordPacking = RECORD_PACKING_STRING;
+                        }
+
+                        // Is the record packed as a String or XML
+                        if (recordPacking.equalsIgnoreCase(RECORD_PACKING_STRING))
+                        {
+                            logger.fine("Processing record [" + index + "] as a string");
+
+                            // get the first node value for the data
+                            String data = records[index].getRecordData().get_any()[0].getNodeValue();
+                            try
+                            {
+                                logger.fine("Parsing xml record string" + index);
+
+                                Document doc = DOMFactory.parse(data);
+                                root = doc.getDocumentElement();
+
+                                // if fine level logging on output the xml
+                                if (logger.isLoggable(Level.FINE))
+                                {
+                                    StringWriter writer = new StringWriter();
+                                    XMLSerializer.out(root, "xml", writer);
+                                    writer.flush();
+                                    logger.fine("Record [" + index + "] :" + writer.toString());
+                                }
+                            }
+                            catch (JaferException exc)
+                            {
+                                logger.severe("Execption Parsing Record [" + index + "]: " + exc);
+                            }
+                        }
+                        else if (recordPacking.equalsIgnoreCase(RECORD_PACKING_XML))
+                        {
+                            logger.fine("Processing record " + index + " as xml");
+                            root = records[index].getRecordData().get_any()[0].getFirstChild();
+                        }
+                        else
+                        {
+                            logger.severe("Invalid record packing value: [" + recordPacking + "] for Record: " + index);
+                            // move on to next records
+                            continue;
+                        }
+
+                        logger.fine("Processing schema information for record " + index);
+                        String schema = records[index].getRecordSchema();
+                        if (schema != null)
+                        {
+                            if (!schema.equalsIgnoreCase("default"))
+                            {
+                                schema = org.jafer.util.Config.translateSRWSchemaName(schema);
+                            }
+                            else
+                            {
+                                schema = org.jafer.util.Config.translateSRWSchemaName(root.getNamespaceURI());
+                            }
+                        }
+                        else
+                        {
+                            // ************************************************
+                            // MATTHEW: WHY ARE WE NOT TRANSLATING
+                            // SCHEMA HERE AS WELL
+                            // ************************************************
+                            schema = root.getNamespaceURI();
+                        }
+                        logger.fine("Creating and adding XMLRecord to return array for record " + index);
+                        XMLRecord record = new XMLRecord(root, schema);
+                        dataObjects.add(record);
+                    }
+                    else
+                    {
+                        logger.severe("Record Data not available in response for Record: " + index);
+                    }
+                }
+            }
+            else
+            {
+                logger.warning("No records returned for query: " + query);
+            }
+
+            return dataObjects;
+        }
+        catch (RemoteException exc)
+        {
+            logger.severe(exc.getMessage());
+            throw new ConnectionException(exc);
+        }
+        finally
+        {
+            logger.fine("SRWSession: Completed retrieve (present)");
+        }
     }
-  }
 
-  /**
-   * scan
-   *
-   * @param databases String[]
-   * @param nTerms int
-   * @param step int
-   * @param position int
-   * @param term Node
-   * @throws JaferException
-   * @throws ConnectionException
-   * @return Vector
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public Vector scan(String[] databases, int nTerms, int step, int position,
-                     Node term) throws JaferException, ConnectionException {
-    return null;
-  }
-
-  /**
-   * scan
-   *
-   * @param databases String[]
-   * @param nTerms int
-   * @param step int
-   * @param position int
-   * @param termObject Object
-   * @throws JaferException
-   * @throws ConnectionException
-   * @return Vector
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public Vector scan(String[] databases, int nTerms, int step, int position,
-                     Object termObject) throws JaferException,
-      ConnectionException {
-    return null;
-  }
-
-  /**
-   * search
-   *
-   * @param queryObject Object
-   * @param databases String[]
-   * @param resultSetName String
-   * @throws JaferException
-   * @throws ConnectionException
-   * @return int[]
-   * @todo Implement this org.jafer.zclient.Session method
-   */
-  public SearchResult[] search(Object queryObject, String[] databases,
-                      String resultSetName) throws JaferException,
-      ConnectionException {
-
-    try {
-      SearchRetrieveRequestType request = new SearchRetrieveRequestType();
-
-      if (queryObject instanceof RPNQuery) {
-        org.jafer.query.RPNQuery rpnQuery =  new org.jafer.query.RPNQuery((RPNQuery)queryObject);
-        query = new CQLQuery(rpnQuery.toJaferQuery()).getCQLQuery();
-      }
-      else if (queryObject instanceof Node)
-        query = new CQLQuery(new JaferQuery((Node)queryObject)).getCQLQuery();
-      else
-        throw new QueryException("Query type: "+ queryObject.getClass().getName() +" not supported", 107, "");
-
-      request.setVersion("1.1");
-      request.setQuery(query);
-      request.setStartRecord(new PositiveInteger("1"));
-      request.setMaximumRecords(new NonNegativeInteger("0"));
-
-      SearchRetrieveResponseType response = binding.searchRetrieveOperation(
-          request);
-      SearchResult result = new SearchResult();
-      result.setDatabaseName(null);
-      result.setDiagnostic(null);
-      result.setNoOfResults(response.getNumberOfRecords().intValue());
-      return new SearchResult[]{ result };
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
+     *      org.w3c.dom.Node)
+     */
+    public Vector scan(String[] databases, int nTerms, int step, int position, Node term) throws JaferException,
+            ConnectionException
+    {
+        return null;
     }
-    catch (RemoteException ex) {
-      throw new ConnectionException(ex);
-    }
-  }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
+     *      java.lang.Object)
+     */
+    public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject) throws JaferException,
+            ConnectionException
+    {
+        return null;
+    }
 }

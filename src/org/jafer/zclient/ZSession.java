@@ -31,230 +31,320 @@
 
 package org.jafer.zclient;
 
-import org.jafer.transport.ConnectionException;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jafer.exception.JaferException;
-import org.jafer.zclient.operations.*;
+import org.jafer.transport.ConnectionException;
 import org.jafer.transport.PDUDriver;
-import org.jafer.record.TermRecord;
-
-import java.util.logging.Logger;
-import java.util.logging.Level;
-import java.util.Vector;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.InetSocketAddress;
-
+import org.jafer.zclient.operations.Init;
+import org.jafer.zclient.operations.Present;
+import org.jafer.zclient.operations.PresentException;
+import org.jafer.zclient.operations.Scan;
+import org.jafer.zclient.operations.Search;
 import org.w3c.dom.Node;
 
-
 /**
- * <p>Manages a zclient session and sets up connection with zserver using org.jafer.util.PDUDriver.
-  * A session can be anonymous or if authentication is required by target, the client sets properties
-  * for user/group/password. Changing these properties will terminate an existing session and establish a new one.</p>
+ * <p>
+ * Manages a zclient session and sets up connection with zserver using
+ * org.jafer.util.PDUDriver. A session can be anonymous or if authentication is
+ * required by target, the client sets properties for user/group/password.
+ * Changing these properties will terminate an existing session and establish a
+ * new one.
+ * </p>
+ * 
  * @author Antony Corfield; Matthew Dovey; Colin Tatham
  * @version 1.0
  */
-public class ZSession
-    implements Session {
+public class ZSession implements Session
+{
 
-  private static Logger logger;
-  private static int sessionId = 0;
-  private PDUDriver pduDriver;
-  private Socket socket;
-  private String name, host, group, username, password, targetInfo = "Z39.50 server";
-  private int port, timeout, targetVersion = 0;
+    private static Logger logger = Logger.getLogger("org.jafer.zclient");;
 
-  /**
-   * double SOCKET_CONNECT_TIMEOUT
-   * Timeout in milliseconds for the Socket.connect () function.
-   * The default value for this on a Windows 2000 machine appears to be
-   * approximately 23 seconds. If a host isn't responding for some
-   * reason then a search will wait for the socket connect () to timeout.
-   * Added by Ashley Sanders, University of Manchester, 9/10/2003.
-   */
+    private static int sessionId = 0;
 
-   private final static int SOCKET_CONNECT_TIMEOUT = 3000;
+    private PDUDriver pduDriver;
 
-  /**
-   * @todo: how do we handle preferredMessageSize and exceptionalRecordSize?
-   **/
+    private Socket socket;
 
-  public ZSession(String host, int port, int timeout) {
+    private String name, host, group, username, password, targetInfo = "Z39.50 server";
 
-    this.logger = Logger.getLogger("org.jafer.zclient");
-    this.sessionId++;
-    this.host = host;
-    this.port = port;
-    this.timeout = timeout;
-  }
+    private int port, timeout, targetVersion = 0;
 
-  private void connect() throws ConnectionException {
+    /**
+     * double SOCKET_CONNECT_TIMEOUT Timeout in milliseconds for the
+     * Socket.connect () function. The default value for this on a Windows 2000
+     * machine appears to be approximately 23 seconds. If a host isn't
+     * responding for some reason then a search will wait for the socket connect ()
+     * to timeout. Added by Ashley Sanders, University of Manchester, 9/10/2003.
+     */
 
-    String message = "";
-    InetSocketAddress sAdd = new InetSocketAddress(host, port);
-    try {
-      socket = new Socket();
-      socket.connect(sAdd, SOCKET_CONNECT_TIMEOUT);
-      setPDUDriver(new PDUDriver(getName(), socket, timeout));
-      message = getName() + " connected to " + host + " on port " + port;
-      logger.log(Level.FINE, message);
-    } catch (java.net.UnknownHostException e) {
-      message = getName() + " error starting session: Unknown host " + host;
-      logger.log(Level.WARNING, message);
-      throw new ConnectionException(message, e);
-    } catch (java.lang.SecurityException e) {
-      message = getName() + " error starting session: Security error " + "(" + e.toString() + ")";
-      logger.log(Level.WARNING, message);
-      throw new ConnectionException(message, e);
-    } catch (java.lang.NullPointerException e) {
-      message = getName() + " error starting session: host (" + host + ") or port (" + port + ") not found";
-      logger.log(Level.WARNING, message);
-      throw new ConnectionException(message, e);
-    } catch (IOException e) {
-      message = getName() + " error starting session: IOException (" + e.toString() + ")";
-      logger.log(Level.WARNING, message);
-      throw new ConnectionException(message, e);
+    private final static int SOCKET_CONNECT_TIMEOUT = 3000;
+
+    /**
+     * @todo: how do we handle preferredMessageSize and exceptionalRecordSize?
+     */
+
+    public ZSession(String host, int port, int timeout)
+    {
+
+        sessionId++;
+        this.host = host;
+        this.port = port;
+        this.timeout = timeout;
     }
-  }
 
-  public void init(String group, String username, String password) throws ConnectionException {
+    private void connect() throws ConnectionException
+    {
 
-    setName(group, username, password);
-    connect();
-
-    Init init = new Init(this);
-    try {
-      init.init(this.group, this.username, this.password);
-      targetVersion = init.getTargetVersion();
-      targetInfo = init.getTargetInfo();
-      logger.log(Level.INFO, getName() + " established with host on port " + port + "\n" + targetInfo);
-    } catch (ConnectionException e) {
-      logger.log(Level.WARNING, getName() + " " + e.getMessage() + " - cannot connect to target " + init.getTargetInfo());
-      throw e;
+        String message = "";
+        InetSocketAddress sAdd = new InetSocketAddress(host, port);
+        try
+        {
+            socket = new Socket();
+            socket.connect(sAdd, SOCKET_CONNECT_TIMEOUT);
+            setPDUDriver(new PDUDriver(getName(), socket, timeout));
+            message = getName() + " connected to " + host + " on port " + port;
+            logger.log(Level.FINE, message);
+        }
+        catch (java.net.UnknownHostException e)
+        {
+            message = getName() + " error starting session: Unknown host " + host;
+            logger.log(Level.WARNING, message);
+            throw new ConnectionException(message, e);
+        }
+        catch (java.lang.SecurityException e)
+        {
+            message = getName() + " error starting session: Security error " + "(" + e.toString() + ")";
+            logger.log(Level.WARNING, message);
+            throw new ConnectionException(message, e);
+        }
+        catch (java.lang.NullPointerException e)
+        {
+            message = getName() + " error starting session: host (" + host + ") or port (" + port + ") not found";
+            logger.log(Level.WARNING, message);
+            throw new ConnectionException(message, e);
+        }
+        catch (IOException e)
+        {
+            message = getName() + " error starting session: IOException (" + e.toString() + ")";
+            logger.log(Level.WARNING, message);
+            throw new ConnectionException(message, e);
+        }
     }
-  }
 
-  public void close() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#init(java.lang.String, java.lang.String,
+     *      java.lang.String)
+     */
+    public void init(String group, String username, String password) throws ConnectionException
+    {
 
-    try {
-      if (targetVersion > 2 || targetVersion == 0)
-        pduDriver.initClose(0);
-      if (socket != null)
-        socket.close();
-      logger.log(Level.INFO, getName() + " closed connection to " + targetInfo);
-    } catch (Exception e) {
-      logger.log(Level.WARNING, getName() + " error attempting to close session " + "(" + e.toString() + ")");
+        setName(group, username, password);
+        connect();
+
+        Init init = new Init(this);
+        try
+        {
+            init.init(this.group, this.username, this.password);
+            targetVersion = init.getTargetVersion();
+            targetInfo = init.getTargetInfo();
+            logger.log(Level.INFO, getName() + " established with host on port " + port + "\n" + targetInfo);
+        }
+        catch (ConnectionException e)
+        {
+            logger.log(Level.WARNING, getName() + " " + e.getMessage() + " - cannot connect to target " + init.getTargetInfo());
+            throw e;
+        }
     }
-  }
 
-//  public int search(Node domQuery, String[] databases, String resultSetName)
-//                                  throws JaferException, ConnectionException {
-//
-//    Search search = new Search(this);
-//    return search.search(domQuery, databases, resultSetName);
-//  }
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#close()
+     */
+    public void close()
+    {
 
-  public SearchResult[] search(Object queryObject, String[] databases, String resultSetName)
-                                  throws JaferException, ConnectionException {
-
-    Search search = new Search(this);
-    return search.search(queryObject, databases, resultSetName);
-  }
-
-  public  Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec, String resultSetName)
-                                      throws PresentException, ConnectionException {
-
-    Present present = new Present(this);
-    return present.present(nRecord, nRecords, recordOID, eSpec, resultSetName);
-  }
-
-  public Vector scan(String[] databases, int nTerms, int step, int position, Node term) throws JaferException, ConnectionException {
-
-    Scan scan = new Scan(this);
-    return scan.scan(databases, nTerms, step, position, term);
-  }
-
-  public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject) throws JaferException, ConnectionException {
-
-    Scan scan = new Scan(this);
-    return scan.scan(databases, nTerms, step,  position, termObject);
-  }
-
-  public void setPDUDriver(PDUDriver pduDriver) {
-    this.pduDriver = pduDriver;
-  }
-
-  public PDUDriver getPDUDriver() {
-    return pduDriver;
-  }
-
-  private void setName(String group, String username, String password) {
-
-    name = "session-" + sessionId + " [" ;
-
-    if (group == null && username == null && password == null)
-      name += "anonymous";
-    else {
-      if (group != null)
-        name += group;
-      if (username != null)
-        name += "." + username;
-      if (password != null)
-        name += "." + "password";
+        try
+        {
+            if (targetVersion > 2 || targetVersion == 0)
+                pduDriver.initClose(0);
+            if (socket != null)
+                socket.close();
+            logger.log(Level.INFO, getName() + " closed connection to " + targetInfo);
+        }
+        catch (Exception e)
+        {
+            logger.log(Level.WARNING, getName() + " error attempting to close session " + "(" + e.toString() + ")");
+        }
     }
-    name += "]" ;
 
-    this.group = group;
-    this.username = username;
-    this.password = password;
-  }
+    // public int search(Node domQuery, String[] databases, String
+    // resultSetName)
+    // throws JaferException, ConnectionException {
+    //
+    // Search search = new Search(this);
+    // return search.search(domQuery, databases, resultSetName);
+    // }
 
-  public int getId() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#search(java.lang.Object,
+     *      java.lang.String[], java.lang.String)
+     */
+    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName) throws JaferException,
+            ConnectionException
+    {
 
-    return sessionId;
-  }
+        Search search = new Search(this);
+        return search.search(queryObject, databases, resultSetName);
+    }
 
-  public String getName() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#present(int, int, int[], java.lang.String,
+     *      java.lang.String)
+     */
+    public Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec, String resultSetName)
+            throws PresentException, ConnectionException
+    {
 
-    return name;
-  }
+        Present present = new Present(this);
+        return present.present(nRecord, nRecords, recordOID, eSpec, resultSetName);
+    }
 
-  public String getGroup() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
+     *      org.w3c.dom.Node)
+     */
+    public Vector scan(String[] databases, int nTerms, int step, int position, Node term) throws JaferException,
+            ConnectionException
+    {
 
-    return group;
-  }
+        Scan scan = new Scan(this);
+        return scan.scan(databases, nTerms, step, position, term);
+    }
 
-  public String getUsername() {
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
+     *      java.lang.Object)
+     */
+    public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject) throws JaferException,
+            ConnectionException
+    {
 
-    return username;
-  }
+        Scan scan = new Scan(this);
+        return scan.scan(databases, nTerms, step, position, termObject);
+    }
 
-  public String getPassword() {
+    public void setPDUDriver(PDUDriver pduDriver)
+    {
+        this.pduDriver = pduDriver;
+    }
 
-    return password;
-  }
+    public PDUDriver getPDUDriver()
+    {
+        return pduDriver;
+    }
+
+    private void setName(String group, String username, String password)
+    {
+
+        name = "session-" + sessionId + " [";
+
+        if (group == null && username == null && password == null)
+            name += "anonymous";
+        else
+        {
+            if (group != null)
+                name += group;
+            if (username != null)
+                name += "." + username;
+            if (password != null)
+                name += "." + "password";
+        }
+        name += "]";
+
+        this.group = group;
+        this.username = username;
+        this.password = password;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getId()
+     */
+    public int getId()
+    {
+
+        return sessionId;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getName()
+     */
+    public String getName()
+    {
+
+        return name;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getGroup()
+     */
+    public String getGroup()
+    {
+
+        return group;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getUsername()
+     */
+    public String getUsername()
+    {
+
+        return username;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.jafer.zclient.Session#getPassword()
+     */
+    public String getPassword()
+    {
+
+        return password;
+    }
 }
 /*
-  public Session(Socket socket)  throws ConnectionException {
-
-    this.logger = Logger.getLogger("org.jafer.zclient");
-    this.socket = socket;
-    this.closeReason = loadCloseReason(new Hashtable());
-    try {
-      timeout = socket.getSoTimeout();
-      src = new BufferedInputStream(socket.getInputStream());
-      dest = new BufferedOutputStream(socket.getOutputStream());
-    }
-    catch (java.io.IOException e1) {
-      try {
-        socket.close();
-        } catch (java.io.IOException e2) {}
-        socket = null;
-        String message = "Error starting Session: IO error " + "(" + e1.toString() + ")";
-        throw new ConnectionException(message, e1);
-    }
-  }
-*/
+ * public Session(Socket socket) throws ConnectionException { this.logger =
+ * Logger.getLogger("org.jafer.zclient"); this.socket = socket; this.closeReason =
+ * loadCloseReason(new Hashtable()); try { timeout = socket.getSoTimeout(); src =
+ * new BufferedInputStream(socket.getInputStream()); dest = new
+ * BufferedOutputStream(socket.getOutputStream()); } catch (java.io.IOException
+ * e1) { try { socket.close(); } catch (java.io.IOException e2) {} socket =
+ * null; String message = "Error starting Session: IO error " + "(" +
+ * e1.toString() + ")"; throw new ConnectionException(message, e1); } }
+ */
