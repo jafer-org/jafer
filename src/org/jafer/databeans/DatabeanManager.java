@@ -502,7 +502,7 @@ public class DatabeanManager extends Databean implements Present, Search
      * Stores a reference to whether pre filling of the caching is enabled or
      * not. Enabled (true) as default.
      */
-    private boolean autoPopulateCache = false;
+    private boolean autoPopulateCache = true;
 
     /**
      * Stores a reference to an array of active beans forthe current set of
