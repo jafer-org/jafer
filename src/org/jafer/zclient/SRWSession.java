@@ -247,18 +247,11 @@ public class SRWSession implements Session
     public Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec, String resultSetName)
             throws PresentException, ConnectionException
     {
-        // ************************************************************************
-        // MATTHEW: FEEL WE HAVE A FEW CONDITIONS BELOW WHERE WE REALLY WANT TO
-        // THROW JAFER EXCEPTION AND ABORT RETRIEVE AS SOMETHING IS OBVIOUSLY
-        // WRONG WITH THE RECORD. SHOULD WE CONSIDER ADDING JAFEREXCEPTION TO
-        // THIS INTERFACE METHOD - SEE logger.warning and logger.sever FOR
-        // CONSIDERATION POINTS IN THIS METHOD
-        // ************************************************************************
-
         logger.fine("SRWSession: Performing retrieve (present)");
 
         try
         {
+            int recordsReturned = 0;
             Vector dataObjects = new Vector();
 
             // make sure query is set
@@ -282,6 +275,12 @@ public class SRWSession implements Session
             logger.fine("Excuting retrieve via binding");
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             logger.fine("Processing search results");
+
+            // store the number of records that were returned by the search
+            if (response.getNumberOfRecords() != null)
+            {
+                recordsReturned = response.getNumberOfRecords().intValue();
+            }
 
             // make sure we have record objects that can be processed
             if (response.getRecords() != null && response.getRecords().getRecord() != null)
@@ -318,8 +317,6 @@ public class SRWSession implements Session
                             String data = records[index].getRecordData().get_any()[0].getNodeValue();
                             try
                             {
-                                logger.fine("Parsing xml record string" + index);
-
                                 Document doc = DOMFactory.parse(data);
                                 root = doc.getDocumentElement();
 
@@ -336,19 +333,35 @@ public class SRWSession implements Session
                             {
                                 String msg = "Exeception Parsing Record [" + index + "]: ";
                                 logger.severe(msg + exc);
-                                throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, 0, msg, exc);
+                                throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned, msg, exc);
                             }
                         }
                         else if (recordPacking.equalsIgnoreCase(RECORD_PACKING_XML))
                         {
                             logger.fine("Processing record " + index + " as xml");
                             root = records[index].getRecordData().get_any()[0].getFirstChild();
+                            // if fine level logging on output the xml
+                            if (logger.isLoggable(Level.FINE))
+                            {
+                                try
+                                {
+                                    StringWriter writer = new StringWriter();
+                                    XMLSerializer.out(root, "xml", writer);
+                                    writer.flush();
+                                    logger.fine("Record [" + index + "] :" + writer.toString());
+                                }
+                                catch (JaferException exc)
+                                {
+                                    // log but continue
+                                    logger.severe(exc.getMessage());
+                                }
+                            }
                         }
                         else
                         {
                             String msg = "Invalid record packing value: [" + recordPacking + "] for Record: " + index;
                             logger.severe(msg);
-                            throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, 0, msg);
+                            throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned, msg);
                         }
 
                         logger.fine("Processing schema information for record " + index);
@@ -380,7 +393,7 @@ public class SRWSession implements Session
                     {
                         String msg = "Record Data not available in response for Record: " + index;
                         logger.severe(msg);
-                        throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, 0, msg);
+                        throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned , msg);
                     }
                 }
             }
