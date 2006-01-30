@@ -337,6 +337,7 @@ test/org/jafer/databeans/DatabeanManagerTest.java -text
 test/org/jafer/databeans/JaferDataBeansTestSuite.java -text
 test/org/jafer/query/JaferQueryTestObject.java -text
 test/org/jafer/query/QueryBuilderTest.java -text
+test/org/jafer/query/QueryTestSuite.java -text
 test/org/jafer/query/converter/CQLQueryConverterTest.java -text
 test/org/jafer/query/converter/JaferQueryConverterTest.java -text
 test/org/jafer/query/converter/RPNQueryConverterTest.java -text
