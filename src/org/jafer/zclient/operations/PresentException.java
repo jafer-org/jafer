@@ -37,50 +37,69 @@ import org.jafer.record.Diagnostic;
 /**
  * Exception thrown if problems retrieving records
  */
-public class PresentException extends JaferException {
+public class PresentException extends JaferException
+{
 
-  private int status, numberOfRecordsReturned;
-  private Diagnostic[] diagnostics;
+    public static final int STATUS_REQUEST_TERMINATED = 1;
 
-  public PresentException(int status, int numberOfRecordsReturned, Diagnostic[] diagnostics, String message) {
+    public static final int STATUS_TO_MANY_RECORDS = 2;
 
-    super(message);
-    this.status = status;
-    this.numberOfRecordsReturned = numberOfRecordsReturned;
-    this.diagnostics = diagnostics;
-  }
+    public static final int STATUS_ORIGIN_FAILURE = 3;
 
-  public PresentException(int status, int numberOfRecordsReturned, String message) {
+    public static final int STATUS_TARGET_FAILURE = 4;
 
-    super(message);
-    this.status = status;
-    this.numberOfRecordsReturned = numberOfRecordsReturned;
-  }
+    public static final int STATUS_TERMINAL_FAILURE = 5;
 
-  public PresentException(int status, int numberOfRecordsReturned, String message, Throwable cause) {
+    private int status, numberOfRecordsReturned;
 
-    super(message, cause);
-    this.status = status;
-    this.numberOfRecordsReturned = numberOfRecordsReturned;
-  }
+    private Diagnostic[] diagnostics;
 
-  public int getStatus() {
+    public PresentException(int status, int numberOfRecordsReturned, Diagnostic[] diagnostics, String message)
+    {
 
-    return status;
-  }
+        super(message);
+        this.status = status;
+        this.numberOfRecordsReturned = numberOfRecordsReturned;
+        this.diagnostics = diagnostics;
+    }
 
-  public int getNumberOfRecordsReturned() {
+    public PresentException(int status, int numberOfRecordsReturned, String message)
+    {
 
-    return numberOfRecordsReturned;
-  }
+        super(message);
+        this.status = status;
+        this.numberOfRecordsReturned = numberOfRecordsReturned;
+    }
 
-  public Diagnostic[] getDiagnostics() {
+    public PresentException(int status, int numberOfRecordsReturned, String message, Throwable cause)
+    {
 
-    return diagnostics;
-  }
+        super(message, cause);
+        this.status = status;
+        this.numberOfRecordsReturned = numberOfRecordsReturned;
+    }
 
-  public boolean hasDiagnostics() {
+    public int getStatus()
+    {
 
-    return (diagnostics != null && diagnostics.length > 0);
-  }
+        return status;
+    }
+
+    public int getNumberOfRecordsReturned()
+    {
+
+        return numberOfRecordsReturned;
+    }
+
+    public Diagnostic[] getDiagnostics()
+    {
+
+        return diagnostics;
+    }
+
+    public boolean hasDiagnostics()
+    {
+
+        return (diagnostics != null && diagnostics.length > 0);
+    }
 }

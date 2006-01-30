@@ -30,10 +30,14 @@
 
 package org.jafer.zclient;
 
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.collections.iterators.ArrayIterator;
 import org.jafer.exception.JaferException;
 import org.jafer.query.QueryException;
 import org.jafer.query.QueryParser;
@@ -51,10 +55,6 @@ import org.jafer.zclient.operations.PresentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import java.util.Hashtable;
-import java.util.Iterator;
-import org.apache.commons.collections.iterators.ArrayIterator;
-import java.util.NoSuchElementException;
 
 public abstract class AbstractClient extends org.jafer.interfaces.Databean implements org.jafer.interfaces.Cache,
         org.jafer.interfaces.Logging, org.jafer.interfaces.Connection, org.jafer.interfaces.Z3950Connection,
@@ -508,7 +508,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                     int status = e.getStatus();
                     switch (status)
                     {
-                    case 1: // Present request terminated try again...
+                    case PresentException.STATUS_REQUEST_TERMINATED: // Present request terminated try again...
                         handleError(userIP + "Present status = " + status + ": " + e.getMessage() + " (record "
                                 + getStartRecordNumber() + "):" + " records requested = " + getNumberOfRequestRecords()
                                 + ", records returned = " + e.getNumberOfRecordsReturned());
@@ -522,7 +522,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                             handleError(userIP + "Persistent failure whilst retrieving records (autoReconnect = "
                                     + getAutoReconnect() + ")", e);
                         break;
-                    case 2: // too many records requested try again...
+                    case PresentException.STATUS_TO_MANY_RECORDS: // too many records requested try again...
 
                         if (e.getNumberOfRecordsReturned() > 1)
                         {
@@ -540,7 +540,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                                     + ", records returned = " + e.getNumberOfRecordsReturned(), e);
                         }
                         break;
-                    case 3: // Present request terminated try again...
+                    case PresentException.STATUS_ORIGIN_FAILURE: // Present request terminated try again...
                         handleError(userIP + "Present status = " + status
                                 + "; requested record was not returned - message size is too small (record "
                                 + getStartRecordNumber() + "):" + " records requested = " + getNumberOfRequestRecords()
@@ -555,7 +555,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                             handleError(userIP + "Persistent failure whilst retrieving records (autoReconnect = "
                                     + getAutoReconnect() + ")", e);
                         break;
-                    case 4: // Present request terminated try again...
+                    case PresentException.STATUS_TARGET_FAILURE: // Present request terminated try again...
                         handleError(userIP + "Present status = " + status + ": " + e.getMessage() + " (record "
                                 + getStartRecordNumber() + "):" + " records requested = " + getNumberOfRequestRecords()
                                 + ", records returned = " + e.getNumberOfRecordsReturned());
@@ -569,7 +569,7 @@ public abstract class AbstractClient extends org.jafer.interfaces.Databean imple
                             handleError(userIP + "Persistent failure whilst retrieving records (autoReconnect = "
                                     + getAutoReconnect() + ")", e);
                         break;
-                    case 5: // Present failure
+                    case PresentException.STATUS_TERMINAL_FAILURE: // Present failure
                         handleError(userIP + "Present failed status = " + status + ": " + e.getMessage() + " (record "
                                 + getStartRecordNumber() + ")", e);
                     }
