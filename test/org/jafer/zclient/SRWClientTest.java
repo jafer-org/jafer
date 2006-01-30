@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 import org.jafer.exception.JaferException;
 import org.jafer.query.QueryBuilder;
 import org.jafer.query.QueryException;
+import org.jafer.record.Field;
 import org.jafer.registry.web.struts.bean.ModsRecord;
 import org.w3c.dom.Node;
 
@@ -56,7 +57,7 @@ public class SRWClientTest extends TestCase
             bean.setHost("http://herbie.bl.uk:9080/cgi-bin/blils.cgi");
             bean.setAutoReconnect(1);
             bean.setRecordSchema("http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0");
-
+                        
             // create and execute query
             QueryBuilder builder = new QueryBuilder();
             Node query = builder.getNode("title", "bible");
@@ -81,7 +82,7 @@ public class SRWClientTest extends TestCase
      * Test that the SRWClient creates a session that uses an SRW binding as the
      * server only supports SRW and can search for records fine
      */
-    public void testSRWBindingForServerSupportingSRWOnly()
+    public void testSRWBindingSearchForServerSupportingSRWOnly()
     {
         try
         {
@@ -252,5 +253,46 @@ public class SRWClientTest extends TestCase
         }
     }
 
-    
+    /**
+     * Test that the SRWClient creates a session that uses an SRW binding as the
+     * server and can search and retrieve records fine
+     */
+    public void testSRWBindingRetrieveForServerSupportingSRW()
+    {
+        try
+        {
+            SRWClient bean = new SRWClient();
+            
+            bean.setHost("http://tweed.lib.ed.ac.uk:8080/elf/search/oxford");
+            bean.setAutoReconnect(1);
+            bean.setRecordSchema("http://www.imsglobal.org/services/rli/xsd/imsRLIManDataSchema_v1p0");
+
+            // create and execute query
+            QueryBuilder builder = new QueryBuilder();
+            Node query = builder.getNode("author", "thomas");
+            System.out.println("START --> CHECK THAT CONNECTION MESSAGES REFER TO SRW");
+            int results = bean.submitQuery(query);
+            System.out.println("END --> CHECK THAT CONNECTION MESSAGES REFER TO SRW");
+
+            // make sure we got results
+            assertTrue("did not get any results", results > 0);
+            
+            // now retrieve the results
+            bean.setRecordCursor(1);
+            Field record = bean.getCurrentRecord();
+            
+            ModsRecord mods = new ModsRecord(record);
+            outputModsData(mods,1);
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("Query Exception : " + exc);
+        }
+        catch (JaferException exc)
+        {
+            exc.printStackTrace();
+            fail("Jafer Exception : " + exc);
+        }
+    }
 }

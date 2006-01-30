@@ -17,10 +17,14 @@ package org.jafer;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
+import org.jafer.databeans.JaferDataBeansTestSuite;
 import org.jafer.query.QueryBuilderTest;
 import org.jafer.query.converter.CQLQueryConverterTest;
 import org.jafer.query.converter.JaferQueryConverterTest;
 import org.jafer.query.converter.RPNQueryConverterTest;
+import org.jafer.registry.uddi.UDDITestSuite;
+import org.jafer.sru.SRUroSRWBridgeTestSuite;
+import org.jafer.zclient.ZClientTestSuite;
 
 /**
  * This class runs the entire JAFER test suite.
@@ -42,7 +46,10 @@ public class JaferTestSuite
         suite.addTestSuite(JaferQueryConverterTest.class);
         suite.addTestSuite(CQLQueryConverterTest.class);
         suite.addTestSuite(RPNQueryConverterTest.class);
-
+        suite.addTestSuite(ZClientTestSuite.class);
+        suite.addTestSuite(SRUroSRWBridgeTestSuite.class);
+        suite.addTestSuite(UDDITestSuite.class);
+        suite.addTestSuite(JaferDataBeansTestSuite.class);
         //$JUnit-END$
         return suite;
     }

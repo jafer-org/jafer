@@ -35,7 +35,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Stores a reference to the XMLHEADER text
      */
-    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
 
     /**
      * Stores a reference to the query builder for building test data
