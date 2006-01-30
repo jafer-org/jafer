@@ -19,34 +19,28 @@
 
 package org.jafer.util.xml;
 
-import org.jafer.exception.JaferException;
-
 import java.io.File;
 import java.io.InputStream;
-import java.io.Writer;
 import java.io.OutputStream;
+import java.io.Writer;
 import java.net.URL;
-import java.util.Map;
 import java.util.Iterator;
-// Imported TraX classes
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.Templates;
-// test FEATURE of parser
-import org.xml.sax.SAXNotSupportedException;
-// Imported DOM classes
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-// Imported Logger classes
+import java.util.Map;
 import java.util.logging.Logger;
-import java.util.logging.Level;
+
+import javax.xml.transform.Templates;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.jafer.exception.JaferException;
+import org.w3c.dom.Node;
 
 /**
  * <p>
@@ -65,6 +59,8 @@ public class XMLTransformer
 
     private static TransformerFactory tFactory;
 
+    private static URIResolver uriResolver = null;
+
     static
     {
         logger = Logger.getLogger("org.jafer.util");
@@ -79,14 +75,15 @@ public class XMLTransformer
     }
 
     /**
-     * Set the URI resolver for the transformer factory that will resolve any
-     * URLs in XSLT stylesheets
+     * To avoid altering all the interfaces when a transformer is created
+     * internally the transformer will have this URIResolver set on it if it is
+     * not currently null
      * 
      * @param resolver The URIResolver to use for all transformations
      */
-    public static void setFactoryURIResover(URIResolver resolver)
+    public static void setURIResoverForNewTransformers(URIResolver resolver)
     {
-        tFactory.setURIResolver(resolver);
+        uriResolver = resolver;
     }
 
     public static Node transform(Node sourceNode, Transformer transformer) throws JaferException
@@ -209,8 +206,15 @@ public class XMLTransformer
         logger.entering("XMLTransformer", "public static Node transform(Node sourceNode, Templates template)");
 
         try
-        {// Create Transformer object from thread safe templates object
-            return transform(sourceNode, template.newTransformer());
+        {
+            Transformer transformer = template.newTransformer();
+            // if we have a URIResolver set apply it to transformer
+            if (uriResolver != null)
+            {
+                transformer.setURIResolver(uriResolver);
+            }
+            // Create Transformer object from thread safe templates object
+            return transform(sourceNode, transformer);
         }
         catch (TransformerConfigurationException e)
         {
@@ -233,6 +237,11 @@ public class XMLTransformer
         try
         {
             transformer = tFactory.newTransformer(new StreamSource(stream));
+            // if we have a URIResolver set apply it to transformer
+            if (uriResolver != null)
+            {
+                transformer.setURIResolver(uriResolver);
+            }
             return transform(sourceNode, transformer);
         }
         catch (TransformerConfigurationException e)
@@ -269,6 +278,11 @@ public class XMLTransformer
                 String value = (String) paramMap.get(param);
                 transformer.setParameter(param, value);
             }
+            // if we have a URIResolver set apply it to transformer
+            if (uriResolver != null)
+            {
+                transformer.setURIResolver(uriResolver);
+            }
             return transform(sourceNode, transformer);
         }
         catch (TransformerConfigurationException e)
@@ -298,6 +312,11 @@ public class XMLTransformer
         try
         {
             transformer = tFactory.newTransformer(new StreamSource(path));
+            // if we have a URIResolver set apply it to transformer
+            if (uriResolver != null)
+            {
+                transformer.setURIResolver(uriResolver);
+            }
             return transform(sourceNode, transformer);
         }
         catch (TransformerConfigurationException e)
@@ -333,6 +352,11 @@ public class XMLTransformer
                 String param = (String) keys.next();
                 String value = (String) paramMap.get(param);
                 transformer.setParameter(param, value);
+            }
+            // if we have a URIResolver set apply it to transformer
+            if (uriResolver != null)
+            {
+                transformer.setURIResolver(uriResolver);
             }
             return transform(sourceNode, transformer);
         }
