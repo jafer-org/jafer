@@ -230,6 +230,11 @@ src/org/jafer/sru/bridge/ScanOperationBridge.java -text
 src/org/jafer/sru/bridge/SearchRetrieveOperationBridge.java -text
 src/org/jafer/sru/bridge/V1Bridge.java -text
 src/org/jafer/sru/servlet/SRUServlet.java -text
+src/org/jafer/srwserver/SRWServer.java -text
+src/org/jafer/srwserver/SRWServerConfig.java -text
+src/org/jafer/srwserver/SRWServerSkeleton.java -text
+src/org/jafer/srwserver/deploy.wsdd -text
+src/org/jafer/srwserver/undeploy.wsdd -text
 src/org/jafer/test/Demo.java -text
 src/org/jafer/test/ServerStart.java -text
 src/org/jafer/test/ServerTest.java -text
