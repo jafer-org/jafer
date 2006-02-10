@@ -186,6 +186,11 @@ public class SRWSession implements Session
                 logger.fine("Convert JaferQuery Node to CQL query string");
                 query = new CQLQuery(new JaferQuery((Node) queryObject)).getCQLQuery();
             }
+            else if (queryObject instanceof JaferQuery)
+            {
+                logger.fine("Convert JaferQuery Node to CQL query string");
+                query = ((JaferQuery) queryObject).toCQLQuery().getCQLQuery();
+            }
             else
             {
                 // bad query

@@ -54,6 +54,8 @@ public class QueryParser {
       return parseQuery((Node)query);
     if (query instanceof RPNQuery)
       return parseQuery((RPNQuery)query);
+    if (query instanceof JaferQuery)
+      return parseQuery((JaferQuery)query);
     else {
       String message = "Query not parsed. (No method available to parse query of Class: "+ query.getClass().getName()+")";
       logger.log(Level.WARNING, message);
@@ -68,6 +70,14 @@ public class QueryParser {
     /** @todo implement this.... */
     return query;
   }
+  
+  public static JaferQuery parseQuery(JaferQuery query) throws QueryException {
+
+      String message = "Query not parsed. (Method to parse JaferQuery not yet implemented.)";
+      logger.log(Level.WARNING, message);
+      /** @todo implement this.... */
+      return query;
+    }
 
   public static Node parseQuery(Node query) throws QueryException {
 
