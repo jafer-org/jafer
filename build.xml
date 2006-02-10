@@ -6,7 +6,9 @@
     Jafer Client
     Jafer Server
     JaferRegistry / JaferUDDI
-    SRUServer
+    SRUServer 
+    SRWServer
+-->
 
 <project name="Jafer" basedir="." default="help">
 
