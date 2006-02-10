@@ -89,6 +89,9 @@ public class SearchRetrieveBridgeTest extends TestCase
             testName = "search specified as operation with no version";
             params.put("query", "bible");
             params.put("operation", "searchRetrieve");
+            params.put("startRecord","1");
+            params.put("maximumRecords","3");
+            params.put("recordPacking","string");
             xml = runBridgeTest(testName, STANDARD_WEBURL, params, "");
             assertTrue("(" + testName + ") Mismatch on check 1", xml.indexOf(check1) != -1 );
             assertTrue("(" + testName + ") Mismatch on check 2", xml.indexOf(check2) != -1 );
