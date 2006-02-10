@@ -452,6 +452,12 @@ webapps/SRUServer/error.jsp -text
 webapps/SRUServer/images/SRUTitle.png -text
 webapps/SRUServer/images/oxfordcrest.gif -text
 webapps/SRUServer/index.jsp -text
+webapps/SRWServer/SOAPMonitorApplet.java -text
+webapps/SRWServer/WEB-INF/web.xml -text
+webapps/SRWServer/fingerprint.jsp -text
+webapps/SRWServer/happyaxis.jsp -text
+webapps/SRWServer/i18nLib.jsp -text
+webapps/SRWServer/index.jsp -text
 webapps/readinglist/WEB-INF/web.xml -text
 webapps/readinglist/add.gif -text
 webapps/readinglist/basket.jsp -text
