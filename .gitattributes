@@ -6,6 +6,7 @@ buildscripts/build_jaferclient.xml -text
 buildscripts/build_jaferportlet.xml -text
 buildscripts/build_jaferregistry.xml -text
 buildscripts/build_jaferserver.xml -text
+buildscripts/build_jafersrwserver.xml -text
 buildscripts/build_jaferuddi.xml -text
 buildscripts/build_resources.xml -text
 buildscripts/build_sruserver.xml -text

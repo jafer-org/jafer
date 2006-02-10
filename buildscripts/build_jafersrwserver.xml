@@ -1,0 +1,110 @@
+<!--
+    JAFER library Build Script Created on 04-January-2006
+    
+    This build script compiles and creates the Jafer srw server library 
+    
+-->
+
+<project name="JaferSRWCompiler" basedir=".." default="build-jafer-srwserver">
+    
+    <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
+    <import file="build_resources.xml"/>
+    <!-- import the compiler tasks -->
+    <import file="build_compilerscript.xml"/>
+    
+    <!-- define the sru server output filenames -->
+    <property name="dist.srwserver.filename" value="SRWServer.war" />
+    <property name="dist.installsrwserver.filename" value="SRWServerInstall.zip" />
+    <property name="srwserver.webapp.dir" value="${webapp.dir}/SRWServer" />
+    
+    <!-- create the srw server distribution WAR -->
+    <target name="distribute-srwserver" depends="compile,copy-resources">
+        <echo message="Creating ${dist.srwserver.filename} distribution" />
+        
+        <delete file="${dist.dir}/${dist.srwserver.filename}" quiet="true" />
+        
+        <zip destfile="${dist.dir}/${dist.srwserver.filename}">
+            <zipfileset  dir="${srwserver.webapp.dir}"   />
+            <zipfileset dir="${classes.dir}" prefix="${webinf.classes.dir}" > 
+                <include name="org/jafer/srwserver/**/*" />  
+                <include name="org/jafer/conf/*" /> 
+                <include name="org/jafer/conf/srwserver/*" /> 
+                <include name="org/jafer/conf/characterSets/*" /> 
+                <include name="org/jafer/databeans/*" /> 
+                <include name="org/jafer/exception/*" /> 
+                <include name="org/jafer/interfaces/*" /> 
+                <include name="org/jafer/query/**/*" /> 
+                <include name="org/jafer/record/*" /> 
+                <include name="org/jafer/transport/*" /> 
+                <include name="org/jafer/util/**/*" /> 
+                <include name="org/jafer/xsl/*" /> 
+                <include name="org/jafer/xsl/beans/*" /> 
+                <include name="org/jafer/xsl/cql/*" /> 
+                <include name="org/jafer/xsl/record/*" /> 
+                <include name="org/jafer/zclient/**/*" /> 
+                <include name="gov/**/*" />                
+            </zipfileset>
+            <zipfileset  dir="${lib.dir}" prefix="${webinf.lib.dir}">
+                <include name="zebulun.jar" />  
+                <include name="activation.jar" />
+                <include name="cql-java.jar" /> 
+            </zipfileset>
+            <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${struts.lib.dir}" prefix="${webinf.lib.dir}">
+                <include name="commons-collections.jar" /> 
+            </zipfileset>
+        </zip>
+        
+        <echo message="${dist.srwserver.filename} JAR created" />
+    </target>
+    
+    <!-- Build installer zip files -->
+    <target name="build-srwserver-installer" depends="distribute-srwserver,create-documentation">
+        <echo message="Building srw server installer" />
+        
+        <zip destfile="${dist.dir}/${dist.installsrwserver.filename}">
+            <fileset file="${dist.dir}/${dist.srwserver.filename}" />
+            <zipfileset  dir="${doc.dir}" prefix="doc"/>
+        </zip>
+        
+        <echo message="Completed building srw server installer" />
+    </target>     
+    
+    <!-- deploy srw - uses undeploy.wsdd from org.jafer.srwserver -->
+    <target name="deploy-srwserver" description="deploys jafer srw server">
+        <echo message="Deploy SRWServer at URL = ${deploy.url}/SRWServer/services/AdminService"/>
+        <java classname="org.apache.axis.client.AdminClient" fork="true">
+            <arg value="-l${deploy.url}/SRWServer/services/AdminService" />
+            <arg value="-p${deploy.port}" />
+            <arg value="${src.dir}/org/jafer/srwserver/deploy.wsdd"/>
+            <classpath>
+                <fileset dir="${lib.dir}" >
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${webapp.dir}/srwserver/WEB-INF/classes" />
+            </classpath>
+        </java>
+    </target>     
+    
+    <!-- undeploy srw - uses undeploy.wsdd from org.jafer.srwserver -->
+    <target name="undeploy-srwserver"  description="undeploys jafer srw server">
+        <echo message="Undeploy SRWServer at URL = ${deploy.url}"/>
+        <java classname="org.apache.axis.client.AdminClient" fork="true">
+            <arg value="-l${deploy.url}/SRWServer/services/AdminService" />
+            <arg value="${src.dir}/org/jafer/srwserver/undeploy.wsdd"/>
+            <classpath>
+                <fileset dir="${lib.dir}" >
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${webapp.dir}/srwserver/WEB-INF/classes" />
+            </classpath>
+        </java>
+    </target>
+    
+    <!-- MAIN BUILD TARGETS -->
+    <target name="build-jafer-srwserver" depends="build-srwserver-installer">
+        <echo message="Completed jafer srw server build" />
+    </target>           
+    
+</project>
