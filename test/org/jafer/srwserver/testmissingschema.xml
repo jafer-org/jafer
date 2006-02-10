@@ -1,0 +1,26 @@
+<srwserverconfig>
+
+    <!-- *********************************************************************************************** -->
+    <!-- PUBLIC - These setting can be altered by the user to configure the SRWServer instance           -->
+    <!-- *********************************************************************************************** -->
+    
+    
+     <!-- If the default max records is not set in the request then it will be defaulted to this value -->
+    <defaultmaxrecords>0</defaultmaxrecords>
+    
+    <!-- *********************************************************************************************** -->
+    <!-- PRIVATE: These are internal settings for standard diagnostic messages and should not be altered -->
+    <!-- *********************************************************************************************** -->    
+    <highestsearchversion>1.1</highestsearchversion>
+    <diagnostics>
+        <!-- Currently only added general exceptions -->
+        <diagnostic code="1">General system error</diagnostic>
+        <diagnostic code="2">System temporarily unavailable</diagnostic>
+        <diagnostic code="3">Authentication error</diagnostic>
+        <diagnostic code="4">Unsupported operation</diagnostic>
+        <diagnostic code="5">Unsupported version</diagnostic>
+        <diagnostic code="6">Unsupported parameter value</diagnostic>
+        <diagnostic code="7">Mandatory parameter not supplied</diagnostic>
+        <diagnostic code="8">Unsupported Parameter</diagnostic>        
+    </diagnostics>
+</srwserverconfig>
