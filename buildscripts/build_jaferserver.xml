@@ -50,6 +50,9 @@
                 <include name="zebulun.jar" />
                 <include name="cql-java.jar" />
             </zipfileset>
+            <zipfileset  dir="${struts.lib.dir}" prefix="${webinf.lib.dir}">
+                <include name="commons-collections.jar" /> 
+            </zipfileset>
             <zipfileset  dir="${axis.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${webinf.lib.dir}"/>
             <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}"/>
