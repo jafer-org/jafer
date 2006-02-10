@@ -44,6 +44,9 @@
             <zipfileset dir="${src.dir}/org/jafer/zoom" prefix="">
               <include name="META-INF/**" />
             </zipfileset>
+            <zipfileset  dir="${struts.lib.dir}" prefix="${webinf.lib.dir}">
+                <include name="commons-collections.jar" /> 
+            </zipfileset>
         </zip>
 
         <echo message="${dist.jaferclient.filename} JAR created" />
