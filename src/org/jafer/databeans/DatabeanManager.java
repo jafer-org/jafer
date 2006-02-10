@@ -42,6 +42,7 @@ import org.jafer.interfaces.Databean;
 import org.jafer.interfaces.DatabeanFactory;
 import org.jafer.interfaces.Present;
 import org.jafer.interfaces.Search;
+import org.jafer.query.JaferQuery;
 import org.jafer.record.CacheFactory;
 import org.jafer.record.Field;
 import org.jafer.record.RecordException;
@@ -192,10 +193,20 @@ class ActiveBean extends java.lang.Thread
     {
         // if the query is of type Node we need to import it into a new document
         if (query instanceof Node)
+        {
             this.query = DOMFactory.newDocument().importNode((Node) query, true);
+        }
+        // if the query is of type JaferQuery we need to import it into a new
+        // document
+        else if (query instanceof JaferQuery)
+        {
+            // if jafer then import the node
+            this.query = DOMFactory.newDocument().importNode(((JaferQuery) query).getQuery(), true);
+        }
         else
+        {
             this.query = query;
-
+        }
         // set the schema to use when prepopulating the cache
         setPrepoulateCacheRecordSchema(schema);
 
@@ -508,7 +519,7 @@ public class DatabeanManager extends Databean implements Present, Search
      * Stores a reference to an array of active beans forthe current set of
      * databases
      */
-    private ActiveBean[] activeBeans;
+    private ActiveBean[] activeBeans = new ActiveBean[0];
 
     /**
      * Stores a reference to current record cursor position
@@ -762,6 +773,9 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     public int submitQuery(Object query) throws JaferException
     {
+        // if the active beans are currently caching stop them now as we are
+        // preforming a new search
+        stopAutoPopulateCache();
         // make sure we have active beans to search
         if (activeBeans.length == 0)
         {
@@ -1184,9 +1198,23 @@ public class DatabeanManager extends Databean implements Present, Search
      */
     protected void finalize() throws Throwable
     {
+        stopAutoPopulateCache();
+        super.finalize();
+    }
+
+    /**
+     * This method stops any auto caching that may being performed by the
+     * databean manager in seperate threads to prempt and speed up retrieval.
+     * <BR>
+     * <BR>
+     * <B>This is important as the databean manager will continue to cache
+     * records if the setting is enabled until this method is called, a new
+     * query is submitted or the databean manager is garbage collected</B>
+     */
+    public void stopAutoPopulateCache()
+    {
         // before the DatabeanManager can be cleaned up it needs to stop any
-        // active bean
-        // threads that may still be running
+        // active bean threads that may still be running
         for (int activeBeanIndex = 0; activeBeanIndex < activeBeans.length; activeBeanIndex++)
         {
             // make sure active bean is configured
@@ -1202,6 +1230,5 @@ public class DatabeanManager extends Databean implements Present, Search
                 }
             }
         }
-        super.finalize();
     }
 }
