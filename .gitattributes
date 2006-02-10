@@ -87,6 +87,7 @@ src/org/jafer/databeans/Adaptor.java -text
 src/org/jafer/databeans/AdaptorFactory.java -text
 src/org/jafer/databeans/DatabeanManager.java -text
 src/org/jafer/databeans/DatabeanManagerFactory.java -text
+src/org/jafer/databeans/DatabeanManagerFactoryConfig.java -text
 src/org/jafer/databeans/JDBC.java -text
 src/org/jafer/databeans/JDBCFactory.java -text
 src/org/jafer/databeans/MySQLDatabean.java -text
