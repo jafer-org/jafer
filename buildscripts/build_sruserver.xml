@@ -5,7 +5,7 @@
     
 -->
 
-<project name="JaferSRUServerCompiler" basedir=".." default="build-sruserver">
+<project name="JaferSRUServerCompiler" basedir=".." default="build-jafer-sruserver">
     
     <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
     <import file="build_resources.xml"/>
@@ -52,7 +52,7 @@
     </target>         
     
     <!-- MAIN BUILD TARGETS -->
-    <target name="build-sruserver" depends="build-sruserver-installer">
+    <target name="build-jafer-sruserver" depends="build-sruserver-installer">
         <echo message="Completed SRU Server build" />
     </target>           
     
