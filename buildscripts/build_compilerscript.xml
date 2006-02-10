@@ -35,16 +35,11 @@
     <target name="generate-axis-stubs" depends="create-support-dirs" if="generate.stubs.enabled">
         <echo message="Starting axis stub generation" />
 
-        <axis-wsdl2java
-            output="${src.dir}"
-            testcase="false"
-            verbose="true"
-            url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
-        </axis-wsdl2java>
-        <axis-wsdl2java
+         <axis-wsdl2java
             output="${src.dir}"
             testcase="false"
             serverSide="true"
+            skeletondeploy="true"
             verbose="true"
             url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
         </axis-wsdl2java>
