@@ -453,6 +453,8 @@ webapps/SRUServer/images/SRUTitle.png -text
 webapps/SRUServer/images/oxfordcrest.gif -text
 webapps/SRUServer/index.jsp -text
 webapps/SRWServer/SOAPMonitorApplet.java -text
+webapps/SRWServer/WEB-INF/classes/SOAPMonitorApplet.class -text
+webapps/SRWServer/WEB-INF/classes/i18n.properties -text
 webapps/SRWServer/WEB-INF/web.xml -text
 webapps/SRWServer/fingerprint.jsp -text
 webapps/SRWServer/happyaxis.jsp -text
