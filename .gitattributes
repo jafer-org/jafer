@@ -81,6 +81,8 @@ src/org/jafer/conf/query/query-schema.xsd -text
 src/org/jafer/conf/recordDescriptor.xml -text
 src/org/jafer/conf/registry/tmodels.xml -text
 src/org/jafer/conf/searchProfiles.xml -text
+src/org/jafer/conf/srwserver/databeanmanagerconfig.xml -text
+src/org/jafer/conf/srwserver/srwserverconfig.xml -text
 src/org/jafer/databeans/Adaptor.java -text
 src/org/jafer/databeans/AdaptorFactory.java -text
 src/org/jafer/databeans/DatabeanManager.java -text
