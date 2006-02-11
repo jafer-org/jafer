@@ -21,6 +21,7 @@ distrib/server/readme.html -text
 documentation/index.html -text
 documentation/programmerguides/index.html -text
 documentation/userguides/index.html -text
+lib/activation.jar -text
 lib/axis/axis-ant.jar -text
 lib/axis/axis.jar -text
 lib/axis/commons-discovery.jar -text
