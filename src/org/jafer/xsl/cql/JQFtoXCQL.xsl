@@ -15,10 +15,10 @@
     <!-- Set up variables used for accessing BIB1 attributes and CQL Context Set data -->
     <!-- **************************************************************************** -->
     <!-- Store ref to the cqlcontextsets.xml file -->
-    <xsl:variable name="contextSets" select="document('../../conf/cqlContextSets.xml')/contextSets"/>
+    <xsl:variable name="contextSets" select="document('conf/cqlContextSets.xml')/contextSets"/>
     <!-- Store a ref to the bib one attribute set -->
     <xsl:variable name="bibAttribSet"
-        select="document('../../conf/bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
+        select="document('conf/bib1Attributes.xml')/attributeSets/attributeSet[@name='bib1']"/>
     <xsl:variable name="alwaysMatchRelationshipValue"
         select="$bibAttribSet/attributeType[@name='relation']/attribute[@name='always_matches']/@value"/>
     <!-- ************************************************************************ -->

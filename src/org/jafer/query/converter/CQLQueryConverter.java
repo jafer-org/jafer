@@ -58,7 +58,7 @@ public class CQLQueryConverter extends Converter
             InputStream XcqlToJqfStylesheet = CQLQueryConverter.class.getClassLoader().getResourceAsStream(
                     "org/jafer/xsl/cql/XCQLtoJQF.xsl");
             // set the URI resolver to use when doing this transform
-            XMLTransformer.setURIResoverForNewTransformers(new XMLFileUriResolver("org/jafer/xsl/cql/"));
+            XMLTransformer.setURIResoverForNewTransformers(new XMLFileUriResolver("org/jafer/"));
             outNode = XMLTransformer.transform(cqlQuery.getXCQLQuery(), XcqlToJqfStylesheet);
             // set the URI resolver back to null
             XMLTransformer.setURIResoverForNewTransformers(null);
@@ -88,7 +88,7 @@ public class CQLQueryConverter extends Converter
             InputStream jqfToXcqlStylesheet = CQLQueryConverter.class.getClassLoader().getResourceAsStream(
                     "org/jafer/xsl/cql/JQFtoXCQL.xsl");
             // set the URI resolver to use when doing this transform
-            XMLTransformer.setURIResoverForNewTransformers(new XMLFileUriResolver("org/jafer/xsl/cql/"));
+            XMLTransformer.setURIResoverForNewTransformers(new XMLFileUriResolver("org/jafer/"));
             outNode = XMLTransformer.transform(jaferQuery.getQuery(), jqfToXcqlStylesheet);
             // set the URI resolver back to null
             XMLTransformer.setURIResoverForNewTransformers(null);
