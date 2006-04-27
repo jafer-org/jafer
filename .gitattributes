@@ -1,6 +1,7 @@
 * text=auto !eol
 /build.xml -text
 /build_userresources.properties -text
+buildscripts/build-osid-sample.xml -text
 buildscripts/build_compilerscript.xml -text
 buildscripts/build_jaferclient.xml -text
 buildscripts/build_jaferportlet.xml -text
@@ -36,6 +37,7 @@ lib/cql-java.jar -text
 lib/java-zoom-api.jar -text
 lib/jdbc/jtds-0.4.jar -text
 lib/jdbc/mysql-connector-java-2.0.14-bin.jar -text
+lib/osid/osidapi-2.0.jar -text
 lib/portlets/portlet-api-1.0.jar -text
 lib/registries/uddi4j.jar -text
 lib/struts/antlr.jar -text
@@ -115,6 +117,28 @@ src/org/jafer/interfaces/Scan.java -text
 src/org/jafer/interfaces/Search.java -text
 src/org/jafer/interfaces/Sort.java -text
 src/org/jafer/interfaces/Z3950Connection.java -text
+src/org/jafer/osid/ModsUtils.java -text
+src/org/jafer/osid/ObjectIterator.java -text
+src/org/jafer/osid/Properties.java -text
+src/org/jafer/osid/Util.java -text
+src/org/jafer/osid/consumer/SampleConsumer.java -text
+src/org/jafer/osid/consumer/Type.java -text
+src/org/jafer/osid/provider/Asset.java -text
+src/org/jafer/osid/provider/AssetIterator.java -text
+src/org/jafer/osid/provider/Id.java -text
+src/org/jafer/osid/provider/IdManager.java -text
+src/org/jafer/osid/provider/Managers.java -text
+src/org/jafer/osid/provider/Part.java -text
+src/org/jafer/osid/provider/PartIterator.java -text
+src/org/jafer/osid/provider/PartStructure.java -text
+src/org/jafer/osid/provider/PartStructureIterator.java -text
+src/org/jafer/osid/provider/Record.java -text
+src/org/jafer/osid/provider/RecordIterator.java -text
+src/org/jafer/osid/provider/RecordStructure.java -text
+src/org/jafer/osid/provider/Repository.java -text
+src/org/jafer/osid/provider/RepositoryIterator.java -text
+src/org/jafer/osid/provider/RepositoryManager.java -text
+src/org/jafer/osid/provider/Type.java -text
 src/org/jafer/portlets/AbstractXSLTPortlet.java -text
 src/org/jafer/portlets/XsltSearchPortlet.java -text
 src/org/jafer/portlets/xslt/PortletContentSerializer.java -text
@@ -249,6 +273,8 @@ src/org/jafer/util/CompressedXMLDecoder.java -text
 src/org/jafer/util/Config.java -text
 src/org/jafer/util/XMLFileUriResolver.java -text
 src/org/jafer/util/xml/DOMFactory.java -text
+src/org/jafer/util/xml/DomUtils.java -text
+src/org/jafer/util/xml/DomUtilsException.java -text
 src/org/jafer/util/xml/ErrorListener.java -text
 src/org/jafer/util/xml/XMLSerializer.java -text
 src/org/jafer/util/xml/XMLTransformer.java -text
