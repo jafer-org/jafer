@@ -20,7 +20,7 @@
     <import file="./buildscripts/build_jaferserver.xml"/>
     <import file="./buildscripts/build_jafersrwserver.xml"/>
     <import file="./buildscripts/build_jaferportlet.xml"/>
-    <import file="./buildscripts/build_osid.xml"/>
+    <import file="./buildscripts/build_jaferosid.xml"/>
 
     <target name="build-all"
         depends="build-jafer-UDDI,
