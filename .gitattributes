@@ -1,7 +1,7 @@
 * text=auto !eol
 /build.xml -text
 /build_userresources.properties -text
-buildscripts/build-osid-sample.xml -text
+buildscripts/build-jafer-osid.xml -text
 buildscripts/build_compilerscript.xml -text
 buildscripts/build_jaferclient.xml -text
 buildscripts/build_jaferportlet.xml -text
