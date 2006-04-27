@@ -44,9 +44,6 @@
             <zipfileset dir="${src.dir}/org/jafer/zoom" prefix="">
               <include name="META-INF/**" />
             </zipfileset>
-            <zipfileset  dir="${struts.lib.dir}" prefix="${webinf.lib.dir}">
-                <include name="commons-collections.jar" /> 
-            </zipfileset>
         </zip>
 
         <echo message="${dist.jaferclient.filename} JAR created" />
@@ -66,7 +63,10 @@
             </zipfileset>
             <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
-            <zipfileset  dir="${util.lib.dir}" prefix="${webinf.lib.dir}"/>
+            <zipfileset  dir="${util.lib.dir}" prefix="${lib.dir}"/>
+            <zipfileset  dir="${struts.lib.dir}" prefix="${lib.dir}">
+                <include name="commons-collections.jar" /> 
+            </zipfileset>
         </zip>
 
         <echo message="Completed building jafer client installer" />
