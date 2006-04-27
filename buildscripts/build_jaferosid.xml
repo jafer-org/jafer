@@ -1,4 +1,4 @@
-<project name="JaferClientOsidCompiler" basedir=".." default="build-jafer-osid">
+<project name="JaferOsidCompiler" basedir=".." default="build-jafer-osid">
 
     <!-- Import the build resources file that specifies all the filesets / clath paths and support files -->
     <import file="build_resources.xml"/>
@@ -6,16 +6,16 @@
     <import file="build_compilerscript.xml"/>
 
     <!-- define the jafer client output filenames -->
-    <property name="dist.jaferclient.filename" value="jaferosid.jar" />
-    <property name="dist.installjaferclient.filename" value="jaferosidInstall.zip" />
+    <property name="dist.jaferosid.filename" value="jaferosid.jar" />
+    <property name="dist.installjaferosid.filename" value="jaferosidInstall.zip" />
 
     <!-- create the jafer client distribution  -->
-    <target name="distribute-jafer-client" depends="compile,copy-resources">
-        <echo message="Creating ${dist.jaferclient.filename} distribution" />
+    <target name="distribute-jafer-osid" depends="compile,copy-resources">
+        <echo message="Creating ${dist.jaferosid.filename} distribution" />
 
-        <delete file="${dist.dir}/${dist.jaferclient.filename}" quiet="true" />
+        <delete file="${dist.dir}/${dist.jaferosid.filename}" quiet="true" />
 
-        <zip destfile="${dist.dir}/${dist.jaferclient.filename}">
+        <zip destfile="${dist.dir}/${dist.jaferosid.filename}">
             <zipfileset dir="${classes.dir}" >
                 <include name="org/jafer/conf/*" />
                 <include name="org/jafer/conf/characterSets/*" />
@@ -40,15 +40,15 @@
             </zipfileset>
         </zip>
 
-        <echo message="${dist.jaferclient.filename} JAR created" />
+        <echo message="${dist.jaferosid.filename} JAR created" />
     </target>
 
     <!-- Build installer zip files -->
-    <target name="build-jafer-client-installer" depends="distribute-jafer-client,create-documentation">
-        <echo message="Building jafer client installer" />
+    <target name="build-jafer-osid-installer" depends="distribute-jafer-osid,create-documentation">
+        <echo message="Building jafer osid installer" />
 
-        <zip destfile="${dist.dir}/${dist.installjaferclient.filename}">
-            <fileset file="${dist.dir}/${dist.jaferclient.filename}" />
+        <zip destfile="${dist.dir}/${dist.installjaferosid.filename}">
+            <fileset file="${dist.dir}/${dist.jaferosid.filename}" />
             <zipfileset  dir="${doc.dir}" prefix="doc"/>
             <zipfileset  dir="${lib.dir}" prefix="${lib.dir}">
                 <include name="zebulun.jar" />
@@ -69,7 +69,7 @@
 
     <!-- MAIN BUILD TARGETS -->
     <target name="build-jafer-osid" depends="build-jafer-osid-installer">
-        <echo message="Completed jafer server build" />
+        <echo message="Completed jafer osid build" />
     </target>
 
 </project>
