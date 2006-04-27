@@ -15,7 +15,7 @@
     </init-param>
     <init-param>
       <param-name>portlet-guid</param-name>
-      <param-value>JaferPortlet.SearchPortlet</param-value>
+      <param-value>JaferPortlets.SearchPortlet</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
