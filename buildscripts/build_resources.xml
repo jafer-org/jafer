@@ -21,6 +21,7 @@
     <property name="lib.dir" value="lib" />
     <property name="axis.lib.dir" value="${lib.dir}/axis" />
     <property name="jdbc.lib.dir" value="${lib.dir}/jdbc" />
+    <property name="osid.lib.dir" value="${lib.dir}/osid" />
     <property name="portlets.lib.dir" value="${lib.dir}/portlets" />
     <property name="registries.lib.dir" value="${lib.dir}/registries" />
     <property name="struts.lib.dir" value="${lib.dir}/struts" />
@@ -36,6 +37,7 @@
         <fileset dir="${lib.dir}">           <include name="**/*.jar" /></fileset>
         <fileset dir="${axis.lib.dir}">      <include name="**/*.jar" /></fileset>
         <fileset dir="${jdbc.lib.dir}">      <include name="**/*.jar" /></fileset>
+        <fileset dir="${osid.lib.dir}">  <include name="**/*.jar" /></fileset>
         <fileset dir="${portlets.lib.dir}">  <include name="**/*.jar" /></fileset>
         <fileset dir="${registries.lib.dir}"><include name="**/*.jar" /></fileset>
         <fileset dir="${struts.lib.dir}">    <include name="**/*.jar" /></fileset>

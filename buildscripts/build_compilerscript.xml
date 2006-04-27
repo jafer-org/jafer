@@ -41,7 +41,7 @@
             serverSide="true"
             skeletondeploy="true"
             verbose="true"
-            url="http://www.loc.gov/z3950/agency/zing/srw/srw-bindings.wsdl" >
+            url="http://www.loc.gov/standards/sru/xml-files/srw-bindings.wsdl" >
         </axis-wsdl2java>
 
         <echo message="Completed axis stub generation" />

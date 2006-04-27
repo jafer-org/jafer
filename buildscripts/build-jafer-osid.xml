@@ -58,12 +58,10 @@
             <zipfileset  dir="${axis.lib.dir}" prefix="${lib.dir}"/>
             <zipfileset  dir="${xml.lib.dir}" prefix="${lib.dir}"/>
             <zipfileset  dir="${util.lib.dir}" prefix="${lib.dir}"/>
+  	    <zipfileset  dir="${osid.lib.dir}" prefix="${lib.dir}" />
             <zipfileset  dir="${struts.lib.dir}" prefix="${lib.dir}">
                 <include name="commons-collections.jar" /> 
             </zipfileset>
-  	    <zipfileset dir="lib/osid" prefix="${lib.dir}" >
-		<include name="osidapi-2.0.jar" />
-	    </zipfileset>
         </zip>
 
         <echo message="Completed building jafer OSID installer" />
