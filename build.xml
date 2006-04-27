@@ -20,6 +20,7 @@
     <import file="./buildscripts/build_jaferserver.xml"/>
     <import file="./buildscripts/build_jafersrwserver.xml"/>
     <import file="./buildscripts/build_jaferportlet.xml"/>
+    <import file="./buildscripts/build_osid.xml"/>
 
     <target name="build-all"
         depends="build-jafer-UDDI,
@@ -28,7 +29,8 @@
         build-jafer-server,
         build-jafer-srwserver,
         build-jafer-sruserver,
-        build-jafer-portlet">
+        build-jafer-portlet,
+        build-jafer-osid">
         <echo message="Completed full build" />
     </target>
 
@@ -42,6 +44,7 @@
       <echo message="build-jafer-client" />
       <echo message="build-jafer-server" />
       <echo message="build-jafer-portlet" />
+      <echo message="build-jafer-osid" />
       <echo message="build-all" />
     </target>
 </project>
