@@ -14,17 +14,45 @@
     
     <!-- define the sru server output filenames -->
     <property name="dist.srwserver.filename" value="SRWServer.war" />
+    <property name="dist.srwserver.classes.filename" value="SRWServer.jar" />
     <property name="dist.installsrwserver.filename" value="SRWServerInstall.zip" />
     <property name="srwserver.webapp.dir" value="${webapp.dir}/SRWServer" />
-    
+        
     <!-- create the srw server distribution WAR -->
     <target name="distribute-srwserver" depends="compile,copy-resources">
+        <echo message="Creating ${dist.srwserver.classes.filename} class file only distribution" />
+        
+        <zip destfile="${dist.dir}/${dist.srwserver.classes.filename}">
+            <zipfileset dir="${classes.dir}" > 
+                <include name="org/jafer/srwserver/**/*" />  
+                <include name="org/jafer/conf/*" /> 
+                <include name="org/jafer/conf/srwserver/*" /> 
+                <include name="org/jafer/conf/characterSets/*" /> 
+                <include name="org/jafer/databeans/*" /> 
+                <include name="org/jafer/exception/*" /> 
+                <include name="org/jafer/interfaces/*" /> 
+                <include name="org/jafer/query/**/*" /> 
+                <include name="org/jafer/record/*" /> 
+                <include name="org/jafer/transport/*" /> 
+                <include name="org/jafer/util/**/*" /> 
+                <include name="org/jafer/xsl/*" /> 
+                <include name="org/jafer/xsl/beans/*" /> 
+                <include name="org/jafer/xsl/cql/*" /> 
+                <include name="org/jafer/xsl/record/*" /> 
+                <include name="org/jafer/zclient/**/*" /> 
+                <include name="gov/**/*" />                
+            </zipfileset>
+        </zip>
+        <echo message="${dist.srwserver.classes.filename} JAR created" />
         <echo message="Creating ${dist.srwserver.filename} distribution" />
         
         <delete file="${dist.dir}/${dist.srwserver.filename}" quiet="true" />
         
         <zip destfile="${dist.dir}/${dist.srwserver.filename}">
-            <zipfileset  dir="${srwserver.webapp.dir}"   />
+            <zipfileset  dir="${srwserver.webapp.dir}">
+                <exclude name="${webinf.classes.dir}/**/*"/>
+            </zipfileset>
+             
             <zipfileset dir="${classes.dir}" prefix="${webinf.classes.dir}" > 
                 <include name="org/jafer/srwserver/**/*" />  
                 <include name="org/jafer/conf/*" /> 
@@ -55,8 +83,8 @@
                 <include name="commons-collections.jar" /> 
             </zipfileset>
         </zip>
-        
-        <echo message="${dist.srwserver.filename} JAR created" />
+       
+        <echo message="${dist.srwserver.filename} WAR created" />
     </target>
     
     <!-- Build installer zip files -->
