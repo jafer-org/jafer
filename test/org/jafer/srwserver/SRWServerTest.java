@@ -13,17 +13,19 @@
  */
 package org.jafer.srwserver;
 
+import gov.loc.www.zing.srw.EchoedSearchRetrieveRequestType;
+import gov.loc.www.zing.srw.RecordType;
+import gov.loc.www.zing.srw.SearchRetrieveRequestType;
+import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+import gov.loc.www.zing.srw.diagnostic.DiagnosticType;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.rmi.RemoteException;
 
 import javax.xml.namespace.QName;
 
-import gov.loc.www.zing.srw.EchoedSearchRetrieveRequestType;
-import gov.loc.www.zing.srw.RecordType;
-import gov.loc.www.zing.srw.SearchRetrieveRequestType;
-import gov.loc.www.zing.srw.SearchRetrieveResponseType;
-import gov.loc.www.zing.srw.diagnostic.DiagnosticType;
+import junit.framework.TestCase;
 
 import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.Serializer;
@@ -44,8 +46,6 @@ import org.jafer.record.HashtableCacheFactory;
 import org.jafer.registry.web.struts.bean.ModsRecord;
 import org.jafer.util.xml.DOMFactory;
 import org.w3c.dom.Node;
-
-import junit.framework.TestCase;
 
 /**
  * This class tests the SRWSever stubs that represent the axis web service
@@ -621,7 +621,7 @@ public class SRWServerTest extends TestCase
     {
         try
         {
-           new SRWServer("/org/jafer/srwserver/testmissinghighestversion.xml", DATA_MANAGER_CONFIG);
+            new SRWServer("/org/jafer/srwserver/testmissinghighestversion.xml", DATA_MANAGER_CONFIG);
             fail("should have had an exception");
         }
         catch (JaferException exc)
@@ -633,7 +633,6 @@ public class SRWServerTest extends TestCase
         }
     }
 
-   
     /**
      * Test the SRWServer throws an error when the config file is invalid for
      * the DatabeanManagerFactoryConfig
@@ -673,7 +672,7 @@ public class SRWServerTest extends TestCase
             }
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
      * the DatabeanManagerFactoryConfig
@@ -693,7 +692,7 @@ public class SRWServerTest extends TestCase
             }
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
      * the DatabeanManagerFactoryConfig
@@ -733,7 +732,7 @@ public class SRWServerTest extends TestCase
             }
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
      * the DatabeanManagerFactoryConfig
@@ -753,7 +752,7 @@ public class SRWServerTest extends TestCase
             }
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
      * the DatabeanManagerFactoryConfig
@@ -762,8 +761,9 @@ public class SRWServerTest extends TestCase
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testNoCacheFactory.xml")
-                    .getDatabeanManagerFactory();
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testNoCacheFactory.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
             assertNull("should not have a cache factory set", databeanManagerFactory.getCacheFactory());
         }
         catch (JaferException exc)
@@ -780,8 +780,9 @@ public class SRWServerTest extends TestCase
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testCacheFactoryDefaultSize.xml")
-                    .getDatabeanManagerFactory();
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testCacheFactoryDefaultSize.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
             assertTrue(
                     "Bad Data Cache Size not default",
                     databeanManagerFactory.getCacheFactory().getCache().getDataCacheSize() == HashtableCacheFactory.DEFAULT_DATACACHE_SIZE);
@@ -800,8 +801,10 @@ public class SRWServerTest extends TestCase
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testCacheFactorySize10.xml")
-                    .getDatabeanManagerFactory();
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testCacheFactorySize10.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
+            ;
             assertTrue("Data Cache Size not 10", databeanManagerFactory.getCacheFactory().getCache().getDataCacheSize() == 10);
         }
         catch (JaferException exc)
@@ -818,62 +821,72 @@ public class SRWServerTest extends TestCase
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testmissingmode.xml")
-                    .getDatabeanManagerFactory();
-            assertEquals("Missing mode not defaulted correctly",databeanManagerFactory.getMode(),DatabeanManagerFactory.MODE_PARALLEL);
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testmissingmode.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
+            assertEquals("Missing mode not defaulted correctly", databeanManagerFactory.getMode(),
+                    DatabeanManagerFactory.MODE_PARALLEL);
         }
         catch (JaferException exc)
         {
             fail("JaferException:" + exc);
         }
     }
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
-     * the DatabeanManagerFactoryConfig. Check that mode parrallel is set correctly when an invalid mode value is supplied.
+     * the DatabeanManagerFactoryConfig. Check that mode parrallel is set
+     * correctly when an invalid mode value is supplied.
      */
     public void testBadDBManFacConfigFileInvalidModeValue()
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testinvalidmode.xml")
-                    .getDatabeanManagerFactory();
-            assertEquals("Missing mode not defaulted correctly",databeanManagerFactory.getMode(),DatabeanManagerFactory.MODE_PARALLEL);
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testinvalidmode.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
+            assertEquals("Missing mode not defaulted correctly", databeanManagerFactory.getMode(),
+                    DatabeanManagerFactory.MODE_PARALLEL);
         }
         catch (JaferException exc)
         {
             fail("JaferException:" + exc);
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
-     * the DatabeanManagerFactoryConfig. Check that mode serial is set correctly.
+     * the DatabeanManagerFactoryConfig. Check that mode serial is set
+     * correctly.
      */
     public void testBadDBManFacConfigFileModeSerial()
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testmodeserial.xml")
-                    .getDatabeanManagerFactory();
-            assertEquals("Mode not set correctly",databeanManagerFactory.getMode(),DatabeanManagerFactory.MODE_SERIAL);
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testmodeserial.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
+            assertEquals("Mode not set correctly", databeanManagerFactory.getMode(), DatabeanManagerFactory.MODE_SERIAL);
         }
         catch (JaferException exc)
         {
             fail("JaferException:" + exc);
         }
     }
-    
+
     /**
      * Test the SRWServer throws an error when the config file is invalid for
-     * the DatabeanManagerFactoryConfig. Check that mode parrallel is set correctly.
+     * the DatabeanManagerFactoryConfig. Check that mode parrallel is set
+     * correctly.
      */
     public void testBadDBManFacConfigFileModeParallel()
     {
         try
         {
-            databeanManagerFactory = new DatabeanManagerFactoryConfig("/org/jafer/srwserver/testmodeparallel.xml")
-                    .getDatabeanManagerFactory();
-            assertEquals("Mode not set correctly",databeanManagerFactory.getMode(),DatabeanManagerFactory.MODE_PARALLEL);
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream("/org/jafer/srwserver/testmodeparallel.xml");
+            databeanManagerFactory = config.getDatabeanManagerFactory();
+            assertEquals("Mode not set correctly", databeanManagerFactory.getMode(), DatabeanManagerFactory.MODE_PARALLEL);
         }
         catch (JaferException exc)
         {
