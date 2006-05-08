@@ -16,6 +16,7 @@ package org.jafer.srwserver;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
+import org.jafer.databeans.DatabeanManagerFactory;
 import org.jafer.exception.JaferException;
 import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;
@@ -56,7 +57,22 @@ public class SRWServerConfig
     private double highestSupportedSearchVersion;
 
     /**
-     * Constructs the SRWServerConfig parsing in the details from the specified
+     * Initialises the SRWServerConfig parsing in the details from
+     * the specified xml
+     * 
+     * @param xml The XML to process
+     * @throws JaferException
+     */
+    public void initialiseFromXML(String xml) throws JaferException
+    {
+        logger.fine("Loading configuration details for SRWSever DatabeanManagerFactory");
+
+        configRoot = DOMFactory.parse(xml).getDocumentElement();
+        initialise();
+    }
+    
+    /**
+     * Initilalises the SRWServerConfig parsing in the details from the specified
      * config file
      * 
      * @param resourceLocation The location of the resource in the distribution
@@ -64,7 +80,7 @@ public class SRWServerConfig
      *        class.getResourceAsStream() to load the srwserver config details
      * @throws JaferException
      */
-    public SRWServerConfig(String resourceLocation) throws JaferException
+    public void initialiseFromResourceStream(String resourceLocation) throws JaferException
     {
         logger.fine("Loading configuration details for SRWSever");
 
@@ -76,6 +92,11 @@ public class SRWServerConfig
             throw new JaferException("Unable to locate srwserver config file: " + resourceLocation);
         }
         configRoot = DOMFactory.parse(configStream).getDocumentElement();
+        initialise();
+    }
+
+    private void initialise() throws JaferException
+    {
         // extract the default schema value from the config
         defaultSchema = Config.getValue(Config.selectSingleNode(configRoot, "defaultschema"));
         // make sure we loaded a correct value

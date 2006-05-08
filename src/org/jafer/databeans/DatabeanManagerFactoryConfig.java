@@ -48,8 +48,25 @@ public class DatabeanManagerFactoryConfig
      */
     private DatabeanManagerFactory databeanManagerFactory = null;
 
+    
     /**
-     * Constructs the DatabeanManagerFactoryConfig parsing in the details from
+     * Initialises the DatabeanManagerFactoryConfig parsing in the details from
+     * the specified xml
+     * 
+     * @param xml The XML to process
+     * @throws JaferException
+     */
+    public void initialiseFromXML(String xml) throws JaferException
+    {
+        logger.fine("Loading configuration details for SRWSever DatabeanManagerFactory");
+
+        databeanManagerFactory = new DatabeanManagerFactory();
+        configRoot = DOMFactory.parse(xml).getDocumentElement();
+        initialise();
+    }
+
+    /**
+     * Initialises the DatabeanManagerFactoryConfig parsing in the details from
      * the specified config file
      * 
      * @param resourceLocation The location of the resource in the distribution
@@ -58,7 +75,7 @@ public class DatabeanManagerFactoryConfig
      *        details
      * @throws JaferException
      */
-    public DatabeanManagerFactoryConfig(String resourceLocation) throws JaferException
+    public void initialiseFromResourceStream(String resourceLocation) throws JaferException
     {
         logger.fine("Loading configuration details for SRWSever DatabeanManagerFactory");
 
@@ -72,7 +89,16 @@ public class DatabeanManagerFactoryConfig
             throw new JaferException("Unable to locate databeanmanagerfactory config file: " + resourceLocation);
         }
         configRoot = DOMFactory.parse(configStream).getDocumentElement();
+        initialise();
+    }
 
+    /**
+     * Initialises the config details from the loaded config root
+     * 
+     * @throws JaferException
+     */
+    private void initialise() throws JaferException
+    {
         String dbManagerName = Config.getValue(Config.selectSingleNode(configRoot, "databeanmanager/@name"));
         // make sure we loaded a correct value
         if (dbManagerName == null || dbManagerName.length() == 0)

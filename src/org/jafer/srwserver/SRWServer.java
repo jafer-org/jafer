@@ -84,8 +84,11 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
     {
         try
         {
-            serverConfig = new SRWServerConfig(srwserverConfigLocation);
-            databeanManagerFactory = new DatabeanManagerFactoryConfig(databeanManagerConfigLocation).getDatabeanManagerFactory();
+            serverConfig = new SRWServerConfig();
+            serverConfig.initialiseFromResourceStream(srwserverConfigLocation);
+            DatabeanManagerFactoryConfig config = new DatabeanManagerFactoryConfig();
+            config.initialiseFromResourceStream(databeanManagerConfigLocation);
+            databeanManagerFactory = config.getDatabeanManagerFactory();
         }
         catch (JaferException exc)
         {
@@ -111,13 +114,44 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
     {
         try
         {
-            serverConfig = new SRWServerConfig(srwserverConfigLocation);
+            serverConfig = new SRWServerConfig();
+            serverConfig.initialiseFromResourceStream(srwserverConfigLocation);
             // make sure we have a factory to use
             if (factory == null)
             {
                 throw new JaferException("You must supply a DatabeanManagerFactory to configure the SRWSever with");
             }
             databeanManagerFactory = factory;
+        }
+        catch (JaferException exc)
+        {
+            String msg = "Unable to configure SRWServer: ";
+            logger.severe(msg + exc);
+            throw new JaferException(msg, exc);
+        }
+    }
+
+    /**
+     * The SRWServer is constructed with the databean manager factory that
+     * creates a databean manager to process all the search requests. The
+     * databean manager will be configured using the supplied factory rather
+     * than the config file
+     * 
+     * @param srwserverConfig The srw server config class
+     * @param factoryConfig The databean factory config class
+     * @throws JaferException
+     */
+    public SRWServer(SRWServerConfig srwserverConfig, DatabeanManagerFactoryConfig factoryConfig) throws JaferException
+    {
+        try
+        {
+            serverConfig = srwserverConfig;
+            databeanManagerFactory = factoryConfig.getDatabeanManagerFactory();
+            // make sure we have a factory to use
+            if (databeanManagerFactory == null)
+            {
+                throw new JaferException("You must supply a valid DatabeanManagerFactoryConfig to configure the SRWSever with");
+            }            
         }
         catch (JaferException exc)
         {
@@ -191,8 +225,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
         }
 
         // add the diagnostics to the response
-        response.setDiagnostics(new DiagnosticsType((DiagnosticType[]) diagnostics
-                .toArray(new DiagnosticType[diagnostics.size()])));
+        response.setDiagnostics(new DiagnosticsType(
+                (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()])));
 
         logger.fine("Assigning any default values to request when not set");
 
@@ -404,8 +438,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
                     }
 
                     // add the diagnostics to the response
-                    response.setDiagnostics(new DiagnosticsType((DiagnosticType[]) diagnostics
-                            .toArray(new DiagnosticType[diagnostics.size()])));
+                    response.setDiagnostics(new DiagnosticsType(
+                            (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()])));
 
                     // calculate the next position
                     int nextPosition = request.getStartRecord().intValue() + request.getMaximumRecords().intValue();
