@@ -26,7 +26,7 @@
                  class = The class of the factory to create the apropriate databean. 
                          Its constructor must accept a String URL for it to be used      -->
         <factories>
-            <factory name="db1" 
+            <db-factory name="db1" 
                      url="z3950s://library.ox.ac.uk:210/ADVANCE" 
                      class="org.jafer.databeans.ZurlFactory" />            
         </factories> 
