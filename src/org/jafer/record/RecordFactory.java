@@ -29,6 +29,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import java.util.logging.Logger;
 import java.net.URL;
+import java.io.InputStream;
 import java.lang.reflect.Constructor;
 //imported exceptions for instantiating a Record class
 import java.lang.ClassNotFoundException;
@@ -223,7 +224,7 @@ public class RecordFactory {
   private Node transformRecord(Node recordNode, int[] recordSyntax, String requestedRecordSchema, boolean fromSerializer) throws JaferException {
 
     String styleSheet;
-    URL resource;
+    InputStream resource;
     Templates template;
     Vector transforms;
     Hashtable  map = (Hashtable)templatesMap.get(Boolean.valueOf(fromSerializer));
@@ -233,7 +234,7 @@ public class RecordFactory {
         styleSheet = (String)transforms.get(i);
         if (!map.containsKey(styleSheet)) {// lookup in hashtable
           try {
-            resource =  this.getClass().getClassLoader().getResource(styleSheet);
+            resource =  this.getClass().getClassLoader().getResourceAsStream(styleSheet);
             template = XMLTransformer.createTemplate(resource);
             map.put(styleSheet, template);
           } catch (Exception e) {
@@ -251,7 +252,7 @@ public class RecordFactory {
   private Node transformRecord(Node recordNode, String recordSchema, String requestedRecordSchema) throws JaferException {
 
     String styleSheet;
-    URL resource;
+    InputStream resource;
     Templates template;
     Vector transforms;
 
@@ -260,7 +261,7 @@ public class RecordFactory {
         styleSheet = (String)transforms.get(i);
         if (!cachedTemplates.containsKey(styleSheet)) {
           try {
-            resource =  this.getClass().getClassLoader().getResource(styleSheet);
+            resource =  this.getClass().getClassLoader().getResourceAsStream(styleSheet);
             template = XMLTransformer.createTemplate(resource);
             cachedTemplates.put(styleSheet, template);
           } catch (Exception e) {
