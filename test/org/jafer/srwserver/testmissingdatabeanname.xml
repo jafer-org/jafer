@@ -2,33 +2,33 @@
     <!-- *********************************************************************************************** -->
     <!-- PUBLIC - These setting can be altered by the user to configure the SRWServer instance           -->
     <!-- *********************************************************************************************** -->
-    
-    <!-- Defines the databean manager used to manage all the conections to the databases 
+
+    <!-- Defines the databean manager used to manage all the conections to the databases
              name = The name to identify the databeanmanager by
-             mode = serial     -> return a result set only for the database that first 
+             mode = serial     -> return a result set only for the database that first
                                   gets a match ignoring all other databases results
                     parallel   -> return a result set over all defined databases results    -->
-    
+
     <databeanmanager  mode="parallel">
-      
+
         <!-- Comment the cachefactory tag if you want to use the inbuilt defaults -->
-        <!-- The cachefactory class attribute needs to represent the class name of the cache factory 
-             you wish to use so that it can be instantiated using reflection 
-             You can also supply an intial size tag to be passed to the constructor 
-             which can be commented out to use defaults --> 
+        <!-- The cachefactory class attribute needs to represent the class name of the cache factory
+             you wish to use so that it can be instantiated using reflection
+             You can also supply an intial size tag to be passed to the constructor
+             which can be commented out to use defaults -->
         <cachefactory class="org.jafer.record.HashtableCacheFactory">
             <initialsize>512</initialsize>
         </cachefactory>
-        
-        <!-- defines the database factories that the SRWServer will use 
-                 name  = The name to identify the database by 
-                 url   = The url to the database to search 
-                 class = The class of the factory to create the apropriate databean. 
+
+        <!-- defines the database factories that the SRWServer will use
+                 name  = The name to identify the database by
+                 url   = The url to the database to search
+                 class = The class of the factory to create the apropriate databean.
                          Its constructor must accept a String URL for it to be used      -->
         <factories>
-            <factory name="db1" 
-                     url="z3950s://library.ox.ac.uk:210/ADVANCE" 
-                     class="org.jafer.databeans.ZurlFactory" />            
-        </factories> 
-    </databeanmanager>   
+            <db-factory name="db1"
+                     url="z3950s://library.ox.ac.uk:210/ADVANCE"
+                     class="org.jafer.databeans.ZurlFactory" />
+        </factories>
+    </databeanmanager>
 </databeanmanagerconfig>
