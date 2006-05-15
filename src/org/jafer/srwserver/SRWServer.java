@@ -151,7 +151,7 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             if (databeanManagerFactory == null)
             {
                 throw new JaferException("You must supply a valid DatabeanManagerFactoryConfig to configure the SRWSever with");
-            }            
+            }
         }
         catch (JaferException exc)
         {
@@ -459,6 +459,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             }
             catch (QueryException exc)
             {
+                // make sure we return no records now
+                response.setNumberOfRecords(new NonNegativeInteger("0"));
                 logger.severe("QueryException performing search: " + exc);
                 DiagnosticType diagnostic = createDiagnostic("1", exc.getMessage());
                 // add the diagnostics to the response
@@ -466,6 +468,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             }
             catch (JaferException exc)
             {
+                // make sure we return no records now
+                response.setNumberOfRecords(new NonNegativeInteger("0"));
                 logger.severe("JaferException performing search: " + exc);
                 DiagnosticType diagnostic = createDiagnostic("1", exc.getMessage());
                 // add the diagnostics to the response
