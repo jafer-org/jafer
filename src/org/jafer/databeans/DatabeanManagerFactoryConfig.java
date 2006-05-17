@@ -177,7 +177,7 @@ public class DatabeanManagerFactoryConfig
         logger.fine("Configuring URL factory for SRWSever DatabeanManagerFactory");
 
         NodeList factories = Config.selectNodeList(configRoot, "databeanmanager/factories/*");
-        if (factories == null || factories.getLength() == 0)
+        if (factories == null)
         {
             throw new JaferException("No factory information defined for SRWSever DatabeanManagerFactory");
         }
