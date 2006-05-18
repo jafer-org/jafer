@@ -160,6 +160,21 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             throw new JaferException(msg, exc);
         }
     }
+    
+    /**
+     * Allows the databean factory to be updated on the server
+     * @param factory the databean factory to use
+     * @throws JaferException
+     */
+    public void setDatabeanManagerFactory(DatabeanManagerFactory factory) throws JaferException
+    {
+        // make sure we have a factory to use
+        if (databeanManagerFactory == null)
+        {
+            throw new JaferException("You must supply a valid DatabeanManagerFactoryConfig to configure the SRWSever with");
+        }
+        databeanManagerFactory = factory;        
+    }
 
     /**
      * This method creates a DiagnosticType for the information provided
