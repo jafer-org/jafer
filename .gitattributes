@@ -19,7 +19,12 @@ distrib/server/ServerTest.bat -text
 distrib/server/TestClient.bat -text
 distrib/server/license.txt -text
 distrib/server/readme.html -text
+documentation/DataBeanManagerCaching.doc -text
+documentation/JAFERUDDIRequirements.doc -text
+documentation/JaferRegistryWebDesign.doc -text
+documentation/cql.doc -text
 documentation/index.html -text
+documentation/jqfNormailisationRules.doc -text
 documentation/programmerguides/index.html -text
 documentation/userguides/index.html -text
 lib/activation.jar -text
