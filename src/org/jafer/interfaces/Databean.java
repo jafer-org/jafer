@@ -41,14 +41,59 @@ import java.util.*;
 
 /**
  * Interface for implementing a Databean
+ * 
  * @author Antony Corfield; Matthew Dovey; Colin Tatham
- *
  */
-public abstract class Databean implements Serializable {
-  private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-    ois.defaultReadObject();
-  }
-  private void writeObject(ObjectOutputStream oos) throws IOException {
-    oos.defaultWriteObject();
-  }
+public abstract class Databean implements Serializable
+{
+
+    private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException
+    {
+        ois.defaultReadObject();
+    }
+
+    private void writeObject(ObjectOutputStream oos) throws IOException
+    {
+        oos.defaultWriteObject();
+    }
+
+    /**
+     * returns the search interface to perform searches
+     * 
+     * @return Search interface
+     */
+    public Search getSearchSupport()
+    {
+        return (Search) this;
+    }
+
+    /**
+     * returns the present interface to retrieve search information
+     * 
+     * @return present interface
+     */
+    public Present getPresentSupport()
+    {
+        return (Present) this;
+    }
+    
+    /**
+     * returns the scan interface to perorm scan requests
+     * 
+     * @return scan interface
+     */
+    public Scan getScanSupport()
+    {
+        return (Scan) this;
+    }
+    
+    /**
+     * returns the Cache interface to set cache up
+     * 
+     * @return Cache interface
+     */
+    public Cache getCacheSupport()
+    {
+        return (Cache) this;
+    }
 }
