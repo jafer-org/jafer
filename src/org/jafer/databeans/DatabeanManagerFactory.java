@@ -57,7 +57,7 @@ public class DatabeanManagerFactory extends DatabeanFactory
      * Stores a reference to the default record schema to set on the databean
      * manager
      */
-    public String recordSchema;
+    private String recordSchema;
 
     /**
      * Stores a reference to factories that can create databeans for specified
