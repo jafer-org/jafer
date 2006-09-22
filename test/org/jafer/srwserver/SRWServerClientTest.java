@@ -85,8 +85,7 @@ public class SRWServerClientTest extends TestCase
             SRWSoapBindingStub binding = new SRWSoapBindingStub(new URL(SERVICE_URL), null);
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             
-            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && (response.getDiagnostics()
-                    .getDiagnostic() == null || response.getDiagnostics().getDiagnostic().length == 0)));
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() == null || response.getDiagnostics().length == 0));
             assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
 
         }
@@ -131,13 +130,12 @@ public class SRWServerClientTest extends TestCase
             // create the binding stubb and execute the request
             SRWSoapBindingStub binding = new SRWSoapBindingStub(new URL(SERVICE_URL), null);
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
-            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && (response.getDiagnostics()
-                    .getDiagnostic() == null || response.getDiagnostics().getDiagnostic().length == 0)));
-           assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
-            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().getRecord().length > 0);
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() == null || response.getDiagnostics().length == 0));
+            assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
+            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().length > 0);
 
             // get the mods data
-            RecordType rec = response.getRecords().getRecord()[0];
+            RecordType rec = response.getRecords()[0];
             MessageElement[] elements = rec.getRecordData().get_any();
             Node root = DOMFactory.parse(elements[0].getNodeValue()).getDocumentElement();
             Field field = new Field(root, root);
@@ -186,13 +184,12 @@ public class SRWServerClientTest extends TestCase
             // create the binding stubb and execute the request
             SRWSoapBindingStub binding = new SRWSoapBindingStub(new URL(SERVICE_URL), null);
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
-            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && (response.getDiagnostics()
-                    .getDiagnostic() == null || response.getDiagnostics().getDiagnostic().length == 0)));
-           assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
-            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().getRecord().length > 0);
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() == null || response.getDiagnostics().length == 0));
+            assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
+            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().length > 0);
 
             // get the mods data
-            RecordType rec = response.getRecords().getRecord()[0];
+            RecordType rec = response.getRecords()[0];
             MessageElement[] elements = rec.getRecordData().get_any();
             Node root = elements[0].getFirstChild();
             Field field = new Field(root, root);
@@ -239,7 +236,7 @@ public class SRWServerClientTest extends TestCase
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
@@ -277,12 +274,13 @@ public class SRWServerClientTest extends TestCase
             SRWSoapBindingStub binding = new SRWSoapBindingStub(new URL(SERVICE_URL), null);
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
+            assertEquals("invalid number of diagnostics",2, response.getDiagnostics().length);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
-            diag = response.getDiagnostics().getDiagnostic()[1];
+            diag = response.getDiagnostics()[1];
             assertEquals("Incorrect diag message", "Mandatory parameter not supplied", diag.getMessage());
             assertEquals("Incorrect diag details", "Query", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/7", diag.getUri().getPath());
@@ -316,7 +314,7 @@ public class SRWServerClientTest extends TestCase
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
@@ -363,7 +361,7 @@ public class SRWServerClientTest extends TestCase
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());

@@ -35,7 +35,7 @@ Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
     </servlet-class>
     <init-param>
       <param-name>SOAPMonitorPort</param-name>
-      <param-value>5001</param-value>
+      <param-value>8001</param-value>
     </init-param>
     <load-on-startup>100</load-on-startup>
   </servlet>

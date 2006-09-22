@@ -14,10 +14,8 @@
 package org.jafer.srwserver;
 
 import gov.loc.www.zing.cql.xcql.OperandType;
-import gov.loc.www.zing.srw.DiagnosticsType;
 import gov.loc.www.zing.srw.EchoedSearchRetrieveRequestType;
 import gov.loc.www.zing.srw.RecordType;
-import gov.loc.www.zing.srw.RecordsType;
 import gov.loc.www.zing.srw.SearchRetrieveRequestType;
 import gov.loc.www.zing.srw.SearchRetrieveResponseType;
 import gov.loc.www.zing.srw.StringOrXmlFragment;
@@ -198,7 +196,7 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             logger.warning("Unable to find diagnostic message for code: " + code);
             message = "UNABLE TO FIND MESSAGE";
         }
-        return new DiagnosticType(details, message, uri);
+        return new DiagnosticType(uri,details, message);
     }
 
     /**
@@ -240,8 +238,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
         }
 
         // add the diagnostics to the response
-        response.setDiagnostics(new DiagnosticsType(
-                (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()])));
+        response.setDiagnostics(
+                (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()]));
 
         logger.fine("Assigning any default values to request when not set");
 
@@ -381,7 +379,7 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
             }
 
             // add the records to the response
-            response.setRecords(new RecordsType(records));
+            response.setRecords(records);
         }
         finally
         {
@@ -453,8 +451,8 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
                     }
 
                     // add the diagnostics to the response
-                    response.setDiagnostics(new DiagnosticsType(
-                            (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()])));
+                    response.setDiagnostics(
+                            (DiagnosticType[]) diagnostics.toArray(new DiagnosticType[diagnostics.size()]));
 
                     // calculate the next position
                     int nextPosition = request.getStartRecord().intValue() + request.getMaximumRecords().intValue();
@@ -479,7 +477,7 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
                 logger.severe("QueryException performing search: " + exc);
                 DiagnosticType diagnostic = createDiagnostic("1", exc.getMessage());
                 // add the diagnostics to the response
-                response.setDiagnostics(new DiagnosticsType(new DiagnosticType[] { diagnostic }));
+                response.setDiagnostics(new DiagnosticType[] { diagnostic });
             }
             catch (JaferException exc)
             {
@@ -488,7 +486,7 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
                 logger.severe("JaferException performing search: " + exc);
                 DiagnosticType diagnostic = createDiagnostic("1", exc.getMessage());
                 // add the diagnostics to the response
-                response.setDiagnostics(new DiagnosticsType(new DiagnosticType[] { diagnostic }));
+                response.setDiagnostics(new DiagnosticType[] { diagnostic });
             }
         }
         catch (Exception exc)

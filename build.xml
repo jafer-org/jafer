@@ -39,13 +39,15 @@
       <echo />
       <echo message="build-jafer-UDDI" />
       <echo message="build-jafer-registry" />
-      <echo message="build-sruserver" />
-      <echo message="build-srwserver" />
+      <echo message="build-jafer-sruserver" />
+      <echo message="build-jafer-srwserver" />
       <echo message="build-jafer-client" />
       <echo message="build-jafer-server" />
       <echo message="build-jafer-portlet" />
       <echo message="build-jafer-osid" />
       <echo message="build-all" />
+      <echo message="deploy-srwserver" />
+      <echo message="undeploy-srwserver" />
     </target>
 </project>
 

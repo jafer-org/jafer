@@ -16,7 +16,6 @@ package org.jafer.srwserver;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
-import org.jafer.databeans.DatabeanManagerFactory;
 import org.jafer.exception.JaferException;
 import org.jafer.util.Config;
 import org.jafer.util.xml.DOMFactory;

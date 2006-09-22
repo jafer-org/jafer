@@ -7,8 +7,15 @@
 
 package org.jafer.srwserver;
 
+import gov.loc.www.zing.srw.SearchRetrieveResponseType;
+
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 
+import javax.xml.namespace.QName;
+
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.encoding.Serializer;
 import org.jafer.exception.JaferException;
 
 public class SRWServerSkeleton implements gov.loc.www.zing.srw.interfaces.SRWPort, org.apache.axis.wsdl.Skeleton
@@ -36,41 +43,34 @@ public class SRWServerSkeleton implements gov.loc.www.zing.srw.interfaces.SRWPor
         return _myOperationsList;
     }
 
-    static
-    {
+    static {
         org.apache.axis.description.OperationDesc _oper;
         org.apache.axis.description.FaultDesc _fault;
-        org.apache.axis.description.ParameterDesc[] _params;
-        _params = new org.apache.axis.description.ParameterDesc[] { new org.apache.axis.description.ParameterDesc(
-                new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "searchRetrieveRequest"),
-                org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/",
-                        "searchRetrieveRequestType"), gov.loc.www.zing.srw.SearchRetrieveRequestType.class, false, false), };
-        _oper = new org.apache.axis.description.OperationDesc("searchRetrieveOperation", _params, new javax.xml.namespace.QName(
-                "http://www.loc.gov/zing/srw/", "searchRetrieveResponse"));
+        org.apache.axis.description.ParameterDesc [] _params;
+        _params = new org.apache.axis.description.ParameterDesc [] {
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "searchRetrieveRequest"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "searchRetrieveRequestType"), gov.loc.www.zing.srw.SearchRetrieveRequestType.class, false, false), 
+        };
+        _oper = new org.apache.axis.description.OperationDesc("searchRetrieveOperation", _params, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "searchRetrieveResponse"));
         _oper.setReturnType(new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "searchRetrieveResponseType"));
         _oper.setElementQName(new javax.xml.namespace.QName("", "SearchRetrieveOperation"));
         _oper.setSoapAction("");
         _myOperationsList.add(_oper);
-        if (_myOperations.get("searchRetrieveOperation") == null)
-        {
+        if (_myOperations.get("searchRetrieveOperation") == null) {
             _myOperations.put("searchRetrieveOperation", new java.util.ArrayList());
         }
-        ((java.util.List) _myOperations.get("searchRetrieveOperation")).add(_oper);
-        _params = new org.apache.axis.description.ParameterDesc[] { new org.apache.axis.description.ParameterDesc(
-                new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "scanRequest"),
-                org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/",
-                        "scanRequestType"), gov.loc.www.zing.srw.ScanRequestType.class, false, false), };
-        _oper = new org.apache.axis.description.OperationDesc("scanOperation", _params, new javax.xml.namespace.QName(
-                "http://www.loc.gov/zing/srw/", "scanResponse"));
+        ((java.util.List)_myOperations.get("searchRetrieveOperation")).add(_oper);
+        _params = new org.apache.axis.description.ParameterDesc [] {
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "scanRequest"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "scanRequestType"), gov.loc.www.zing.srw.ScanRequestType.class, false, false), 
+        };
+        _oper = new org.apache.axis.description.OperationDesc("scanOperation", _params, new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "scanResponse"));
         _oper.setReturnType(new javax.xml.namespace.QName("http://www.loc.gov/zing/srw/", "scanResponseType"));
         _oper.setElementQName(new javax.xml.namespace.QName("", "ScanOperation"));
         _oper.setSoapAction("");
         _myOperationsList.add(_oper);
-        if (_myOperations.get("scanOperation") == null)
-        {
+        if (_myOperations.get("scanOperation") == null) {
             _myOperations.put("scanOperation", new java.util.ArrayList());
         }
-        ((java.util.List) _myOperations.get("scanOperation")).add(_oper);
+        ((java.util.List)_myOperations.get("scanOperation")).add(_oper);
     }
 
     public SRWServerSkeleton()
@@ -90,11 +90,16 @@ public class SRWServerSkeleton implements gov.loc.www.zing.srw.interfaces.SRWPor
         {
             SRWServer s = new SRWServer("/org/jafer/conf/srwserver/srwserverconfig.xml",
                                         "/org/jafer/conf/srwserver/databeanmanagerconfig.xml");
-            return s.searchRetrieveOperation(body);
+            return s.searchRetrieveOperation(body);         
+            
         }
         catch (JaferException exc)
         {
             throw new RemoteException("Configuration error:", exc);
+        }
+        catch (Exception exc)
+        {
+            throw new RemoteException("Opps error:", exc);
         }
     }
 

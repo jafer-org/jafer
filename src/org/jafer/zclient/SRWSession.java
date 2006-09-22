@@ -212,11 +212,11 @@ public class SRWSession implements Session
             // database names are ignored in SRW
             result.setDatabaseName("");
             // did we get any diagnostic information returned
-            if (response.getDiagnostics() != null && response.getDiagnostics().getDiagnostic().length > 0)
+            if (response.getDiagnostics() != null && response.getDiagnostics().length > 0)
             {
                 // store the first diagnotic object
                 JaferException exc = new JaferException("Failure executing query: " + query + " due to "
-                        + response.getDiagnostics().getDiagnostic(0).getMessage());
+                        + response.getDiagnostics()[0].getMessage());
                 result.setDiagnostic(exc);
             }
             // did we get a number of results set on response
@@ -288,11 +288,11 @@ public class SRWSession implements Session
             }
 
             // make sure we have record objects that can be processed
-            if (response.getRecords() != null && response.getRecords().getRecord() != null)
+            if (response.getRecords() != null)
             {
                 // stores the parsed root of the record data
                 Node root = null;
-                RecordType[] records = response.getRecords().getRecord();
+                RecordType[] records = response.getRecords();
                 // loop round processing returned records
                 for (int index = 0; index < records.length; index++)
                 {

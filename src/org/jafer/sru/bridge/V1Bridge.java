@@ -13,7 +13,6 @@
  */
 package org.jafer.sru.bridge;
 
-import gov.loc.www.zing.srw.DiagnosticsType;
 import gov.loc.www.zing.srw.ExplainResponseType;
 import gov.loc.www.zing.srw.RecordType;
 import gov.loc.www.zing.srw.ScanResponseType;
@@ -52,7 +51,7 @@ public class V1Bridge
     {
         try
         {
-            DiagnosticsType diagostics = createDiagnostics(code, message, details, exc);
+            DiagnosticType[] diagostics = createDiagnostics(code, message, details, exc);
             if (diagostics != null)
             {
                 // obtain the serialiser to serialise diagnostic to XML to put
@@ -61,7 +60,7 @@ public class V1Bridge
                 QName diagQName = new QName("http://www.loc.gov/zing/srw/diagnostic/", "diagnostic");
                 Serializer ser = DiagnosticType.getSerializer(null, DiagnosticType.class, diagQName);
                 StringWriter diagWriter = new StringWriter();
-                ser.serialize(diagQName, null, diagostics.getDiagnostic()[0], new SerializationContext(diagWriter));
+                ser.serialize(diagQName, null, diagostics[0], new SerializationContext(diagWriter));
                 // create the message fragment
                 MessageElement[] elements = { new MessageElement(diagQName, diagWriter.getBuffer().toString()) };
                 StringOrXmlFragment fragment = new StringOrXmlFragment(elements);
@@ -111,7 +110,7 @@ public class V1Bridge
     {
         try
         {
-            DiagnosticsType diagostics = createDiagnostics(code, message, details, exc);
+            DiagnosticType[] diagostics =createDiagnostics(code, message, details, exc);
             if (diagostics != null)
             {
                 SearchRetrieveResponseType response = new SearchRetrieveResponseType();
@@ -151,7 +150,7 @@ public class V1Bridge
     {
         try
         {
-            DiagnosticsType diagostics = createDiagnostics(code, message, details, exc);
+            DiagnosticType[] diagostics =createDiagnostics(code, message, details, exc);
             if (diagostics != null)
             {
                 ScanResponseType response = new ScanResponseType();
@@ -187,7 +186,7 @@ public class V1Bridge
      * @param exc The exception that caused the error
      * @return A diagnosticType object for embedding in the response
      */
-    private DiagnosticsType createDiagnostics(String code, String message, String details, Exception exc)
+    private DiagnosticType[] createDiagnostics(String code, String message, String details, Exception exc)
     {
         try
         {
@@ -199,9 +198,9 @@ public class V1Bridge
             }
 
             // create the diagnostic type
-            DiagnosticType diagnosticType = new DiagnosticType( details, message, uri);
+            DiagnosticType diagnosticType = new DiagnosticType(uri, details, message);
             DiagnosticType[] diag = { diagnosticType };
-            return new DiagnosticsType(diag);
+            return diag;
         }
         catch (MalformedURIException exc1)
         {

@@ -22,30 +22,17 @@
       <parameter name="typeMappingVersion" value="1.2"/>
       <parameter name="allowedMethods" value="*"/>
 
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:tripleType"
-        type="java:gov.loc.www.zing.cql.xcql.TripleType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:operandType"
-        type="java:gov.loc.www.zing.cql.xcql.OperandType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:scanResponseType"
-        type="java:gov.loc.www.zing.srw.ScanResponseType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
+	    <requestFlow>
+	      <handler type="soapmonitor"/>
+	    </requestFlow>
+	    <responseFlow>
+	      <handler type="soapmonitor"/>
+	    </responseFlow>
+
+	  <!--                          					                  -->
+	  <!--                          XCQL mappings                         -->
+	  <!--                          					                  -->
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
         qname="ns:booleanType"
@@ -54,110 +41,16 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:prefixType"
-        type="java:gov.loc.www.zing.cql.xcql.PrefixType"
+        qname="ns:operandType"
+        type="java:gov.loc.www.zing.cql.xcql.OperandType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/diagnostic/"
-        qname="ns:diagnosticType"
-        type="java:gov.loc.www.zing.srw.diagnostic.DiagnosticType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:requestType"
-        type="java:gov.loc.www.zing.srw.RequestType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:recordType"
-        type="java:gov.loc.www.zing.srw.RecordType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:xmlFragment"
-        type="java:gov.loc.www.zing.srw.XmlFragment"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:modifiersType"
-        type="java:gov.loc.www.zing.cql.xcql.ModifiersType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:searchRetrieveResponseType"
-        type="java:gov.loc.www.zing.srw.SearchRetrieveResponseType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:diagnosticsType"
-        type="java:gov.loc.www.zing.srw.DiagnosticsType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:termsType"
-        type="java:gov.loc.www.zing.srw.TermsType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:termType"
-        type="java:gov.loc.www.zing.srw.TermType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:>termType>whereInList"
-        type="java:gov.loc.www.zing.srw.TermTypeWhereInList"
-        serializer="org.apache.axis.encoding.ser.EnumSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.EnumDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:echoedScanRequestType"
-        type="java:gov.loc.www.zing.srw.EchoedScanRequestType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:responseType"
-        type="java:gov.loc.www.zing.srw.ResponseType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
         qname="ns:modifierType"
@@ -166,38 +59,16 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
       <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:extraDataType"
-        type="java:gov.loc.www.zing.srw.ExtraDataType"
+        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
+        qname="ns:prefixType"
+        type="java:gov.loc.www.zing.cql.xcql.PrefixType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:searchRetrieveRequestType"
-        type="java:gov.loc.www.zing.srw.SearchRetrieveRequestType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:scanRequestType"
-        type="java:gov.loc.www.zing.srw.ScanRequestType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:echoedSearchRetrieveRequestType"
-        type="java:gov.loc.www.zing.srw.EchoedSearchRetrieveRequestType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
+     
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
         qname="ns:relationType"
@@ -206,38 +77,60 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:sortKeyType"
-        type="java:gov.loc.www.zing.srw.SortKeyType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:xSortKeysType"
-        type="java:gov.loc.www.zing.srw.XSortKeysType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
-      <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:explainResponseType"
-        type="java:gov.loc.www.zing.srw.ExplainResponseType"
-        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
-        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
-        encodingStyle=""
-      />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:prefixesType"
-        type="java:gov.loc.www.zing.cql.xcql.PrefixesType"
+        qname="ns:searchClauseType"
+        type="java:gov.loc.www.zing.cql.xcql.SearchClauseType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
+        qname="ns:tripleType"
+        type="java:gov.loc.www.zing.cql.xcql.TripleType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <!--                          					                  -->
+      <!--                         SRW Diagnostic mappings                -->
+      <!--                          					                  -->
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/diagnostic/"
+        qname="ns:diagnosticType"
+        type="java:gov.loc.www.zing.srw.diagnostic.DiagnosticType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <!--                          					                  -->
+	  <!--                               SRW mappings                     -->      
+      <!--                          					                  --> 
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:echoedScanRequestType"
+        type="java:gov.loc.www.zing.srw.EchoedScanRequestType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:echoedSearchRetrieveRequestType"
+        type="java:gov.loc.www.zing.srw.EchoedSearchRetrieveRequestType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/srw/"
         qname="ns:explainRequestType"
@@ -246,6 +139,97 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:explainResponseType"
+        type="java:gov.loc.www.zing.srw.ExplainResponseType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+        <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:extraDataType"
+        type="java:gov.loc.www.zing.srw.ExtraDataType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:recordType"
+        type="java:gov.loc.www.zing.srw.RecordType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:requestType"
+        type="java:gov.loc.www.zing.srw.RequestType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:responseType"
+        type="java:gov.loc.www.zing.srw.ResponseType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:scanRequestType"
+        type="java:gov.loc.www.zing.srw.ScanRequestType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:scanResponseType"
+        type="java:gov.loc.www.zing.srw.ScanResponseType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:searchRetrieveRequestType"
+        type="java:gov.loc.www.zing.srw.SearchRetrieveRequestType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:searchRetrieveResponseType"
+        type="java:gov.loc.www.zing.srw.SearchRetrieveResponseType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:sortKeyType"
+        type="java:gov.loc.www.zing.srw.SortKeyType"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/srw/"
         qname="ns:stringOrXmlFragment"
@@ -254,20 +238,89 @@
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
       <typeMapping
         xmlns:ns="http://www.loc.gov/zing/srw/"
-        qname="ns:recordsType"
-        type="java:gov.loc.www.zing.srw.RecordsType"
+        qname="ns:termType"
+        type="java:gov.loc.www.zing.srw.TermType"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
+      
       <typeMapping
-        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
-        qname="ns:searchClauseType"
-        type="java:gov.loc.www.zing.cql.xcql.SearchClauseType"
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:>termType>whereInList"
+        type="java:gov.loc.www.zing.srw.TermTypeWhereInList"
+        serializer="org.apache.axis.encoding.ser.EnumSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.EnumDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:xmlFragment"
+        type="java:gov.loc.www.zing.srw.XmlFragment"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <!--                          					                  -->
+	  <!--                               SRW array mappings               -->      
+      <!--                          					                  --> 
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:diagnosticsType"
+        type="java:gov.loc.www.zing.srw.diagnostic.DiagnosticType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
+        qname="ns:modifiersType"
+        type="java:gov.loc.www.zing.cql.xcql.ModifierType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle=""
+      />
+      
+      <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:termsType"
+        type="java:gov.loc.www.zing.srw.TermType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle=""
+      />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:xSortKeysType"
+        type="java:gov.loc.www.zing.srw.SortKeyType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle=""
+      />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/cql/xcql/"
+        qname="ns:prefixesType"
+        type="java:gov.loc.www.zing.cql.xcql.PrefixType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
+        encodingStyle=""
+      />
+      
+       <typeMapping
+        xmlns:ns="http://www.loc.gov/zing/srw/"
+        qname="ns:recordsType"
+        type="java:gov.loc.www.zing.srw.RecordType[]"
+        serializer="org.apache.axis.encoding.ser.ArraySerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.ArrayDeserializerFactory"
         encodingStyle=""
       />
   </service>

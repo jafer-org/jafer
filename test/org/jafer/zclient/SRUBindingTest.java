@@ -13,7 +13,6 @@
  */
 package org.jafer.zclient;
 
-import gov.loc.www.zing.srw.DiagnosticsType;
 import gov.loc.www.zing.srw.RecordType;
 import gov.loc.www.zing.srw.ScanRequestType;
 import gov.loc.www.zing.srw.ScanResponseType;
@@ -95,7 +94,7 @@ public class SRUBindingTest extends TestCase
             request.setScanClause(cql);
             // excute the request
             ScanResponseType response = binding.scanOperation(request);
-            TermType[] terms = response.getTerms().getTerm();
+            TermType[] terms = response.getTerms();
             assertTrue("Should have got some terms", terms.length > 0);
             // loop round each record make sure the data is not null
             for (int index = 0; index < terms.length; index++)
@@ -140,7 +139,7 @@ public class SRUBindingTest extends TestCase
             // make sure we got results back
             assertTrue("Call returned 0 results", response.getNumberOfRecords().intValue() > 0);
             // get records
-            RecordType[] records = response.getRecords().getRecord();
+            RecordType[] records = response.getRecords();
             assertTrue("Should have got two records", records.length == 2);
 
             // loop round each record make sure the data is not null
@@ -185,9 +184,7 @@ public class SRUBindingTest extends TestCase
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
             // make sure we got results back
             assertTrue("Call did not return 0 results", response.getNumberOfRecords().intValue() == 0);
-            DiagnosticsType diag = response.getDiagnostics();
-            assertNotNull(diag);
-            DiagnosticType diagnostic = diag.getDiagnostic(0);
+            DiagnosticType diagnostic = response.getDiagnostics()[0];
             assertEquals("Bad diagnostic message", "Unsupported index", diagnostic.getMessage());
         }
         catch (QueryException exc)
@@ -367,11 +364,9 @@ public class SRUBindingTest extends TestCase
             SearchRetrieveResponseType response = binding.searchRetrieveOperation(request);
 
             // now we need to check diagnostic to ensure message is bad version
-            DiagnosticsType diagnostics = response.getDiagnostics();
-            assertNotNull("Should have got diagnostics", diagnostics);
-            DiagnosticType diag = diagnostics.getDiagnostic(0);
-            assertNotNull("Should have got a diagnostic", diag);
-            assertEquals("wrong error", "Unsupported version", diag.getMessage());
+            DiagnosticType diagnostic = response.getDiagnostics()[0];
+            assertNotNull("Should have got a diagnostic", diagnostic);
+            assertEquals("wrong error", "Unsupported version", diagnostic.getMessage());
         }
         catch (QueryException exc)
         {
@@ -405,11 +400,9 @@ public class SRUBindingTest extends TestCase
             // excute the request
             ScanResponseType response = binding.scanOperation(request);
             // now we need to check diagnostic to ensure message is bad version
-            DiagnosticsType diagnostics = response.getDiagnostics();
-            assertNotNull("Should have got diagnostics", diagnostics);
-            DiagnosticType diag = diagnostics.getDiagnostic(0);
-            assertNotNull("Should have got a diagnostic", diag);
-            assertEquals("wrong error", "Unsupported version", diag.getMessage());
+            DiagnosticType diagnostic = response.getDiagnostics()[0];
+            assertNotNull("Should have got a diagnostic", diagnostic);
+            assertEquals("wrong error", "Unsupported version", diagnostic.getMessage());
 
         }
         catch (QueryException exc)

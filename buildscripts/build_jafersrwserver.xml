@@ -115,6 +115,19 @@
         </java>
     </target>     
     
+    <target name="dep" >
+        <axis-admin
+            port="${deploy.port}"
+            hostname="localhost"
+            failonerror="true"
+            servletpath="/SRWServer/services/AdminService"
+            debug="true"
+            xmlfile="${src.dir}/org/jafer/srwserver/deploy.wsdd"
+        />
+        
+        
+    </target>
+    
     <!-- undeploy srw - uses undeploy.wsdd from org.jafer.srwserver -->
     <target name="undeploy-srwserver"  description="undeploys jafer srw server">
         <echo message="Undeploy SRWServer at URL = ${deploy.url}"/>

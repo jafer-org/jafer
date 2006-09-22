@@ -408,7 +408,6 @@ test/org/jafer/srwserver/testNoFactoryName.xml -text
 test/org/jafer/srwserver/testNoFactoryURL.xml -text
 test/org/jafer/srwserver/testinvalidmode.xml -text
 test/org/jafer/srwserver/testmissingdatabeanname.xml -text
-test/org/jafer/srwserver/testmissingfactories.xml -text
 test/org/jafer/srwserver/testmissinghighestversion.xml -text
 test/org/jafer/srwserver/testmissingmaxrecords.xml -text
 test/org/jafer/srwserver/testmissingmode.xml -text

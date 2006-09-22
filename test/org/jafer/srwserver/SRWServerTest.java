@@ -195,8 +195,7 @@ public class SRWServerTest extends TestCase
             // execute and evaluate response
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
 
-            assertTrue("Should not have had any diagnostics", response.getDiagnostics() != null
-                    && response.getDiagnostics().getDiagnostic().length == 0);
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && response.getDiagnostics().length == 0));
             assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
 
             serialiseSearchRetrieveResponse(response);
@@ -241,13 +240,12 @@ public class SRWServerTest extends TestCase
 
             // execute and evaluate response
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
-            assertTrue("Should not have had any diagnostics", response.getDiagnostics() != null
-                    && response.getDiagnostics().getDiagnostic().length == 0);
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && response.getDiagnostics().length == 0));
             assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
-            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().getRecord().length > 0);
+            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().length > 0);
 
             // get the mods data
-            RecordType rec = response.getRecords().getRecord()[0];
+            RecordType rec = response.getRecords()[0];
             MessageElement[] elements = rec.getRecordData().get_any();
             Node root = DOMFactory.parse(elements[0].getNodeValue()).getDocumentElement();
             Field field = new Field(root, root);
@@ -296,13 +294,12 @@ public class SRWServerTest extends TestCase
 
             // execute and evaluate response
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
-            assertTrue("Should not have had any diagnostics", response.getDiagnostics() != null
-                    && response.getDiagnostics().getDiagnostic().length == 0);
+            assertTrue("Should not have had any diagnostics", (response.getDiagnostics() != null && response.getDiagnostics().length == 0));
             assertTrue("Should have got results", response.getNumberOfRecords().intValue() > 0);
-            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().getRecord().length > 0);
+            assertTrue("Should have got records", response.getRecords() != null && response.getRecords().length > 0);
 
             // get the mods data
-            RecordType rec = response.getRecords().getRecord()[0];
+            RecordType rec = response.getRecords()[0];
             MessageElement[] elements = rec.getRecordData().get_any();
             Node root = elements[0].getFirstChild();
             Field field = new Field(root, root);
@@ -349,7 +346,7 @@ public class SRWServerTest extends TestCase
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
@@ -387,11 +384,11 @@ public class SRWServerTest extends TestCase
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
-            diag = response.getDiagnostics().getDiagnostic()[1];
+            diag = response.getDiagnostics()[1];
             assertEquals("Incorrect diag message", "Mandatory parameter not supplied", diag.getMessage());
             assertEquals("Incorrect diag details", "Query", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/7", diag.getUri().getPath());
@@ -429,7 +426,7 @@ public class SRWServerTest extends TestCase
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
@@ -481,7 +478,7 @@ public class SRWServerTest extends TestCase
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "Unsupported version", diag.getMessage());
             assertEquals("Incorrect diag details", "1.1", diag.getDetails());
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/5", diag.getUri().getPath());
@@ -553,7 +550,7 @@ public class SRWServerTest extends TestCase
             SearchRetrieveResponseType response = server.searchRetrieveOperation(request);
             assertTrue("Should have got no result", response.getNumberOfRecords().intValue() == 0);
 
-            DiagnosticType diag = response.getDiagnostics().getDiagnostic()[0];
+            DiagnosticType diag = response.getDiagnostics()[0];
             assertEquals("Incorrect diag message", "General system error", diag.getMessage());
             assertTrue("Incorrect diag details", diag.getDetails().indexOf("Database unavailable") != -1);
             assertEquals("Incorrect diag URI", "srw/diagnostic/1/1", diag.getUri().getPath());
@@ -647,26 +644,6 @@ public class SRWServerTest extends TestCase
         catch (JaferException exc)
         {
             if (exc.getCause().getMessage().indexOf("databean manager name") == -1)
-            {
-                fail("JaferException:" + exc);
-            }
-        }
-    }
-
-    /**
-     * Test the SRWServer throws an error when the config file is invalid for
-     * the DatabeanManagerFactoryConfig
-     */
-    public void testBadDBManFacConfigFileMissingFactories()
-    {
-        try
-        {
-            new SRWServer(SRW_CONFIG_FILE, "/org/jafer/srwserver/testmissingfactories.xml");
-            fail("should have had an exception");
-        }
-        catch (JaferException exc)
-        {
-            if (exc.getCause().getMessage().indexOf("No factory information") == -1)
             {
                 fail("JaferException:" + exc);
             }
