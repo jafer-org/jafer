@@ -17,7 +17,6 @@ package org.jafer.query;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.jafer.query.QueryBuilderTest;
 import org.jafer.query.converter.CQLQueryConverterTest;
 import org.jafer.query.converter.JaferQueryConverterTest;
 import org.jafer.query.converter.RPNQueryConverterTest;
