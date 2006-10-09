@@ -35,7 +35,7 @@ public class CQLQueryConverterTest extends TestCase
     /**
      * Stores a reference to the XMLHEADER text
      */
-    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n";
+    private static final String XMLHEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     /**
      * Stores a reference to the query builder for building test data
@@ -440,6 +440,28 @@ public class CQLQueryConverterTest extends TestCase
             assertTrue(success);
         }
 
+    }
+    
+    /**
+     * Tests convertion from CQL to XCQL on a simple search keyword query
+     */
+    public void testJQFtoXCQLSimpleKeywordQuery()
+    {
+        String expectedCQL, expectedXCQL, testName = "";
+        try
+        {
+            JaferQuery jq = new JaferQuery(builder.getNode("any","golf"));
+            expectedCQL = "\"golf\"";
+            expectedXCQL = XMLHEADER + "<XCQL><searchClause><index>cql.serverChoice</index>" +
+                    "<relation><value>=</value></relation><term>golf</term></searchClause></XCQL>";
+            testName = "Simple Keyword Query";
+            runJQFtoCQLTest(testName, jq ,expectedXCQL,expectedCQL);            
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("Query Exception: (" + testName + ") " + exc);
+        }
     }
 
     /**
@@ -2168,6 +2190,27 @@ public class CQLQueryConverterTest extends TestCase
             expectedXCQL = XMLHEADER + "<XCQL><searchClause><index>dc.title</index><relation><value>=</value></relation>"
                     + "<term>golf guide</term></searchClause></XCQL>";
             testName = "Simple Query";
+            runCQLToXCQLTest(testName, cql, expectedXCQL);
+        }
+        catch (QueryException exc)
+        {
+            exc.printStackTrace();
+            fail("Query Exception: (" + testName + ") " + exc);
+        }
+    }
+    
+    /**
+     * Tests convertion from CQL to XCQL on a simple search keyword query
+     */
+    public void testCQLToXCQLSimpleKeywordQuery()
+    {
+        String cql, expectedXCQL, testName = "";
+        try
+        {
+            cql = "golf";
+            expectedXCQL = XMLHEADER + "<XCQL><searchClause><index>cql.serverChoice</index>" +
+                    "<relation><value>scr</value></relation><term>golf</term></searchClause></XCQL>";
+            testName = "Simple Keyword Query";
             runCQLToXCQLTest(testName, cql, expectedXCQL);
         }
         catch (QueryException exc)
