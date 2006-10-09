@@ -1,8 +1,9 @@
 <contextSets>
   <contextSet name="CQL" shortId="cql" Id="info:srw/cql-context-set/1/cql-v1.1">
     <indexes>
-      <index name="allrecords" attributeSet="bib1" useAttribute="any"/>
+      <!-- Order important here as any must always be mapped back to serverChoice -->
       <index name="serverChoice" attributeSet="bib1" useAttribute="any"/>
+      <index name="allrecords" attributeSet="bib1" useAttribute="any"/>
     </indexes>
     <relations>
       <relation name="&lt;" attributeSet="bib1" relationAttribute="1"/>

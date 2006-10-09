@@ -46,11 +46,15 @@
     <!-- Processes a search clause              -->
     <!-- ************************************** -->
     <xsl:template match="searchClause">
-        <xsl:value-of select="./index"/>
-        <xsl:if test="./relation">
-            <xsl:text> </xsl:text>
-            <xsl:apply-templates select="./relation"/>
-            <xsl:text> </xsl:text>
+        
+        <!-- output the index and relation if it is not serverchoice -->
+        <xsl:if test="./index[text() != 'cql.serverChoice']">
+            <xsl:value-of select="./index"/>
+            <xsl:if test="./relation">
+                <xsl:text> </xsl:text>
+                <xsl:apply-templates select="./relation"/>
+                <xsl:text> </xsl:text>
+            </xsl:if>
         </xsl:if>
         <!-- output the term -->
         <xsl:text>&quot;</xsl:text>
