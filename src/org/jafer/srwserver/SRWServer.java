@@ -37,7 +37,6 @@ import org.jafer.databeans.DatabeanManagerFactory;
 import org.jafer.databeans.DatabeanManagerFactoryConfig;
 import org.jafer.exception.JaferException;
 import org.jafer.query.CQLQuery;
-import org.jafer.query.JaferQuery;
 import org.jafer.query.QueryException;
 import org.jafer.record.Field;
 import org.jafer.util.xml.XMLSerializer;
@@ -422,12 +421,12 @@ public class SRWServer implements gov.loc.www.zing.srw.interfaces.SRWPort
                     beanManager = (DatabeanManager) databeanManagerFactory.getDatabean();
                     beanManager.setRecordSchema(request.getRecordSchema());
 
-                    logger.fine("Converting CQL query to JaferQuery");
-                    // take the request query and convert it to a JAFERQuery
-                    JaferQuery query = new CQLQuery(request.getQuery()).toJaferQuery();
+                    logger.fine("Converting CQL query to CQLQuery");
+                    // take the request query and convert it to a CQLQuery
+                    CQLQuery query = new CQLQuery(request.getQuery());
 
-                    logger.fine("Submitting jafer query to databeanManager");
-                    int numberOfResults = beanManager.submitQuery(query.getQuery());
+                    logger.fine("Submitting cql query to databeanManager");
+                    int numberOfResults = beanManager.submitQuery(query);
                     logger.fine("Found " + numberOfResults + " of results");
 
                     // populate the response message from results

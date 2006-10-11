@@ -168,33 +168,41 @@ public class SRWSession implements Session
      * @see org.jafer.zclient.Session#search(java.lang.Object,
      *      java.lang.String[], java.lang.String)
      */
-    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName) throws JaferException,
-            ConnectionException
+    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
     {
         try
         {
             logger.fine("SRWSession: Performing search");
 
-            if (queryObject instanceof RPNQuery)
+            if (queryObject instanceof CQLQuery)
             {
-                logger.fine("Convert RPN query object to CQL query string");
-                org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery((RPNQuery) queryObject);
-                query = new CQLQuery(rpnQuery.toJaferQuery()).getCQLQuery();
-            }
-            else if (queryObject instanceof Node)
-            {
-                logger.fine("Convert JaferQuery Node to CQL query string");
-                query = new CQLQuery(new JaferQuery((Node) queryObject)).getCQLQuery();
+                logger.fine("Convert CQLQuery Node to CQL query string");
+                query = ((CQLQuery) queryObject).getCQLQuery();
             }
             else if (queryObject instanceof JaferQuery)
             {
                 logger.fine("Convert JaferQuery Node to CQL query string");
                 query = ((JaferQuery) queryObject).toCQLQuery().getCQLQuery();
             }
+            else if (queryObject instanceof RPNQuery)
+            {
+                logger.fine("Convert RPN query object to CQL query string");
+                org.jafer.query.RPNQuery rpnQuery = new org.jafer.query.RPNQuery(
+                        (RPNQuery) queryObject);
+                query = new CQLQuery(rpnQuery.toJaferQuery()).getCQLQuery();
+            }
+           
+            else if (queryObject instanceof Node)
+            {
+                logger.fine("Convert JaferQuery Node to CQL query string");
+                query = new CQLQuery(new JaferQuery((Node) queryObject)).getCQLQuery();
+            }
             else
             {
                 // bad query
-                throw new QueryException("Query type: " + queryObject.getClass().getName() + " not supported", 107, "");
+                throw new QueryException("Query type: " + queryObject.getClass().getName()
+                        + " not supported", 107, "");
             }
 
             logger.fine("Creating Search Request = version 1.1, start record = 1, max records = 0");
@@ -215,8 +223,8 @@ public class SRWSession implements Session
             if (response.getDiagnostics() != null && response.getDiagnostics().length > 0)
             {
                 // store the first diagnotic object
-                JaferException exc = new JaferException("Failure executing query: " + query + " due to "
-                        + response.getDiagnostics()[0].getMessage());
+                JaferException exc = new JaferException("Failure executing query: " + query
+                        + " due to " + response.getDiagnostics()[0].getMessage());
                 result.setDiagnostic(exc);
             }
             // did we get a number of results set on response
@@ -249,8 +257,8 @@ public class SRWSession implements Session
      * @see org.jafer.zclient.Session#present(int, int, int[], java.lang.String,
      *      java.lang.String)
      */
-    public Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec, String resultSetName)
-            throws PresentException, ConnectionException
+    public Vector present(int nRecord, int nRecords, int[] recordOID, String eSpec,
+            String resultSetName) throws PresentException, ConnectionException
     {
         logger.fine("SRWSession: Performing retrieve (present)");
 
@@ -267,8 +275,8 @@ public class SRWSession implements Session
                         "No Query set in SRWSession, need to perform a search first");
             }
 
-            logger.fine("Creating Search Request = version 1.1, Record Packing = string, start record = " + nRecord
-                    + ", max records = " + nRecords);
+            logger.fine("Creating Search Request = version 1.1, Record Packing = string, start record = "
+                    + nRecord + ", max records = " + nRecords);
 
             SearchRetrieveRequestType request = new SearchRetrieveRequestType();
             request.setVersion("1.1");
@@ -298,7 +306,8 @@ public class SRWSession implements Session
                 {
                     // make sure all the data objects exist that we require
                     // inorder to process the record
-                    if (records[index].getRecordData() != null && records[index].getRecordData().get_any() != null
+                    if (records[index].getRecordData() != null
+                            && records[index].getRecordData().get_any() != null
                             && records[index].getRecordData().get_any() != null
                             && records[index].getRecordData().get_any().length > 0
                             && records[index].getRecordData().get_any()[0].getNodeValue() != null)
@@ -338,7 +347,9 @@ public class SRWSession implements Session
                             {
                                 String msg = "Exeception Parsing Record [" + index + "]: ";
                                 logger.severe(msg + exc);
-                                throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned, msg, exc);
+                                throw new PresentException(
+                                        PresentException.STATUS_TERMINAL_FAILURE, recordsReturned,
+                                        msg, exc);
                             }
                         }
                         else if (recordPacking.equalsIgnoreCase(RECORD_PACKING_XML))
@@ -364,9 +375,11 @@ public class SRWSession implements Session
                         }
                         else
                         {
-                            String msg = "Invalid record packing value: [" + recordPacking + "] for Record: " + index;
+                            String msg = "Invalid record packing value: [" + recordPacking
+                                    + "] for Record: " + index;
                             logger.severe(msg);
-                            throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned, msg);
+                            throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE,
+                                    recordsReturned, msg);
                         }
 
                         logger.fine("Processing schema information for record " + index);
@@ -390,7 +403,8 @@ public class SRWSession implements Session
                             // ************************************************
                             schema = root.getNamespaceURI();
                         }
-                        logger.fine("Creating and adding XMLRecord to return array for record " + index);
+                        logger.fine("Creating and adding XMLRecord to return array for record "
+                                + index);
                         XMLRecord record = new XMLRecord(root, schema);
                         dataObjects.add(record);
                     }
@@ -398,7 +412,8 @@ public class SRWSession implements Session
                     {
                         String msg = "Record Data not available in response for Record: " + index;
                         logger.severe(msg);
-                        throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE, recordsReturned , msg);
+                        throw new PresentException(PresentException.STATUS_TERMINAL_FAILURE,
+                                recordsReturned, msg);
                     }
                 }
             }
@@ -426,8 +441,8 @@ public class SRWSession implements Session
      * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
      *      org.w3c.dom.Node)
      */
-    public Vector scan(String[] databases, int nTerms, int step, int position, Node term) throws JaferException,
-            ConnectionException
+    public Vector scan(String[] databases, int nTerms, int step, int position, Node term)
+            throws JaferException, ConnectionException
     {
         return null;
     }
@@ -438,8 +453,8 @@ public class SRWSession implements Session
      * @see org.jafer.zclient.Session#scan(java.lang.String[], int, int, int,
      *      java.lang.Object)
      */
-    public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject) throws JaferException,
-            ConnectionException
+    public Vector scan(String[] databases, int nTerms, int step, int position, Object termObject)
+            throws JaferException, ConnectionException
     {
         return null;
     }

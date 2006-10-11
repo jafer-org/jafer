@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.jafer.exception.JaferException;
+import org.jafer.query.CQLQuery;
 import org.jafer.query.JaferQuery;
 import org.jafer.query.QueryException;
 import org.jafer.record.Diagnostic;
@@ -63,7 +64,7 @@ import asn1.ASN1Sequence;
 
 public class Search
 {
- 
+
     private PDUDriver pduDriver;
 
     private static int refId = 0;
@@ -76,8 +77,8 @@ public class Search
         logger = Logger.getLogger("org.jafer.zclient");
     }
 
-    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName) throws JaferException,
-            ConnectionException
+    public SearchResult[] search(Object queryObject, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
     {
 
         if (queryObject instanceof RPNQuery)
@@ -85,26 +86,35 @@ public class Search
         else if (queryObject instanceof Node)
             return search((Node) queryObject, databases, resultSetName);
         else if (queryObject instanceof JaferQuery)
-            return search(((JaferQuery) queryObject).getQuery(), databases, resultSetName);
+            return search((JaferQuery) queryObject, databases, resultSetName);
+        else if (queryObject instanceof CQLQuery)
+            return search((CQLQuery) queryObject, databases, resultSetName);
         else
-            throw new QueryException("Query type: " + queryObject.getClass().getName() + " not supported", 107, "");
+            throw new QueryException("Query type: " + queryObject.getClass().getName()
+                    + " not supported", 107, "");
     }
 
-    public SearchResult[] search(Node domQuery, String[] databases, String resultSetName) throws JaferException,
-            ConnectionException
+    public SearchResult[] search(Node domQuery, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
     {
         JaferQuery jaferQuery = new JaferQuery(domQuery);
         return search(jaferQuery.toRPNQuery().getQuery(), databases, resultSetName);
     }
 
-    public SearchResult[] search(JaferQuery jaferQuery, String[] databases, String resultSetName) throws JaferException,
-            ConnectionException
+    public SearchResult[] search(JaferQuery jaferQuery, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
     {
         return search(jaferQuery.toRPNQuery().getQuery(), databases, resultSetName);
     }
 
-    public SearchResult[] search(RPNQuery rpnQuery, String[] databases, String resultSetName) throws JaferException,
-            ConnectionException
+    public SearchResult[] search(CQLQuery cqlQuery, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
+    {
+        return search(cqlQuery.toRPNQuery().getQuery(), databases, resultSetName);
+    }
+
+    public SearchResult[] search(RPNQuery rpnQuery, String[] databases, String resultSetName)
+            throws JaferException, ConnectionException
     {
 
         SearchRequest search = new SearchRequest();
@@ -158,18 +168,21 @@ public class Search
             {
                 try
                 {
-                    diagnostic = new Diagnostic(databases[0], response.s_records.c_nonSurrogateDiagnostic.ber_encode());
+                    diagnostic = new Diagnostic(databases[0],
+                            response.s_records.c_nonSurrogateDiagnostic.ber_encode());
                     message = diagnostic.toString();
                 }
                 catch (Exception e)
                 {
-                    message = "diagnostic not available - ASN1Exception processing diagnostic (" + e.toString() + ")";
+                    message = "diagnostic not available - ASN1Exception processing diagnostic ("
+                            + e.toString() + ")";
                 }
             }
             throw new JaferException(message, diagnostic);
         }
 
-        if (response.s_additionalSearchInfo != null && response.s_additionalSearchInfo.value[0] != null)
+        if (response.s_additionalSearchInfo != null
+                && response.s_additionalSearchInfo.value[0] != null)
         {
             OtherInformation1 info = response.s_additionalSearchInfo.value[0];
             ASN1Sequence targetSeq = (ASN1Sequence) info.s_information.c_externallyDefinedInfo.c_singleASN1type;
@@ -199,8 +212,9 @@ public class Search
                     }
                     if (details[2] instanceof ASN1Integer)
                     {
-                        results[i].setDiagnostic(new JaferException("Additional Search Information", ((ASN1Integer) details[1])
-                                .get(), ""));
+                        results[i].setDiagnostic(new JaferException(
+                                "Additional Search Information", ((ASN1Integer) details[1]).get(),
+                                ""));
                     }
                 }
                 catch (ASN1Exception ex)
