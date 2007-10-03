@@ -30,18 +30,23 @@
  */
 
 package org.jafer.util.xml;
-import org.jafer.util.Config;
-import org.jafer.exception.JaferException;
-// Imported JAVA API for XML Parsing classes
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-// Imported DOM classes
+import org.jafer.conf.Config;
+import org.jafer.exception.JaferException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 // thrown by parsing errors
 import org.xml.sax.SAXException;
 
@@ -63,117 +68,106 @@ import org.w3c.dom.*;
 
 public class DOMFactory {
 
-  private static DocumentBuilderFactory factory;
-  private static Logger logger;
+	private static DocumentBuilderFactory factory;
+	private static Logger logger;
 
   static {
-      logger = Logger.getLogger("org.jafer.util");
+		logger = Logger.getLogger("org.jafer.util");
       factory = DocumentBuilderFactory.newInstance();
       factory.setNamespaceAware(true);
-  }
+	}
 
   public static synchronized DocumentBuilder getDocumentBuilder() {
 
-    DocumentBuilder builder = null;
+		DocumentBuilder builder = null;
     try {
-      builder = factory.newDocumentBuilder();
+			builder = factory.newDocumentBuilder();
     } catch (ParserConfigurationException e) {
-      String message = "DOMFactory, static initialization: Parser with specified options cannot be built!";
-      logger.log(Level.SEVERE, message, e);
-      System.err.print("FATAL: " + message + " Could not initialize DOMFactory.");
-      System.exit(-1);
-    }
+			String message = "DOMFactory, static initialization: Parser with specified options cannot be built!";
+			logger.log(Level.SEVERE, message, e);
+			System.err.print("FATAL: " + message + " Could not initialize DOMFactory.");
+			System.exit(-1);
+		}
 
-    return builder;
-  }
+		return builder;
+	}
 
   public static Document newDocument() {
 
-    return getDocumentBuilder().newDocument();
-  }
+		return getDocumentBuilder().newDocument();
+	}
 
-  public static Document parse(URL resource) throws JaferException
-  {
-      try
-      {
-          // convert to URL to URI first to take care of %20 encoding
-          return parse(new File(new URI(resource.toString())));
-      }
-      catch (URISyntaxException e)
-      {
-          String message = "DOMFactory, public static Document parse(URL resource): Cannot create URI from URL; " + e.toString();
-          logger.severe(message);
-          throw new JaferException(message, e);
-      }
-      catch (NullPointerException e)
-      {
+	public static Document parse(URL resource) throws JaferException
+	{
+		try
+		{
+			return parse(resource.openStream());
+		}
+		catch (IOException ioe)
+		{
+			String message = "DOMFactory, public static Document parse(URL resource): Cannot parse resource; "
+				+ ioe.toString();
+			logger.severe(message);
+			throw new JaferException(message, ioe);
+		}
+		catch( NullPointerException e )
+		{
           String message = "DOMFactory, public static Document parse(URL resource): Cannot parse resource; " + e.toString();
-          logger.severe(message);
-          throw new JaferException(message, e);
-      }
-  }
+			logger.severe(message);
+			throw new JaferException(message, e);
+		}
+	}
 
-  public static Document parse(File file) throws JaferException {
+	public static Document parse(InputStream inStream) throws JaferException
+	{
 
-    Document document = null;
+		Document document = null;
+		try
+		{
+			DocumentBuilder builder = getDocumentBuilder();
+			document = builder.parse(inStream);
+		}
+		catch( IOException e )
+		{
+			String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; "
+				+ e.toString();
+			logger.log(Level.SEVERE, message, e);
+			throw new JaferException(message, e);
+		}
+		catch( SAXException e )
+		{
+			String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; "
+				+ e.toString();
+			logger.log(Level.SEVERE, message, e);
+			throw new JaferException(message, e);
+		}
+		catch( IllegalArgumentException e )
+		{
+			String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; "
+				+ e.toString();
+			logger.log(Level.SEVERE, message, e);
+			throw new JaferException(message, e);
+		}
+
+		return document;
+	}
+
+  	public static Document parse(String data) throws JaferException {
+
+
+		Document document = null;
     try {
-      DocumentBuilder builder = getDocumentBuilder();
-      document = builder.parse(file);
-    } catch (IOException e) {
-      String message = "DOMFactory, public static Document parse(File file): Cannot parse file " + file + "; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    } catch (SAXException e) {
-      String message = "DOMFactory:public static Document parse(File file) - Cannot parse file " + file + "; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    } catch (IllegalArgumentException e) {
-      String message = "DOMFactory:public static Document parse(File file) - Cannot parse file " + file + "; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    }
-
-    return document;
-  }
-
-  public static Document parse(InputStream inStream) throws JaferException {
-
-    Document document = null;
-    try {
-      DocumentBuilder builder = getDocumentBuilder();
-      document = builder.parse(inStream);
-    } catch (IOException e) {
-      String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    } catch (SAXException e) {
-      String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    } catch (IllegalArgumentException e) {
-      String message = "DOMFactory, public static Document parse(InputStream inStream): Cannot parse stream; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    }
-
-    return document;
-  }
-
-  public static Document parse(String data) throws JaferException {
-
-    Document document = null;
-    try {
-      DocumentBuilder builder = getDocumentBuilder();
-      document = builder.parse(new InputSource(new StringReader(data)));
+			DocumentBuilder builder = getDocumentBuilder();
+			document = builder.parse(new InputSource(new StringReader(data)));
     } catch (IOException e) {
       String message = "DOMFactory, public static Document parse(String data): Cannot parse data; " + e.toString();
       logger.log(Level.SEVERE, message, e);
       throw new JaferException(message, e);
     } catch (SAXException e) {
       String message = "DOMFactory, public static Document parse(String data): Cannot parse data; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    }
+			logger.log(Level.SEVERE, message, e);
+			throw new JaferException(message, e);
+		}
 
     return document;
   }
@@ -190,97 +184,75 @@ public class DOMFactory {
       throw new JaferException(message, e);
     } catch (SAXException e) {
       String message = "DOMFactory, public static Document parse(String data): Cannot parse data; " + e.toString();
-      logger.log(Level.SEVERE, message, e);
-      throw new JaferException(message, e);
-    }
+			logger.log(Level.SEVERE, message, e);
+			throw new JaferException(message, e);
+		}
 
-    return document;
-  }
+		return document;
+	}
 
-  public static Map getMap(File file) throws JaferException {
 
-    Hashtable map = new Hashtable();
-    NodeList list = null;
-    list = parse(file).getDocumentElement().getChildNodes();
-    for (int i = 0; i < list.getLength(); i++)
-      if (Config.getValue(list.item(i)) != null)
-        map.put(list.item(i).getNodeName(), Config.getValue(list.item(i)));
-
-    return (Map)map;
-  }
-
-  public static Map getMap(URL resource) throws JaferException {
-
-    try {
-      return getMap(new File(resource.getPath()));
-    } catch (NullPointerException e) {
-      String message = "DOMFactory, public static Map getMap(URL resource): Cannot create Map from resource (" + resource + "); " + e.toString();
-      logger.severe(message);
-      throw new JaferException(message, e);
-    }
-  }
-//
-//  private static String getValue(Node node) {
-//
-//    if (node.hasChildNodes() &&
-//        node.getFirstChild().getNodeType() == Node.TEXT_NODE)
-//          return node.getFirstChild().getNodeValue();
-//
-//    return null;
-//  }
-
+	//
+	//  private static String getValue(Node node) {
+	//
+	//    if (node.hasChildNodes() &&
+	//        node.getFirstChild().getNodeType() == Node.TEXT_NODE)
+	//          return node.getFirstChild().getNodeValue();
+	//
+	//    return null;
+	//  }
   public static Node getExceptionNode(Document document, Throwable e) {
 
-    Element exception = document.createElement("exception");
+		Element exception = document.createElement("exception");
 
     try {
-      exception.setAttribute("oid", Config.getRecordSyntaxFromName("JAFER"));
+			exception.setAttribute("oid", Config.getRecordSyntaxFromName("JAFER"));
     } catch (JaferException ex) {
-      exception.setAttribute("oid", "unknown");
-    }
+			exception.setAttribute("oid", "unknown");
+		}
 
-    exception.setAttribute("type", e.getClass().getName());
-    Node txt = document.createTextNode(e.toString());
-    exception.appendChild(txt);
+		exception.setAttribute("type", e.getClass().getName());
+		Node txt = document.createTextNode(e.toString());
+		exception.appendChild(txt);
 
-    if(e.getCause() != null) // recursively get cause execeptions
-      exception.appendChild(getExceptionNode(document, e.getCause()));
+		if( e.getCause() != null )
+			exception.appendChild(getExceptionNode(document, e.getCause()));
 
     return (Node)exception;
-  }
+	}
 
   public static Node getExceptionNode(Document document, Throwable e, String msg) {
 
-    Node exception = getExceptionNode(document, e);
-    Node message = document.createElement("message");
-    Node txt = document.createTextNode(msg);
-    message.appendChild(txt);
-    exception.appendChild(message);
-    return exception;
-  }
+		Node exception = getExceptionNode(document, e);
+		Node message = document.createElement("message");
+		Node txt = document.createTextNode(msg);
+		message.appendChild(txt);
+		exception.appendChild(message);
+		return exception;
+	}
 
   public static Node getExceptionNode(Document document, Throwable e, StackTraceElement[] stackTraceElement) {
 
-    Node exception = getExceptionNode(document, e);
-    appendtStackTrace(document, exception, stackTraceElement);
-    return exception;
-  }
+		Node exception = getExceptionNode(document, e);
+		appendtStackTrace(document, exception, stackTraceElement);
+		return exception;
+	}
 
   public static Node getExceptionNode(Document document, Throwable e, StackTraceElement[] stackTraceElement, String msg) {
 
-    Node exception = getExceptionNode(document, e, msg);
-    appendtStackTrace(document, exception, stackTraceElement);
-    return exception;
-  }
+		Node exception = getExceptionNode(document, e, msg);
+		appendtStackTrace(document, exception, stackTraceElement);
+		return exception;
+	}
 
   private static Node appendtStackTrace(Document document, Node exception, StackTraceElement[] stackTraceElement) {
 
     for (int i = 0; i < stackTraceElement.length; i++) {
-      Node stackTrace = document.createElement("stackTrace");
+			Node stackTrace = document.createElement("stackTrace");
       Node txt = document.createTextNode(stackTraceElement[i].toString());
-      stackTrace.appendChild(txt);
-      exception.appendChild(stackTrace);
-    }
-    return exception;
-  }
+			stackTrace.appendChild(txt);
+			exception.appendChild(stackTrace);
+		}
+		return exception;
+	}
 }
