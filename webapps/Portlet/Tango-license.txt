@@ -1,0 +1,4 @@
+JaferPortlets makes use of some icons from the Tango Desktop Project
+<http://tango.freedesktop.org/> under the Creative Commons
+Attribution-ShareAlike 2.5 License
+<http://creativecommons.org/licenses/by-sa/2.5/>.

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:portlet="http://www.uportal.org/extensions/portlet">
 
-	<xsl:include href="wrap.xsl"/>
-
     <xsl:output method="html"/>
 
     <xsl:param name="mediaPath">images</xsl:param>
@@ -13,7 +11,7 @@
     <xsl:template match="/data/databases">
     	<div class="portlet-section-header">
 			<img title="Search" alt="Search" src="{$mediaPath}/search_big.png"/>
-			Search
+			Edit Search
 		</div>
       <form name="JaferSearchForm" method="post" action="actionURL">
         <input type="hidden" name="action" value="search"/>

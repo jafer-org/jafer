@@ -566,6 +566,7 @@ import org.w3c.dom.NodeList;
     }
     return value;
   }
+
   //////////////////////////////////////////////////////////
   /**
    * Following methods added temporarily for use in CQL query generation:

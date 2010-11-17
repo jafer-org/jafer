@@ -97,7 +97,7 @@
             author="true"
             version="true"
             use="true"
-            source="1.4"
+            source="1.5"
             windowtitle="Jafer API">
 
             <tag name="uml.dependency" enabled="false" description="omondo tag to remove till aquire doclet" />

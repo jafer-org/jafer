@@ -380,7 +380,6 @@ public class QueryBuilder implements org.jafer.interfaces.QueryBuilder
          * are not set to 0 are used in the query being built. a check is made
          * to ensure that a Use attribute has been set.
          */
-
         if (attributes[1] < 1)
             throw new QueryException("Use attribute has been incorrectly set.");
 

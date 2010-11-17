@@ -4,6 +4,8 @@ import javax.portlet.GenericPortlet;
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletException;
+import javax.portlet.PortletResponse;
+
 import java.io.IOException;
 import java.lang.reflect.Method;
 import javax.portlet.RenderRequest;
@@ -84,6 +86,14 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
     abstract protected String[][] getVTableEdit();
 
     private String dispatchVTable(PortletRequest request,
+            String[][] vTable, String action,
+            Document[] xml) throws
+           PortletException {
+        return dispatchVTable(request, null, vTable, action, xml);
+        
+    }
+
+    private String dispatchVTable(PortletRequest request, PortletResponse response,
                                   String[][] vTable, String action,
                                   Document[] xml) throws
             PortletException {
@@ -104,13 +114,48 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
                         throw new PortletException(
                                 "Unknown PortletRequest type");
                     }
-                    Method func = this.getClass().getMethod(method,
-                            new Class[] {cl});
-                    if (xml == null || xml.length == 0) {
-                        func.invoke(this, new Object[] {request});
-                    } else {
-                        xml[0] = ((Document) func.invoke(this,
-                                new Object[] {request}));
+                    // if we've a response we'll first
+                    // look for methods that require it
+                    Class cl_resp = null;
+                    if(response != null) {
+                        if (response instanceof ActionResponse) {
+                            cl_resp = ActionResponse.class;
+                        }
+                        if (response instanceof RenderResponse) {
+                            cl_resp = RenderResponse.class;
+                        }
+                        if (cl_resp == null) {
+                            throw new PortletException(
+                                "Unknown PortletResponse type");
+                        }
+                    }
+                    Method func = null;
+                    if(cl_resp != null) {
+                        try {
+                            func = this.getClass().getMethod(method,
+                                new Class[] {cl, cl_resp});
+                            if (xml == null || xml.length == 0) {
+                                func.invoke(this, new Object[] {request, response});
+                            } else {
+                                xml[0] = ((Document) func.invoke(this,
+                                    new Object[] {request, response}));
+                            }
+                        } catch(NoSuchMethodException e) {
+                            ;
+                        }
+                    }
+                    // if we've no methods that support a response
+                    // (if we were passed one) we'll fall back
+                    // to looking for request-only signatures
+                    if(func == null) {
+                        func = this.getClass().getMethod(method,
+                                new Class[] {cl});
+                        if (xml == null || xml.length == 0) {
+                            func.invoke(this, new Object[] {request});
+                        } else {
+                            xml[0] = ((Document) func.invoke(this,
+                                    new Object[] {request}));
+                        }
                     }
                 }
             }
@@ -168,7 +213,7 @@ abstract public class AbstractXSLTPortlet extends GenericPortlet {
         if (action == null) {
             action = vTableAction[0][0];
         }
-        String page = dispatchVTable(request, vTableAction, action, null);
+        String page = dispatchVTable(request, response, vTableAction, action, null);
         response.setRenderParameter("action", page);
     }
 

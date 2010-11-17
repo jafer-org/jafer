@@ -10,80 +10,67 @@
     <xsl:param name="title"></xsl:param>
     <xsl:param name="locale">en_US</xsl:param>
 
-	<xsl:template match="/error">
-	<div class="portlet-msg-error">
-		<xsl:value-of select="."/>
-		Please try again.
-	</div>
-	</xsl:template>
-	
-	<xsl:template match="/results">
+    <xsl:template match="/searches">
     	<div class="portlet-section-header">
-			<img title="Search Results" alt="Search Results" src="{$mediaPath}/results_big.png"/>
-			Search Results
+			<img title="Session History" alt="Session History" src="{$mediaPath}/history_big.png"/>
+			Previous Searches
 		</div>
-		<xsl:apply-templates select="search"/>
-		<xsl:apply-templates select="records"/>
-	</xsl:template>
-
-    <xsl:template match="records">
 
         <xsl:choose>
    	    	<xsl:when test="@total = 0">
 				<div class="portlet-msg-info">
-	            	Your search has not found any matching records.
+	            	You have no previous searches in this session.
 				</div>
 			</xsl:when>
 			<xsl:when test="@total = 1">
 				<div class="portlet-msg-info">
-					Your search has found <xsl:value-of select="@total"/> record.
+					You have <xsl:value-of select="@total"/> previous search in this session.
 				</div>
-	            <xsl:apply-templates select="record" />
 			</xsl:when>
 			<xsl:when test="@total > 1">
 				<div class="portlet-msg-info">
-					Your search has found <xsl:value-of select="@total"/> records
+					You have <xsl:value-of select="@total"/> previous searches in this session.
 					<br/>
 					Displaying <xsl:value-of select="@start"/> - <xsl:value-of select="@end"/>
-					<br/>
+				</div>
+			</xsl:when>
+        </xsl:choose>
+
 					<xsl:choose>
 				        <xsl:when test="@start &gt; 10">
 					        <a href="renderURL">
-					          <portlet:param name="action" value="list"/>
-					          <portlet:param name="id" value="{@start - 10}" />
-					          <img title="Previous Results" alt="Previous Results"
-			    		      	border="0" src="{$mediaPath}/previous.png" align="top"/>
-			        		</a>
-			        	</xsl:when>
+					          <portlet:param name="action" value="history"/>
+			    		      <portlet:param name="id" value="{@start - 10}" />
+					          <img title="Previous Searches" alt="Previous Searches"
+					          	border="0" src="{$mediaPath}/previous.png" align="top"/>
+					        </a>
+				        </xsl:when>
 				        <xsl:otherwise>
-				          <img title="No Previous Results" alt="No Previous Results"
+				          <img title="No Previous Searches" alt="No Previous Searches"
 				          	border="0" src="{$mediaPath}/previous_inactive.png" align="top"/>
 				        </xsl:otherwise>
-			        </xsl:choose>
+					</xsl:choose>
 					<xsl:choose>
 				        <xsl:when test="@end &lt; @total">
 					        <a href="renderURL">
-					          <portlet:param name="action" value="list"/>
-					          <portlet:param name="id" value="{@end + 1}" />
-					          <img title="Next Results" alt="Next Results"
-			    		      	border="0" src="{$mediaPath}/next.png" align="top"/>
-			        		</a>
-			        	</xsl:when>
+					          <portlet:param name="action" value="history"/>
+			        		  <portlet:param name="id" value="{@end + 1}" />
+					          <img title="Next Searches" alt="Next Searches"
+					          	border="0" src="{$mediaPath}/next.png" align="top"/>
+			    		    </a>
+				        </xsl:when>
 				        <xsl:otherwise>
-				          <img title="No Next Results" alt="No Next Results"
+				          <img title="No Next Searches" alt="No Next Searches"
 				          	border="0" src="{$mediaPath}/next_inactive.png" align="top"/>
 				        </xsl:otherwise>
-			        </xsl:choose>
-			      </div>
+					</xsl:choose>
+            	<xsl:apply-templates select="search" />
 
-	              <xsl:apply-templates select="record" />
-          </xsl:when>
-        </xsl:choose>
     </xsl:template>
 
-	<xsl:template match="search">
+    <xsl:template match="search">
     	<div class="portlet-section-body">
-    		<b>Search: </b>
+	        <span style="font-style:italic"><xsl:value-of select="@id" />: </span>
     		<xsl:if test="rpn/item[@name='title']">
 				<span style="font-size:100%">Title = <xsl:value-of select="rpn/item[@name='title']"/></span>
 	    	</xsl:if>
@@ -102,24 +89,23 @@
 			</xsl:for-each>
 			]
 			</span>
+			<span style="font-size:70%; font-style:italic;">
+			<br/>
+    		<xsl:value-of select="@date"/>
+			<a href="actionURL">
+        		<portlet:param name="action" value="search" />
+	        	<portlet:param name="history" value="{@id}" />
+		          <img title="Re-run" alt="Re-run"
+		          	border="0" src="{$mediaPath}/re-run.png" align="top"/>
+			</a>
 			<a href="renderURL">
         		<portlet:param name="action" value="start" />
 		        <portlet:param name="history" value="{@id}" />
 		          <img title="Edit" alt="Edit"
 		          	border="0" src="{$mediaPath}/edit.png" align="top"/>
 			</a>
+			</span>
 		</div>
+		
 	</xsl:template>
-
-    <xsl:template match="record">
-      <a href="renderURL">
-        <portlet:param name="action" value="item" />
-        <portlet:param name="id" value="{@id}" />
-        <img border="0" title="Show result" alt="Show result" src="{$mediaPath}/record.png" align="TOP"/>
-        <xsl:value-of select="mods:mods/mods:title"/>
-      </a>
-      <xsl:value-of select="mods:mods/mods:name"/>
-      <br />
-    </xsl:template>
-    
 </xsl:stylesheet>

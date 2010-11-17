@@ -1,4 +1,5 @@
 * text=auto !eol
+/.project -text svneol=unset#text/plain
 /build.xml -text
 /build_userresources.properties -text
 buildscripts/build_compilerscript.xml -text
@@ -61,6 +62,7 @@ lib/xml/xercesImpl.jar -text
 lib/xml/xml-apis.jar -text
 lib/xml/xmlParserAPIs.jar -text
 lib/zebulun.jar -text
+/readme-spp.txt -text svneol=unset#text/plain
 src/MessageResources.properties -text
 src/org/jafer/conf/OpenURL/openURL.xml -text
 src/org/jafer/conf/SRWSchemaMappings.xml -text
@@ -118,6 +120,8 @@ src/org/jafer/interfaces/Deprecated.java -text
 src/org/jafer/interfaces/Logging.java -text
 src/org/jafer/interfaces/Present.java -text
 src/org/jafer/interfaces/QueryBuilder.java -text
+src/org/jafer/interfaces/RPNItem.java -text svneol=unset#text/plain
+src/org/jafer/interfaces/RecordedSearch.java -text svneol=unset#text/plain
 src/org/jafer/interfaces/Scan.java -text
 src/org/jafer/interfaces/Search.java -text
 src/org/jafer/interfaces/Sort.java -text
@@ -146,6 +150,7 @@ src/org/jafer/osid/provider/RepositoryManager.java -text
 src/org/jafer/osid/provider/Type.java -text
 src/org/jafer/portlets/AbstractXSLTPortlet.java -text
 src/org/jafer/portlets/XsltSearchPortlet.java -text
+src/org/jafer/portlets/XsltSingleSearchPortlet.java -text svneol=unset#text/plain
 src/org/jafer/portlets/xslt/PortletContentSerializer.java -text
 src/org/jafer/portlets/xslt/SAXElement.java -text
 src/org/jafer/portlets/xslt/XSLTPortletRequestDispatcher.java -text
@@ -155,7 +160,10 @@ src/org/jafer/query/QueryBuilder.java -text
 src/org/jafer/query/QueryConverter.java -text
 src/org/jafer/query/QueryException.java -text
 src/org/jafer/query/QueryParser.java -text
+src/org/jafer/query/RPNOperand.java -text svneol=unset#text/plain
+src/org/jafer/query/RPNOperator.java -text svneol=unset#text/plain
 src/org/jafer/query/RPNQuery.java -text
+src/org/jafer/query/RecordedSearch.java -text svneol=unset#text/plain
 src/org/jafer/query/converter/CQLQueryConverter.java -text
 src/org/jafer/query/converter/Converter.java -text
 src/org/jafer/query/converter/JaferQueryConverter.java -text
@@ -462,21 +470,47 @@ webapps/JaferRegistry/jsp/viewProvider.jsp -text
 webapps/JaferRegistry/jsp/viewProviderServices.jsp -text
 webapps/JaferRegistry/jsp/viewService.jsp -text
 webapps/JaferRegistry/jsp/welcome.jsp -text
+webapps/Portlet/Tango-license.txt -text svneol=unset#text/plain
 webapps/Portlet/WEB-INF/jaferportlet_en.properties -text
 webapps/Portlet/WEB-INF/portlet.xml -text
 webapps/Portlet/WEB-INF/web.xml -text
 webapps/Portlet/images/Thumbs.db -text
 webapps/Portlet/images/cross.gif -text
+webapps/Portlet/images/edit.png -text
 webapps/Portlet/images/find.gif -text
+webapps/Portlet/images/help.png -text
+webapps/Portlet/images/history.png -text
+webapps/Portlet/images/history_big.png -text
 webapps/Portlet/images/info.gif -text
 webapps/Portlet/images/left.gif -text
+webapps/Portlet/images/next.png -text
+webapps/Portlet/images/next_inactive.png -text
+webapps/Portlet/images/previous.png -text
+webapps/Portlet/images/previous_inactive.png -text
+webapps/Portlet/images/re-run.png -text
+webapps/Portlet/images/record.png -text
+webapps/Portlet/images/record_big.png -text
+webapps/Portlet/images/results.png -text
+webapps/Portlet/images/results_big.png -text
 webapps/Portlet/images/return.gif -text
+webapps/Portlet/images/return.png -text
 webapps/Portlet/images/right.gif -text
+webapps/Portlet/images/search.png -text
+webapps/Portlet/images/search_big.png -text
+webapps/Portlet/images/search_cancel.png -text
+webapps/Portlet/images/search_go.png -text
 webapps/Portlet/images/viewHTML.gif -text
 webapps/Portlet/images/viewXML.gif -text
+webapps/Portlet/xsl-ss/help.xsl -text svneol=unset#text/plain
+webapps/Portlet/xsl-ss/item.xsl -text svneol=unset#text/plain
+webapps/Portlet/xsl-ss/list.xsl -text svneol=unset#text/plain
+webapps/Portlet/xsl-ss/search.xsl -text svneol=unset#text/plain
+webapps/Portlet/xsl/help.xsl -text svneol=unset#text/plain
+webapps/Portlet/xsl/history.xsl -text svneol=unset#text/plain
 webapps/Portlet/xsl/item.xsl -text
 webapps/Portlet/xsl/list.xsl -text
 webapps/Portlet/xsl/search.xsl -text
+webapps/Portlet/xsl/wrap.xsl -text svneol=unset#text/plain
 webapps/SRUServer/WEB-INF/web.xml -text
 webapps/SRUServer/css/sru-styles.css -text
 webapps/SRUServer/error.jsp -text

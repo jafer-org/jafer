@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:portlet="http://www.uportal.org/extensions/portlet" xmlns:mods="http://www.loc.gov/mods/">
 
-	<xsl:include href="wrap.xsl"/>
-
     <xsl:output method="html"/>
 
     <xsl:param name="mediaPath">images</xsl:param>
@@ -12,7 +10,7 @@
 
     <xsl:template match="/record">
     	<div class="portlet-section-header">
-			<img title="Record Details" alt="Record Details" src="{$mediaPath}/record_big.png"/>
+			<img title="Record Details" alt="Record Details" src="{$mediaPath}/record.png"/>
 			Record Details
 		</div>
 

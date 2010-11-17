@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:portlet="http://www.uportal.org/extensions/portlet" xmlns:mods="http://www.loc.gov/mods/">
 
-	<xsl:include href="wrap.xsl"/>
-
     <xsl:output method="html" omit-xml-declaration="yes" doctype-public="" doctype-system=""/>
 
     <xsl:param name="mediaPath">images</xsl:param>
@@ -13,16 +11,14 @@
 	<xsl:template match="/error">
 	<div class="portlet-msg-error">
 		<xsl:value-of select="."/>
-		Please try again.
+		Please edit it and try again.
 	</div>
 	</xsl:template>
-	
+
 	<xsl:template match="/results">
     	<div class="portlet-section-header">
-			<img title="Search Results" alt="Search Results" src="{$mediaPath}/results_big.png"/>
-			Search Results
+			<xsl:apply-templates select="search"/>
 		</div>
-		<xsl:apply-templates select="search"/>
 		<xsl:apply-templates select="records"/>
 	</xsl:template>
 
@@ -32,6 +28,8 @@
    	    	<xsl:when test="@total = 0">
 				<div class="portlet-msg-info">
 	            	Your search has not found any matching records.
+	            	<br/>
+	            	Please use 'edit' to setup your search.
 				</div>
 			</xsl:when>
 			<xsl:when test="@total = 1">
@@ -82,8 +80,12 @@
     </xsl:template>
 
 	<xsl:template match="search">
-    	<div class="portlet-section-body">
-    		<b>Search: </b>
+			<a href="actionURL">
+        		<portlet:param name="action" value="search" />
+	        	<portlet:param name="history" value="{@id}" />
+		          <img title="Refresh" alt="Refresh"
+		          	border="0" src="{$mediaPath}/re-run.png" align="top"/>
+			</a>
     		<xsl:if test="rpn/item[@name='title']">
 				<span style="font-size:100%">Title = <xsl:value-of select="rpn/item[@name='title']"/></span>
 	    	</xsl:if>
@@ -102,13 +104,6 @@
 			</xsl:for-each>
 			]
 			</span>
-			<a href="renderURL">
-        		<portlet:param name="action" value="start" />
-		        <portlet:param name="history" value="{@id}" />
-		          <img title="Edit" alt="Edit"
-		          	border="0" src="{$mediaPath}/edit.png" align="top"/>
-			</a>
-		</div>
 	</xsl:template>
 
     <xsl:template match="record">

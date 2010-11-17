@@ -61,14 +61,23 @@
       <value>xsl/item.xsl</value>
     </init-param>
     <init-param>
+      <name>history</name>
+      <value>xsl/history.xsl</value>
+    </init-param>
+    <init-param>
       <name>images</name>
       <value>images/</value>
+    </init-param>
+    <init-param>
+      <name>help</name>
+      <value>xsl/help.xsl</value>
     </init-param>
 
     <expiration-cache>-1</expiration-cache>
     <supports>
       <mime-type>text/html</mime-type>
       <portlet-mode>VIEW</portlet-mode>
+      <portlet-mode>HELP</portlet-mode>
     </supports>
 
     <supported-locale>en</supported-locale>
@@ -79,5 +88,96 @@
       <keywords>JAFER, Search</keywords>
     </portlet-info>
   </portlet>
+
+  <portlet>
+    <description>JAFER Single Search Portlet</description>
+    <portlet-name>SingleSearchPortlet</portlet-name>
+    <display-name>JAFER Single Search Portlet</display-name>
+    <portlet-class>org.jafer.portlets.XsltSingleSearchPortlet</portlet-class>
+    <!-- Dynamic target discovery -->
+    <init-param>
+      <name>uddiInquiryUrl</name>
+      <value></value>
+    </init-param>
+    <init-param>
+      <name>uddiPublishUrl</name>
+      <value></value>
+    </init-param>
+    <init-param>
+      <name>uddiPartition</name>
+      <value></value>
+    </init-param>
+
+    <!-- Static target discovery -->
+    <init-param>
+      <name>target.Tulane University</name>
+      <value>z3950s://voyager.tcs.tulane.edu:7090/VOYAGER</value>
+    </init-param>
+    <init-param>
+      <name>target.Library of Congress</name>
+      <value>z3950s://z3950.loc.gov:7090/VOYAGER</value>
+    </init-param>    
+    <init-param>
+      <name>target.Hull University</name>
+      <value>z3950s://library.hull.ac.uk:210/INNOPAC</value>
+    </init-param>
+    <init-param>
+      <name>target.Oxford University</name>
+      <value>z3950s://olis.ox.ac.uk:210/ADVANCE</value>
+    </init-param>
+    <init-param>
+      <name>target.DSpace</name>
+      <value>http://repository.ust.hk/SRW/search/DSpace</value>
+    </init-param>
+    <init-param>
+      <name>target.Leeds University</name>
+      <value>z3950s://lib.leeds.ac.uk:210/INNOPAC</value>
+    </init-param>
+    <init-param>
+      <name>recordSchema</name>
+      <value>http://www.loc.gov/mods/</value>
+    </init-param>
+    <init-param>
+      <name>search</name>
+      <value>xsl-ss/search.xsl</value>
+    </init-param>
+    <init-param>
+      <name>list</name>
+      <value>xsl-ss/list.xsl</value>
+    </init-param>
+    <init-param>
+      <name>item</name>
+      <value>xsl-ss/item.xsl</value>
+    </init-param>
+    <init-param>
+      <name>history</name>
+      <value>xsl-ss/history.xsl</value>
+    </init-param>
+    <init-param>
+      <name>help</name>
+      <value>xsl-ss/help.xsl</value>
+    </init-param>
+    <init-param>
+      <name>images</name>
+      <value>images/</value>
+    </init-param>
+
+    <expiration-cache>-1</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>VIEW</portlet-mode>
+      <portlet-mode>EDIT</portlet-mode>
+      <portlet-mode>HELP</portlet-mode>
+    </supports>
+
+    <supported-locale>en</supported-locale>
+
+    <portlet-info>
+      <title>JAFER Single Search Portlet</title>
+      <short-title>Single Search</short-title>
+      <keywords>JAFER, Search</keywords>
+    </portlet-info>
+  </portlet>
+
 </portlet-app>
 
