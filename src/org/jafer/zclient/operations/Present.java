@@ -95,9 +95,12 @@ public class Present {
       status = response.s_presentStatus.value.get();
     String message = null;
 
+	int records = nRecords > response.s_records.c_responseRecords.length
+		? response.s_records.c_responseRecords.length : nRecords;
+
     if (status == PresentStatus.E_success) {
 
-      for (int n = 0; n < nRecords; n++) {
+      for (int n = 0; n < records; n++) {
         NamePlusRecord nr = response.s_records.c_responseRecords[n];
         if (nr.s_name != null)
           dbName = nr.s_name.value.value.get();
