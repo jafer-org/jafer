@@ -42,7 +42,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jafer.conf.Config;
+import org.jafer.util.Config;
 import org.jafer.exception.JaferException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -191,7 +191,45 @@ public class DOMFactory {
 		return document;
 	}
 
+	public static Map getMap(InputStream inStream) throws JaferException
+	{
 
+		Hashtable map = new Hashtable();
+		NodeList list = null;
+		list = parse(inStream).getDocumentElement().getChildNodes();
+		for( int i = 0; i < list.getLength(); i++ )
+		{
+			if( Config.getValue(list.item(i)) != null )
+			{
+				map.put(list.item(i).getNodeName(), Config.getValue(list.item(i)));
+			}
+		}
+
+		return map;
+	}
+
+	public static Map getMap(URL resource) throws JaferException
+	{
+		try
+		{
+			return getMap(resource.openStream());
+		}
+		catch( NullPointerException e )
+		{
+			String message = "DOMFactory, public static Map getMap(URL resource): Cannot create Map from resource ("
+				+ resource + "); " + e.toString();
+			logger.severe(message);
+			throw new JaferException(message, e);
+		}
+		catch( IOException e )
+		{
+			String message = "DOMFactory, public static Map getMap(URL resource): Cannot create Map from resource ("
+				+ resource + "); " + e.toString();
+			logger.severe(message);
+			throw new JaferException(message, e);
+		}
+	}
+	
 	//
 	//  private static String getValue(Node node) {
 	//

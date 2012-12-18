@@ -14,7 +14,6 @@
 
 package org.jafer.util.xml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -370,30 +369,6 @@ public class XMLTransformer
 		}
 	}
 
-	public static Node transform(Node sourceNode, URL resource) throws JaferException
-	{
-
-		logger.entering("XMLTransformer",
-			"public static Node transform(Map paramMap, Node sourceNode, URL resource)");
-
-		try
-		{
-			return transform(sourceNode, resource.getFile());
-		}
-		catch( NullPointerException e )
-		{
-			String message = "XMLTransformer; cannot transform node, NULL resource. "
-				+ e.toString();
-			logger.severe(message);
-			throw new JaferException(message, e);
-		}
-		finally
-		{
-			logger.exiting("XMLTransformer",
-				"public static Node transform(Map paramMap, Node sourceNode, URL resource)");
-		}
-	}
-
 	public static Node transform(Map paramMap, Node sourceNode, URL resource) throws JaferException
 	{
 
@@ -412,29 +387,6 @@ public class XMLTransformer
 		finally
 		{
             logger.exiting("XMLTransformer", "public static Node transform(Map paramMap, Node sourceNode, URL resource)");
-		}
-	}
-
-	public static Node transform(Node sourceNode, File file) throws JaferException
-	{
-
-		logger.entering("XMLTransformer",
-			"public static Node transform(Map paramMap, Node sourceNode, File file)");
-
-		try
-		{
-			return transform(sourceNode, file.getPath());
-		}
-		catch( NullPointerException e )
-		{
-			String message = "XMLTransformer; cannot transform node, NULL file. " + e.toString();
-			logger.severe(message);
-			throw new JaferException(message, e);
-		}
-		finally
-		{
-						logger.exiting("XMLTransformer",
-				"public static Node transform(Map paramMap, Node sourceNode, File file)");
 		}
 	}
 
