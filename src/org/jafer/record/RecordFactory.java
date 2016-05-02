@@ -36,6 +36,8 @@ import java.lang.ClassNotFoundException;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.xml.transform.Templates;
+import javax.xml.transform.stream.StreamSource;
+
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
@@ -235,7 +237,7 @@ public class RecordFactory {
         if (!map.containsKey(styleSheet)) {// lookup in hashtable
           try {
             resource =  this.getClass().getClassLoader().getResourceAsStream(styleSheet);
-            template = XMLTransformer.createTemplate(resource);
+            template = XMLTransformer.createTemplate(new StreamSource(resource));
             map.put(styleSheet, template);
           } catch (Exception e) {
             throw new JaferException("Error creating template from styleSheet: " + styleSheet, e);
@@ -262,7 +264,7 @@ public class RecordFactory {
         if (!cachedTemplates.containsKey(styleSheet)) {
           try {
             resource =  this.getClass().getClassLoader().getResourceAsStream(styleSheet);
-            template = XMLTransformer.createTemplate(resource);
+            template = XMLTransformer.createTemplate(new StreamSource(resource));
             cachedTemplates.put(styleSheet, template);
           } catch (Exception e) {
             throw new JaferException("Error creating template from stylesheet: " + styleSheet, e);

@@ -195,7 +195,7 @@ public class MARCRecord extends DataObject {
       byteIn = new ByteArrayInputStream(bytes,
                     baseAddress + start, len - 1);
 
-      if (Integer.parseInt(tag) < 10)
+      if (isFixfield(tag))
         field = document.createElementNS(OAI_NAMESPACE, "fixfield");
 //	field = document.createElement("fixfield");
       else
@@ -209,6 +209,18 @@ public class MARCRecord extends DataObject {
       byteIn.close();
     }
   }
+
+	private boolean isFixfield(String tag)
+	{
+		try
+		{
+			return Integer.parseInt(tag) < 10;
+		}
+		catch( NumberFormatException nfe )
+		{
+			return false;
+		}
+	}
 
   private void processField(Document document, Node field, ByteArrayInputStream byteIn) throws IOException, JaferException {
 
